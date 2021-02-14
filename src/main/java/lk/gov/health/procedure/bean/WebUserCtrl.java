@@ -18,7 +18,9 @@ import lk.gov.health.procedure.entity.WebUser;
 import lk.gov.health.procedure.facade.UserPrivilegeFacade;
 import lk.gov.health.procedure.facade.WebUserFacade;
 import lk.gov.health.procedure.facade.util.JsfUtil;
+import lk.gov.health.procedure.util.ServiceConnector;
 import org.jasypt.util.password.BasicPasswordEncryptor;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -40,22 +42,28 @@ public class WebUserCtrl implements Serializable {
 
     public String loginNew() {
 
-        if (userName == null || userName.trim().equals("")) {
-            JsfUtil.addErrorMessage("Please enter Username");
-            return "";
-        }
+//        if (userName == null || userName.trim().equals("")) {
+//            JsfUtil.addErrorMessage("Please enter Username");
+//            return "";
+//        }
 
-        if (userPassword == null || userPassword.trim().equals("")) {
-            JsfUtil.addErrorMessage("Please enter Password");
-            return "";
-        }
+//        if (userPassword == null || userPassword.trim().equals("")) {
+//            JsfUtil.addErrorMessage("Please enter Password");
+//            return "";
+//        }
 
-        if (!checkLoginNew()) {
-            JsfUtil.addErrorMessage("Username/Password Error. Please retry.");
-            return "";
-        }
+//        if (!checkLoginNew()) {
+//            JsfUtil.addErrorMessage("Username/Password Error. Please retry.");
+//            return "";
+//        }
 
-        loggedUserPrivileges = userPrivilegeList(loggedUser);
+//        loggedUserPrivileges = userPrivilegeList(loggedUser);
+
+        ServiceConnector sc = new ServiceConnector();
+        JSONObject obj = sc.GetRequest("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroom/count");
+        
+        userName = obj.get("room_count").toString();
+                
         JsfUtil.addSuccessMessage("Successfully Logged");
         return "/index";
     }
