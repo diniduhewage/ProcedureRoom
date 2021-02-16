@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
  * @author user
  */
 public class ProcedureTypePojo {
+    private Long id;
     private String procedureType;
     private String description; 
     
@@ -28,7 +29,15 @@ public class ProcedureTypePojo {
         
         return jo_;        
     }
-
+    
+    public ProcedureTypePojo getObject(JSONObject jo_) {
+        this.setId(Long.parseLong(jo_.get("id").toString()));
+        this.setProcedureType(jo_.containsKey("procedureType") ? jo_.get("procedureType").toString() : null);
+        this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
+        
+        return this;
+    }
+    
     public String getProcedureType() {
         return procedureType;
     }
@@ -44,4 +53,12 @@ public class ProcedureTypePojo {
     public void setDescription(String description) {
         this.description = description;
     } 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

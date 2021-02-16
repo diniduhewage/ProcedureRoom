@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
  * @author user
  */
 public class ProcedureRoomTypePojo {
+    private Long id;
     private String typeId;
     private String description;
     
@@ -28,7 +29,15 @@ public class ProcedureRoomTypePojo {
         
         return jo_;        
     }
-
+    
+    public ProcedureRoomTypePojo getObject(JSONObject jo_) {
+        this.setId(Long.parseLong(jo_.get("id").toString()));
+        this.setTypeId(jo_.containsKey("typeId") ? jo_.get("typeId").toString() : null);
+        this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
+        
+        return this;
+    }
+    
     public String getTypeId() {
         return typeId;
     }
@@ -43,6 +52,14 @@ public class ProcedureRoomTypePojo {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
     
     

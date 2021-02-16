@@ -5,7 +5,11 @@
  */
 package lk.gov.health.procedure.pojo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONObject;
 
 /**
@@ -13,6 +17,7 @@ import org.json.simple.JSONObject;
  * @author user
  */
 public class ProcedurePerClientPojo {
+    private Long id;
     private String phn;
     private Long instituteId;
     private Long procedureId;
@@ -44,7 +49,25 @@ public class ProcedurePerClientPojo {
         
         return jo_;        
     }
+    
+    public ProcedurePerClientPojo getObject(JSONObject jo_) {
+        this.setId(Long.parseLong(jo_.get("id").toString()));
+        this.setPhn(jo_.containsKey("phn") ? jo_.get("phn").toString() : null);
+        this.setInstituteId(jo_.containsKey("instituteId") ? Long.parseLong(jo_.get("instituteId").toString()) : null);
+        this.setProcedureId(jo_.containsKey("procedureId") ? Long.parseLong(jo_.get("procedureId").toString()) : null);
+        this.setRoomId(jo_.containsKey("roomId") ? Long.parseLong(jo_.get("roomId").toString()) : null);
+        this.setCreatedBy(jo_.containsKey("createdBy") ? Long.parseLong(jo_.get("createdBy").toString()) : null);
+        try {        
+            this.setCreatedAt(jo_.containsKey("createdAt") ? new SimpleDateFormat("dd/MM/yyyy").parse(jo_.get("createdAt").toString()) : null);
+        } catch (ParseException ex) {
+            Logger.getLogger(ProcedurePerClientPojo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.setStatus(jo_.containsKey("status") ? jo_.get("status").toString() : null); 
+        
+        return this;
+    }      
 
+    
     public String getPhn() {
         return phn;
     }
@@ -99,6 +122,14 @@ public class ProcedurePerClientPojo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
     
     

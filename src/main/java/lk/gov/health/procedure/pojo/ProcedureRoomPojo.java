@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
  * @author user
  */
 public class ProcedureRoomPojo {
+    private Long id;
     private String roomId;
     private String description;
     private Long type;
@@ -37,7 +38,17 @@ public class ProcedureRoomPojo {
         
         return jo_;        
     }
-            
+    
+    public ProcedureRoomPojo getObject(JSONObject jo_) {
+        this.setId(Long.parseLong(jo_.get("id").toString()));
+        this.setRoomId(jo_.containsKey("roomId") ? jo_.get("roomId").toString() : null);
+        this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
+        this.setType(jo_.containsKey("type") ? Long.parseLong(jo_.get("type").toString()) : null);
+        this.setInstituteId(jo_.containsKey("instituteId") ? Long.parseLong(jo_.get("instituteId").toString()) : null);
+        this.setStatus(jo_.containsKey("status") ? jo_.get("status").toString() : null); 
+        
+        return this;
+    }            
 
     public String getRoomId() {
         return roomId;
@@ -78,6 +89,14 @@ public class ProcedureRoomPojo {
     public void setStatus(String status) {
         this.status = status;
     }  
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     
     
 }
