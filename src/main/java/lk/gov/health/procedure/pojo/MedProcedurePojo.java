@@ -16,12 +16,12 @@ public class MedProcedurePojo {
     private Long id;
     private String procId;
     private String description;
-    private Long procType;
-    private Long roomType;
+    private ProcedureTypePojo procType;
+    private ProcedureRoomTypePojo roomType;
     private String comment;
     private String status;
 
-    public MedProcedurePojo(Long id, String proc_id_, String description_, Long proc_type_, Long room_type_, String comment_, String status_) {
+    public MedProcedurePojo(Long id, String proc_id_, String description_, ProcedureTypePojo proc_type_, ProcedureRoomTypePojo room_type_, String comment_, String status_) {
         this.id = id;
         this.procId = proc_id_;
         this.description = description_;
@@ -52,7 +52,8 @@ public class MedProcedurePojo {
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setProcId(jo_.containsKey("procId") ? jo_.get("procId").toString() : null);
         this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
-        this.setProcType(jo_.containsKey("procType") ? Long.parseLong(jo_.get("procType").toString()) : null);
+        this.setProcType(jo_.containsKey("procType") ? (ProcedureTypePojo)(jo_.get("procType")) : null);
+        this.setRoomType(jo_.containsKey("roomType") ? (ProcedureRoomTypePojo)(jo_.get("roomType")) : null);
         this.setComment(jo_.containsKey("comment") ? jo_.get("comment").toString() : null);
         this.setStatus(jo_.containsKey("status") ? jo_.get("status").toString() : null);
         return this;
@@ -74,19 +75,19 @@ public class MedProcedurePojo {
         this.description = description;
     }
 
-    public Long getProcType() {
+    public ProcedureTypePojo getProcType() {
         return procType;
     }
 
-    public void setProcType(Long procType) {
+    public void setProcType(ProcedureTypePojo procType) {
         this.procType = procType;
     }
 
-    public Long getRoomType() {
+    public ProcedureRoomTypePojo getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(Long roomType) {
+    public void setRoomType(ProcedureRoomTypePojo roomType) {
         this.roomType = roomType;
     }
 
@@ -113,5 +114,4 @@ public class MedProcedurePojo {
     public void setId(Long id) {
         this.id = id;
     }
-
 }

@@ -20,13 +20,13 @@ public class ProcedurePerClientPojo {
     private Long id;
     private String phn;
     private Long instituteId;
-    private Long procedureId;
-    private Long roomId;
+    private MedProcedurePojo procedureId;
+    private ProcedureRoomPojo roomId;
     private Long createdBy; 
     private Date createdAt;
     private String status;
     
-    public ProcedurePerClientPojo(String phn_,Long institute_id_,Long procedure_id_,Long room_id_,Long created_by_,Date created_at_ , String status_){
+    public ProcedurePerClientPojo(String phn_,Long institute_id_,MedProcedurePojo procedure_id_,ProcedureRoomPojo room_id_,Long created_by_,Date created_at_ , String status_){
         this.phn = phn_;
         this.instituteId = institute_id_;
         this.procedureId = procedure_id_;
@@ -54,8 +54,8 @@ public class ProcedurePerClientPojo {
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setPhn(jo_.containsKey("phn") ? jo_.get("phn").toString() : null);
         this.setInstituteId(jo_.containsKey("instituteId") ? Long.parseLong(jo_.get("instituteId").toString()) : null);
-        this.setProcedureId(jo_.containsKey("procedureId") ? Long.parseLong(jo_.get("procedureId").toString()) : null);
-        this.setRoomId(jo_.containsKey("roomId") ? Long.parseLong(jo_.get("roomId").toString()) : null);
+        this.setProcedureId(jo_.containsKey("procedureId") ? (MedProcedurePojo)(jo_.get("procedureId")) : null);
+        this.setRoomId(jo_.containsKey("roomId") ? (ProcedureRoomPojo)(jo_.get("roomId")) : null);
         this.setCreatedBy(jo_.containsKey("createdBy") ? Long.parseLong(jo_.get("createdBy").toString()) : null);
         try {        
             this.setCreatedAt(jo_.containsKey("createdAt") ? new SimpleDateFormat("dd/MM/yyyy").parse(jo_.get("createdAt").toString()) : null);
@@ -84,19 +84,19 @@ public class ProcedurePerClientPojo {
         this.instituteId = instituteId;
     }
 
-    public Long getProcedureId() {
+    public MedProcedurePojo getProcedureId() {
         return procedureId;
     }
 
-    public void setProcedureId(Long procedureId) {
+    public void setProcedureId(MedProcedurePojo procedureId) {
         this.procedureId = procedureId;
     }
 
-    public Long getRoomId() {
+    public ProcedureRoomPojo getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(ProcedureRoomPojo roomId) {
         this.roomId = roomId;
     }
 
