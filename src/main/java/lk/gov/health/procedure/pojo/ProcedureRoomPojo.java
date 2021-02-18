@@ -15,11 +15,11 @@ public class ProcedureRoomPojo {
     private Long id;
     private String roomId;
     private String description;
-    private Long type;
+    private ProcedureRoomTypePojo type;
     private Long instituteId;
     private String status;
     
-    public ProcedureRoomPojo(String room_id_, String description_, Long type_,Long institute_id_, String status_){
+    public ProcedureRoomPojo(String room_id_, String description_, ProcedureRoomTypePojo type_,Long institute_id_, String status_){
         this.roomId = room_id_;
         this.description = description_;
         this.type = type_;
@@ -43,7 +43,7 @@ public class ProcedureRoomPojo {
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setRoomId(jo_.containsKey("roomId") ? jo_.get("roomId").toString() : null);
         this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
-        this.setType(jo_.containsKey("type") ? Long.parseLong(jo_.get("type").toString()) : null);
+        this.setType(jo_.containsKey("type") ? (ProcedureRoomTypePojo)(jo_.get("type")) : null);
         this.setInstituteId(jo_.containsKey("instituteId") ? Long.parseLong(jo_.get("instituteId").toString()) : null);
         this.setStatus(jo_.containsKey("status") ? jo_.get("status").toString() : null); 
         
@@ -66,11 +66,11 @@ public class ProcedureRoomPojo {
         this.description = description;
     }
 
-    public Long getType() {
+    public ProcedureRoomTypePojo getType() {
         return type;
     }
 
-    public void setType(Long type) {
+    public void setType(ProcedureRoomTypePojo type) {
         this.type = type;
     }
 
@@ -96,7 +96,5 @@ public class ProcedureRoomPojo {
 
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    
+    }   
 }
