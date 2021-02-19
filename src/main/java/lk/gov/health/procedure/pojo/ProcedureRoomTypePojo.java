@@ -5,6 +5,8 @@
  */
 package lk.gov.health.procedure.pojo;
 
+import java.util.ArrayList;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -16,6 +18,9 @@ public class ProcedureRoomTypePojo {
     private String typeId;
     private String description;
     
+    public ProcedureRoomTypePojo(){
+        
+    }
     public ProcedureRoomTypePojo(String type_id_ , String description_){
         this.typeId = type_id_;
         this.description = description_;
@@ -28,7 +33,7 @@ public class ProcedureRoomTypePojo {
         jo_.put("description", this.getDescription());
         
         return jo_;        
-    }
+    }  
     
     public ProcedureRoomTypePojo getObject(JSONObject jo_) {
         this.setId(Long.parseLong(jo_.get("id").toString()));
@@ -36,6 +41,17 @@ public class ProcedureRoomTypePojo {
         this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
         
         return this;
+    }
+    
+    public ArrayList<ProcedureRoomTypePojo> getObjectList(JSONArray ja_) {
+        ArrayList<ProcedureRoomTypePojo> ObjectList = new ArrayList<>();
+        
+        for (int i = 0; i < ja_.size(); i++) {
+            JSONObject jo_ = (JSONObject) ja_.get(i);
+
+            ObjectList.add(new ProcedureRoomTypePojo().getObject(jo_));
+        }
+        return ObjectList;
     }
     
     public String getTypeId() {

@@ -5,6 +5,8 @@
  */
 package lk.gov.health.procedure.pojo;
 
+import java.util.ArrayList;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -19,6 +21,10 @@ public class ProcedureTypePojo {
     public ProcedureTypePojo(String procedure_type_, String description_){
         this.procedureType = procedure_type_;
         this.description = description_;        
+    }
+
+    public ProcedureTypePojo() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public JSONObject getJsonObject(){
@@ -36,6 +42,15 @@ public class ProcedureTypePojo {
         this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
         
         return this;
+    }
+    
+    public ArrayList<ProcedureTypePojo> getObjectList(JSONArray ja_) {
+        ArrayList<ProcedureTypePojo> ObjectList = new ArrayList<>();
+        
+        for (int i = 0; i < ja_.size(); i++) {
+            ObjectList.add(new ProcedureTypePojo().getObject((JSONObject) ja_.get(i)));
+        }
+        return ObjectList;
     }
     
     public String getProcedureType() {

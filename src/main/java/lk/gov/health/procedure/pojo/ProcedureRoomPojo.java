@@ -5,6 +5,9 @@
  */
 package lk.gov.health.procedure.pojo;
 
+import java.util.ArrayList;
+import lk.gov.health.procedure.enums.ObjectStatus;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -17,9 +20,12 @@ public class ProcedureRoomPojo {
     private String description;
     private ProcedureRoomTypePojo type;
     private Long instituteId;
-    private String status;
+    private ObjectStatus status;
     
-    public ProcedureRoomPojo(String room_id_, String description_, ProcedureRoomTypePojo type_,Long institute_id_, String status_){
+    public ProcedureRoomPojo(){
+    }
+    
+    public ProcedureRoomPojo(String room_id_, String description_, ProcedureRoomTypePojo type_,Long institute_id_, ObjectStatus status_){
         this.roomId = room_id_;
         this.description = description_;
         this.type = type_;
@@ -45,10 +51,19 @@ public class ProcedureRoomPojo {
         this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
         this.setType(jo_.containsKey("type") ? (ProcedureRoomTypePojo)(jo_.get("type")) : null);
         this.setInstituteId(jo_.containsKey("instituteId") ? Long.parseLong(jo_.get("instituteId").toString()) : null);
-        this.setStatus(jo_.containsKey("status") ? jo_.get("status").toString() : null); 
+        this.setStatus(jo_.containsKey("status") ? (ObjectStatus)jo_.get("status"): null); 
         
         return this;
-    }            
+    }   
+    
+    public ArrayList<ProcedureRoomPojo> getObjectList(JSONArray ja_) {
+        ArrayList<ProcedureRoomPojo> ObjectList = new ArrayList<>();
+        
+        for (int i = 0; i < ja_.size(); i++) {
+            ObjectList.add(new ProcedureRoomPojo().getObject((JSONObject) ja_.get(i)));
+        }
+        return ObjectList;
+    }
 
     public String getRoomId() {
         return roomId;
@@ -82,11 +97,11 @@ public class ProcedureRoomPojo {
         this.instituteId = instituteId;
     }
 
-    public String getStatus() {
+    public ObjectStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ObjectStatus status) {
         this.status = status;
     }  
 
