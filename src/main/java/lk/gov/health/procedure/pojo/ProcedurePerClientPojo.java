@@ -7,9 +7,12 @@ package lk.gov.health.procedure.pojo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lk.gov.health.procedure.enums.ProcPerClientStates;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -24,9 +27,13 @@ public class ProcedurePerClientPojo {
     private ProcedureRoomPojo roomId;
     private Long createdBy; 
     private Date createdAt;
-    private String status;
+    private ProcPerClientStates status;
     
-    public ProcedurePerClientPojo(String phn_,Long institute_id_,MedProcedurePojo procedure_id_,ProcedureRoomPojo room_id_,Long created_by_,Date created_at_ , String status_){
+    public ProcedurePerClientPojo(){
+        
+    }
+    
+    public ProcedurePerClientPojo(String phn_,Long institute_id_,MedProcedurePojo procedure_id_,ProcedureRoomPojo room_id_,Long created_by_,Date created_at_ , ProcPerClientStates status_){
         this.phn = phn_;
         this.instituteId = institute_id_;
         this.procedureId = procedure_id_;
@@ -62,10 +69,19 @@ public class ProcedurePerClientPojo {
         } catch (ParseException ex) {
             Logger.getLogger(ProcedurePerClientPojo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.setStatus(jo_.containsKey("status") ? jo_.get("status").toString() : null); 
+        this.setStatus(jo_.containsKey("status") ? (ProcPerClientStates)jo_.get("status") : null); 
         
         return this;
-    }      
+    } 
+    
+    public ArrayList<ProcedurePerClientPojo> getObjectList(JSONArray ja_) {
+        ArrayList<ProcedurePerClientPojo> ObjectList = new ArrayList<>();
+        
+        for (int i = 0; i < ja_.size(); i++) {
+            ObjectList.add(new ProcedurePerClientPojo().getObject((JSONObject) ja_.get(i)));
+        }
+        return ObjectList;
+    }
 
     
     public String getPhn() {
@@ -116,11 +132,11 @@ public class ProcedurePerClientPojo {
         this.createdAt = createdAt;
     }
 
-    public String getStatus() {
+    public ProcPerClientStates getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ProcPerClientStates status) {
         this.status = status;
     }
 

@@ -1,22 +1,148 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:p="http://primefaces.org/ui">
+    
     <h:head>
-        <title>#{bundle.Title}</title>
     </h:head>
+
     <h:body>
-
-        <ui:composition template="./template/template.xhtml">
-
-            <ui:define name="content">
-
+        <h:form>
+        <div class="card">
+            <p:megaMenu orientation="horizontal" autoDisplay="false"> 
+                <p:menuitem value = "Pharmacy" url="#" icon="pi pi-briefcase"/>
+                <p:menuitem value = "Procedure Room" url="#"/>
                 
-            </ui:define>
-        </ui:composition>
-    </h:body>
+            </p:megaMenu>
+            
+        </div>   
+        </h:form>
+        
+        
+        <div class="card"  align="left" style="float:left; width:10%">
+    <h:form>
+        <p:growl>
+            <p:autoUpdate/>
+        </p:growl>
+ 
+        <p:panelMenu style="width:200px" >
+            <p:submenu label="Ajax Menuitems" expanded="true">
+                <p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save"/>
+                <p:menuitem value="Update" action="#{menuView.update}" icon="pi pi-refresh"/>
+            </p:submenu>
+            <p:submenu label="Non-Ajax Menuitem" expanded="true">
+                <p:menuitem value="Delete" action="#{menuView.delete}" ajax="false" icon="pi pi-times"/>
+            </p:submenu>
+            
+            <p:submenu label="Navigations" expanded="true">
+                <p:submenu label="Links" icon="pi pi-home">
+                    <p:submenu label="PrimeFaces" icon="pi pi-briefcase">
+                        <p:menuitem value="Home" url="http://www.primefaces.org" icon="pi pi-home"/>
+                        <p:menuitem value="Docs" url="http://www.primefaces.org/documentation"
+                                    icon="pi pi-file"/>
+                        <p:menuitem value="Download" url="http://www.primefaces.org/downloads"
+                                    icon="pi pi-arrow-down"/>
+                        <p:menuitem value="Support" url="http://www.primefaces.org/support"
+                                    icon="pi pi-briefcase"/>
+                        <p:menuitem value = "Procedure Room" ajax="false" action="#{ProcedureRoomTypeCtrl.getProcRoomTypes()}" />
+                    </p:submenu>
+                </p:submenu>
+                <p:menuitem value="Mobile" icon="pi pi-mobile"/>
+            </p:submenu>
+        </p:panelMenu>
+    </h:form>
+</div>     
+               
+        <style type="text/css">
+    .ui-filter-column .ui-column-customfilter .custom-filter {
+        width: 100%;
+        box-sizing: border-box;  
+    }
+    
+    body .ui-panelmenu .ui-panelmenu-header.ui-state-active, body .ui-panelmenu .ui-panelmenu-header{
+       font-size: 12px;
+       font-weight: normal;
+     }
+     body .ui-panelmenu li.ui-menuitem span.ui-menuitem-text{
+          font-size: 12px;
+       font-weight: normal;
+       
+     }  
+     
+</style>
+        
+   <div class="card" style="float:right; width:85%;">
+    <h:form id="form">
+
+        <p:dataTable id="products" value="#{ProcedureRoomTypeCtrl.items}" var="item" editable="true" editMode="cell" 
+                     style="margin-bottom:20px" editInitEvent="dblclick" rowKey="#{item.id}"
+                     rows="10"
+                     widgetVar="cellCars2"
+                     paginator="true"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+            
+            <p:ajax event="cellEdit" listener="#{ProcedureRoomTypeCtrl.onCellEdit}" />
+            <f:facet name="header">
+                Procedure Room Types                
+            </f:facet>
+
+            <p:column headerText="Room Type">
+                <h:outputText value="#{item.typeId}" />
+            </p:column>
+            <p:column headerText="Description">
+                <h:outputText value="#{item.description}"/>
+            </p:column>
+            
+        </p:dataTable>
+
+        <p:contextMenu for="products">
+            <p:menuitem value="View" update="productDetail" icon="pi pi-search"
+                        oncomplete="PF('productDialog').show()"/>
+            <p:menuitem value="Delete" update="products" icon="pi pi-times"
+                        action="#{dtContextMenuView.deleteProduct}"/>
+        </p:contextMenu>
+
+        <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade"
+                  hideEffect="fade" resizable="false">
+            <p:outputPanel id="productDetail" style="text-align:center;">
+                <p:column rendered="#{not empty dtContextMenuView.selectedProduct}">
+                    <div class="product">
+                        <div class="product-grid-item border-0" style="margin-bottom: 0">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"/>
+                                    <span class="product-category">#{dtContextMenuView.selectedProduct.category}</span>
+                                </div>
+                                <span class="product-badge status-#{dtContextMenuView.selectedProduct.inventoryStatus.name().toLowerCase()}">#{dtContextMenuView.selectedProduct.inventoryStatus.text}</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <p:graphicImage
+                                        name="demo/images/product/#{dtContextMenuView.selectedProduct.image}"/>
+                                <div class="product-name">#{dtContextMenuView.selectedProduct.name}</div>
+                                <div class="product-description">#{dtContextMenuView.selectedProduct.description}</div>
+                                <p:rating readonly="true" value="#{dtContextMenuView.selectedProduct.rating}"/>
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                <h:outputText value="#{dtContextMenuView.selectedProduct.price}"
+                                              styleClass="product-price">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                                <p:commandButton type="button" value="Add To Cart"
+                                                 icon="pi pi-shopping-cart"
+                                                 disabled="#{dtContextMenuView.selectedProduct.inventoryStatus == 'OUTOFSTOCK'}">
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </p:column>
+            </p:outputPanel>
+        </p:dialog>
+    </h:form>
+</div>
+   </h:body>
 </html>
 
