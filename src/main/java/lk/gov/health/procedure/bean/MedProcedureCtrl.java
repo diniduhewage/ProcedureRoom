@@ -10,38 +10,66 @@ import java.util.ArrayList;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import lk.gov.health.procedure.pojo.MedProcedurePojo;
+import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
+import lk.gov.health.procedure.pojo.ProcedureTypePojo;
+import lk.gov.health.procedure.util.ServiceConnector;
 
 /**
  *
  * @author user
  */
-@Named
+@Named("MedProcedureCtrl")
 @SessionScoped
-public class MedProcedureCtrl implements Serializable{
-    private MedProcedurePojo med_pojo_ = new MedProcedurePojo();
-    
-    private ArrayList<MedProcedurePojo> medList;
-         
+public class MedProcedureCtrl implements Serializable {
 
-    public MedProcedurePojo getMed_pojo_() {
-        return med_pojo_;
+    private MedProcedurePojo selected = new MedProcedurePojo();
+    private ArrayList<ProcedureTypePojo> procTypes;
+    ProcedureTypePojo procType = new ProcedureTypePojo();
+    ProcedureRoomTypePojo roomType = new ProcedureRoomTypePojo();
+
+    private ArrayList<MedProcedurePojo> items;
+
+    public MedProcedurePojo getSelected() {
+        return selected;
     }
 
-    public void setMed_pojo_(MedProcedurePojo med_pojo_) {
-        this.med_pojo_ = med_pojo_;
+    public void setSelected(MedProcedurePojo selected) {
+        this.selected = selected;
     }
 
-    public ArrayList<MedProcedurePojo> getMedList() {
-        return medList;
+    public ArrayList<MedProcedurePojo> getItems() {
+        return items;
     }
 
-    public void setMedList(ArrayList<MedProcedurePojo> medList) {
-        this.medList = medList;
+    public void setItems(ArrayList<MedProcedurePojo> items) {
+        this.items = items;
+    }
+
+    public ArrayList<ProcedureTypePojo> getProcTypes() {
+        return procTypes;
+    }
+
+    public void setProcTypes(ArrayList<ProcedureTypePojo> procTypes) {
+        this.procTypes = procTypes;
+    }
+
+    public String toMedProcedure() {
+        selected = new MedProcedurePojo();
+        return "/pages/procedure";
+    }
+
+    public ArrayList<ProcedureTypePojo> fetchProcTypes() {
+        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype";
+
+        ServiceConnector sc_ = new ServiceConnector();
+        return procType.getObjectList(sc_.GetRequestList(url_));
     }
     
-    
-    
-    
-    
-            
+    public ArrayList<ProcedureRoomTypePojo> fetchRoomTypes() {
+        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroomtype";
+
+        ServiceConnector sc_ = new ServiceConnector();
+        return roomType.getObjectList(sc_.GetRequestList(url_));
+    }
+
 }

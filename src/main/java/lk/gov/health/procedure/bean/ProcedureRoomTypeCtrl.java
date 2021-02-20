@@ -7,13 +7,11 @@ package lk.gov.health.procedure.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
 import lk.gov.health.procedure.util.ServiceConnector;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -52,16 +50,26 @@ public class ProcedureRoomTypeCtrl implements Serializable {
 
         ServiceConnector sc_ = new ServiceConnector();
         items = selected.getObjectList(sc_.GetRequestList(url_));       
+    }   
+    
+    public String toProcRoomTypes() {
+        selected = new ProcedureRoomTypePojo();   
+        getProcRoomTypes();
+        return "/pages/room_types";
+    } 
+    
+    public void saveRoomType(){
+        JSONObject jo = selected.getJsonObject();
+        
+        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype";
+
+        ServiceConnector sc_ = new ServiceConnector();
+        JSONObject res_jo_ = sc_.PostRequest(url_, jo);  
+        
+        items.add(selected.getObject(res_jo_));
     }
-
-    public void onCellEdit(CellEditEvent event) {
-        Object oldValue = event.getOldValue();
-        Object newValue = event.getNewValue();
-
-        if (newValue != null && !newValue.equals(oldValue)) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
+    
+    public void openNew(){
+        selected = null;
     }
-
 }
