@@ -12,21 +12,6 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <style type="text/css">
-            .ui-filter-column .ui-column-customfilter .custom-filter {
-                width: 100%;
-                box-sizing: border-box;
-            }
-            body .ui-panelmenu .ui-panelmenu-header.ui-state-active, body .ui-panelmenu .ui-panelmenu-header{
-                font-size: 12px;
-                font-weight: normal;
-            }
-            body .ui-panelmenu li.ui-menuitem span.ui-menuitem-text{
-                font-size: 12px;
-                font-weight: normal;
-
-            } 
-        </style>
         <ui:composition template="/index.xhtml">
             <ui:define name="tabSection">
                 <div style="float:right; width:82%; margin-right: 0.5cm; ">
@@ -37,11 +22,11 @@ and open the template in the editor.
                             <div class="products-buttonbar" style="margin-top:0.5cm; margin-right: 0.25cm">
                                 <div>
                                     <p:commandButton value="New" icon="pi pi-plus" actionListener="#{crudView.openNew}" update=":form:manage-proc-type-content" oncomplete="PF('manageProcedureTypeDialog').show()"
-                                                     styleClass="ui-button-success" style="margin-right: .5rem; width: 100px; height: 30px;"> 
+                                                     styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
                                         <p:resetInput target=":form:manage-proc-type-content"/>
                                     </p:commandButton>
                                     <p:commandButton id="delete-products-button" value="Remove" icon="pi pi-trash" actionListener="#{crudView.deleteSelectedProducts}"
-                                                     styleClass="ui-button-danger" disabled="#{!crudView.hasSelectedProducts()}" update="@this" style="height: 30px;">
+                                                     styleClass="ui-button-danger" disabled="#{!crudView.hasSelectedProducts()}" update="@this" style="margin-right: .5rem;  height: 30px; font-size: 11px;">
                                         <p:confirm header="Confirmation" message="Delete the selected products?" icon="pi pi-exclamation-triangle"/>
                                     </p:commandButton>
                                 </div>
@@ -53,14 +38,8 @@ and open the template in the editor.
                                          rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px"
                                          rowIndexVar="index">
                                 <f:facet name="header">
-                                    <div class="procedure-table-header">
-                                        <span style="font-weight: bold">Procedure Type</span>
-
-                                        <span class="filter-container ui-input-icon-left">
-                                            <i class="pi pi-search"></i>
-                                            <p:inputText id="globalFilter" onkeyup="PF('dtProcedures').filter()" placeholder="Search"/>
-                                        </span>
-
+                                    <div class="procedure-table-header" style="height: 0.5cm">
+                                        <span style="font-weight: bold; font-size: 15px">Procedure Type</span>
                                     </div>
                                 </f:facet>                                
 
