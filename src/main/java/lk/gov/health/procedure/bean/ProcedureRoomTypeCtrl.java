@@ -5,6 +5,9 @@
  */
 package lk.gov.health.procedure.bean;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.enterprise.context.SessionScoped;
@@ -61,15 +64,22 @@ public class ProcedureRoomTypeCtrl implements Serializable {
     public void saveRoomType(){
         JSONObject jo = selected.getJsonObject();
         
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype";
+        Client client = Client.create();
 
-        ServiceConnector sc_ = new ServiceConnector();
-        JSONObject res_jo_ = sc_.PostRequest(url_, jo);  
-        
-        items.add(selected.getObject(res_jo_));
+        if (selected.getId() == null) {
+            jo.put("id", 123654);
+            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroomtype");
+            webResource1.type("application/json").post(ClientResponse.class, jo.toString());
+        } else {
+            jo.put("id", selected.getId());
+            WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroomtype/" + selected.getId());
+            webResource2.type("application/json").put(ClientResponse.class, jo.toString());
+        }
     }
     
-    public void openNew(){
-        selected = null;
-    }
+    public void deleteRoomType(){
+        Client client = Client.create();
+        WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroomtype/" + selected.getId());
+        webResource2.delete();
+    } 
 }

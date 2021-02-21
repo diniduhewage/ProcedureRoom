@@ -5,6 +5,9 @@
  */
 package lk.gov.health.procedure.bean;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.enterprise.context.SessionScoped;
@@ -13,6 +16,7 @@ import lk.gov.health.procedure.pojo.MedProcedurePojo;
 import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
 import lk.gov.health.procedure.pojo.ProcedureTypePojo;
 import lk.gov.health.procedure.util.ServiceConnector;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -57,19 +61,34 @@ public class MedProcedureCtrl implements Serializable {
         selected = new MedProcedurePojo();
         return "/pages/procedure";
     }
+    
+    public void saveProcedure(){
+        JSONObject jo = selected.getJsonObject();
 
-    public ArrayList<ProcedureTypePojo> fetchProcTypes() {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype";
+        Client client = Client.create();
+        System.out.println("yyyyyyyyyy -->"+jo);
+
+        if (selected.getId() == null) {
+            jo.put("id", 123654);
+            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
+            webResource1.type("application/json").post(ClientResponse.class, jo);
+        } else {
+            WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/" + selected.getId());
+            webResource2.type("application/json").put(ClientResponse.class, jo);
+        }
+    }
+
+    public ArrayList<ProcedureTypePojo> fetchProcTypes(String qryVal) {
+        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype/filer_list/"+qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return procType.getObjectList(sc_.GetRequestList(url_));
     }
     
-    public ArrayList<ProcedureRoomTypePojo> fetchRoomTypes() {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroomtype";
+    public ArrayList<ProcedureRoomTypePojo> fetchRoomTypes(String qryVal) {
+        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroomtype/filer_list/"+qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return roomType.getObjectList(sc_.GetRequestList(url_));
     }
-
 }

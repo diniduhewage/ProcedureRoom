@@ -40,20 +40,14 @@ and open the template in the editor.
                                                      styleClass="ui-button-success" style="margin-right: .5rem; width: 100px; height: 30px;"> 
                                         <p:resetInput target=":form:manage-room-type-content"/>
                                     </p:commandButton>
-                                    <p:commandButton id="delete-products-button" value="Remove"
-                                                     icon="pi pi-trash" actionListener="#{crudView.deleteSelectedProducts}"
-                                                     styleClass="ui-button-danger" disabled="#{!crudView.hasSelectedProducts()}"
-                                                     update="@this" style="height: 30px;">
-                                        <p:confirm header="Confirmation" message="Delete the selected types?"
-                                                   icon="pi pi-exclamation-triangle"/>
-                                    </p:commandButton>
+                                    
                                 </div>
                             </div>
 
                             <p:dataTable id="dt-room-types" widgetVar="dtRoomTypes" var="item" value="#{ProcedureRoomTypeCtrl.items}"
                                          reflow="true" styleClass="products-table"
                                          selection="#{ProcedureRoomTypeCtrl.selected}" rowKey="#{item.id}" paginator="true"
-                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px">
+                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                                 <f:facet name="header">
                                     <div class="products-table-header">
                                         <span style="font-weight: bold">Procedure Room Type</span>
@@ -68,7 +62,13 @@ and open the template in the editor.
 
                                 <!--            <p:column selectionMode="multiple" exportable="false"></p:column>-->
 
-                                <p:column headerText="Procedure" sortBy="#{item.typeId}" filterBy="#{item.typeId}">
+                                <p:column width="100" styleClass="wrap">
+                                    <f:facet name="header">
+                                        <h:outputText value="No" />
+                                    </f:facet>
+                                    <h:outputText value="#{index + 1}"/>
+                                </p:column>
+                                <p:column headerText="Room Type" sortBy="#{item.typeId}" filterBy="#{item.typeId}">
                                     <h:outputText value="#{item.typeId}"/>
                                 </p:column>
                                 <p:column headerText="Description" sortBy="#{item.description}" filterBy="#{item.description}">
@@ -81,9 +81,9 @@ and open the template in the editor.
                                                      styleClass="edit-button rounded-button ui-button-success" process="@this">
                                         <f:setPropertyActionListener value="#{item}" target="#{ProcedureRoomTypeCtrl.selected}"/>
                                         <p:resetInput target=":form:manage-room-type-content"/>
-                                    </p:commandButton>
+                                    </p:commandButton> 
                                     <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-                                                     oncomplete="PF('deleteProcedureDialog').show()">
+                                                     oncomplete="PF('deleteRoomTypeDialog').show()">
                                         <f:setPropertyActionListener value="#{item}" target="#{ProcedureRoomTypeCtrl.selected}"/>
                                     </p:commandButton>
                                 </p:column>
@@ -95,8 +95,8 @@ and open the template in the editor.
                                 <p:outputPanel class="ui-fluid">
                                     <p:outputPanel id="manage-room-type-content" rendered="#{not empty ProcedureRoomTypeCtrl.selected}">                                       
                                         <div class="p-field">
-                                            <p:outputLabel for="room_type">Room Type</p:outputLabel>
-                                            <p:inputText id="room_type" value="#{ProcedureRoomTypeCtrl.selected.typeId}" required="true"/>
+                                            <p:outputLabel for="typeId">Room Type</p:outputLabel>
+                                            <p:inputText id="typeId" value="#{ProcedureRoomTypeCtrl.selected.typeId}"/>
                                         </div>
                                         <div class="p-field">
                                             <p:outputLabel for="description">Description</p:outputLabel>
@@ -106,17 +106,16 @@ and open the template in the editor.
                                 </p:outputPanel>
 
                                 <f:facet name="footer">
-                                    <p:commandButton value="Save" icon="pi pi-check" actionListener="#{ProcedureRoomTypeCtrl.saveRoomType}"
-                                                     update="manage-room-type-content" process="manage-room-type-content @this"/>
-                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageRoomTypeDialog').hide()"
-                                                     class="ui-button-secondary"/>
+                                    <p:commandButton value="Save" icon="pi pi-check" class="ui-button-primary" actionListener="#{ProcedureRoomTypeCtrl.saveRoomType}"
+                                                     update="manage-room-type-content" process="manage-room-type-content @this"/>                                    
+                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageRoomTypeDialog').hide()" class="ui-button-secondary"/>
                                 </f:facet>
                             </p:dialog>
 
-                            <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
-                                             message="Delete the procedure?" header="Confirm" severity="warn">
-                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudView.deleteProduct}"
-                                                 process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
+                            <p:confirmDialog widgetVar="deleteRoomTypeDialog" showEffect="fade" width="300"
+                                             message="Delete this room type?" header="Confirm" severity="warn">
+                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{ProcedureRoomTypeCtrl.deleteRoomType}"
+                                                 process="@this" oncomplete="PF('deleteRoomTypeDialog').hide()"/>
                                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                                  onclick="PF('deleteProcedureDialog').hide()"/>
                             </p:confirmDialog>

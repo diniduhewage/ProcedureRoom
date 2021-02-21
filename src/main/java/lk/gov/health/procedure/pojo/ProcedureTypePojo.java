@@ -28,8 +28,7 @@ public class ProcedureTypePojo {
     }
     
     public JSONObject getJsonObject(){
-        JSONObject jo_ = new JSONObject();
-        
+        JSONObject jo_ = new JSONObject(); 
         jo_.put("procedureType", this.getProcedureType());
         jo_.put("description", this.getDescription());
         

@@ -44,6 +44,7 @@ public class MedProcedurePojo {
         jo_.put("procId", this.getProcId());
         jo_.put("description", this.getDescription());
         jo_.put("procType", this.getProcType());
+        System.out.println("111111111111 -->"+this.getProcType());
         jo_.put("roomType", this.getRoomType());
         jo_.put("comment", this.getComment());
         jo_.put("status", this.getStatus());

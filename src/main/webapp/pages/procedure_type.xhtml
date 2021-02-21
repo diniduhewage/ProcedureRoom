@@ -37,13 +37,9 @@ and open the template in the editor.
                             <div class="products-buttonbar" style="margin-top:0.5cm; margin-right: 0.25cm">
                                 <div>
                                     <p:commandButton value="New" icon="pi pi-plus" actionListener="#{crudView.openNew}" update=":form:manage-proc-type-content" oncomplete="PF('manageProcedureTypeDialog').show()"
-                                                     styleClass="ui-button-success" style="margin-right: .5rem; width: 100px; height: 30px;"> 
+                                                     styleClass="ui-button-success" style="margin-right: .5rem; width: 100px; height: 30px;" onclick="PF('manageProcedureTypeDialog').hide()"> 
                                         <p:resetInput target=":form:manage-proc-type-content"/>
-                                    </p:commandButton>
-                                    <p:commandButton id="delete-products-button" value="Remove" icon="pi pi-trash" actionListener="#{crudView.deleteSelectedProducts}"
-                                                     styleClass="ui-button-danger" disabled="#{!crudView.hasSelectedProducts()}" update="@this" style="height: 30px;">
-                                        <p:confirm header="Confirmation" message="Delete the selected products?" icon="pi pi-exclamation-triangle"/>
-                                    </p:commandButton>
+                                    </p:commandButton>                                    
                                 </div>
                             </div>
 
@@ -96,9 +92,9 @@ and open the template in the editor.
                             <p:dialog header="New Procedure Type" width="450" showEffect="fade" modal="true"
                                       widgetVar="manageProcedureTypeDialog" responsive="true">
                                 <p:outputPanel class="ui-fluid">
-                                    <p:outputPanel id="manage-proc-type-content" rendered="#{not empty ProcedureTypeCtrl.selected}">                                       
+                                    <p:outputPanel id="manage-proc-type-content">                                       
                                         <div class="p-field">
-                                            <p:outputLabel for="procedure">Procedure</p:outputLabel>
+                                            <p:outputLabel for="procedure">Procedure Type</p:outputLabel>
                                             <p:inputText id="procedure" value="#{ProcedureTypeCtrl.selected.procedureType}" required="true"/>
                                         </div>
                                         <div class="p-field">
@@ -110,15 +106,14 @@ and open the template in the editor.
 
                                 <f:facet name="footer">
                                     <p:commandButton value="Save" icon="pi pi-check" class="ui-button-primary" actionListener="#{ProcedureTypeCtrl.saveProcedureType}"
-                                                     update="manage-proc-type-content" process="manage-proc-type-content @this"/>
-                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureTypeDialog').hide()"
-                                                     class="ui-button-secondary"/>
+                                                     update="manage-proc-type-content" onclick="PF('manageProcedureTypeDialog').hide()" process="manage-proc-type-content @this"/>
+                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureTypeDialog').hide()" class="ui-button-secondary"/>
                                 </f:facet>
                             </p:dialog>
 
                             <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
-                                             message="Delete the procedure?" header="Confirm" severity="warn">
-                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudView.deleteProduct}"
+                                             message="Delete the Procedure Type?" header="Confirm" severity="warn">
+                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{ProcedureTypeCtrl.deleteProcedureType}"
                                                  process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
                                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                                  onclick="PF('deleteProcedureDialog').hide()"/>
