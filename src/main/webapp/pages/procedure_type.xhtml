@@ -12,21 +12,6 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <style type="text/css">
-            .ui-filter-column .ui-column-customfilter .custom-filter {
-                width: 100%;
-                box-sizing: border-box;
-            }
-            body .ui-panelmenu .ui-panelmenu-header.ui-state-active, body .ui-panelmenu .ui-panelmenu-header{
-                font-size: 12px;
-                font-weight: normal;
-            }
-            body .ui-panelmenu li.ui-menuitem span.ui-menuitem-text{
-                font-size: 12px;
-                font-weight: normal;
-
-            } 
-        </style>
         <ui:composition template="/index.xhtml">
             <ui:define name="tabSection">
                 <div style="float:right; width:82%; margin-right: 0.5cm; ">
@@ -49,14 +34,8 @@ and open the template in the editor.
                                          rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px"
                                          rowIndexVar="index">
                                 <f:facet name="header">
-                                    <div class="procedure-table-header">
-                                        <span style="font-weight: bold">Procedure Type</span>
-
-                                        <span class="filter-container ui-input-icon-left">
-                                            <i class="pi pi-search"></i>
-                                            <p:inputText id="globalFilter" onkeyup="PF('dtProcedures').filter()" placeholder="Search"/>
-                                        </span>
-
+                                    <div class="procedure-table-header" style="height: 0.5cm">
+                                        <span style="font-weight: bold; font-size: 15px">Procedure Type</span>
                                     </div>
                                 </f:facet>                                
 

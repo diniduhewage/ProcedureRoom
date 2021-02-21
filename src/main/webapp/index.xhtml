@@ -6,19 +6,69 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <h:head>
-
+        <div class="header">
+            <h1>HMIS Procedure and Pharmacy Modules</h1>
+        </div>
     </h:head>
 
-    <h:body>  
+    <h:body>
+        <style type="text/css">
+            .header {
+                padding: 10px;
+                text-align: center;
+                background: #D2d4d4;
+                color: white;
+                font-size: 13px;
+            }     
+
+            .ui-column-filter{
+                width: 100%;
+                box-sizing: border-box;
+                height: 0.7cm; 
+
+            }
+
+            body .ui-panelmenu .ui-panelmenu-header.ui-state-active, body .ui-panelmenu .ui-panelmenu-header{
+                font-size: 12px;
+                font-weight: normal;
+                background-color: #2596be;
+            }
+            body .ui-panelmenu li.ui-menuitem span.ui-menuitem-text{
+                font-size: 12px;
+                font-weight: normal;
+
+            } 
+
+            body .ui-panelmenu h3.ui-panelmenu-header.ui-state-active{
+                background-color: #D2d4d4;
+
+            } 
+
+            .ui-fluid .ui-inputfield{
+                height: 0.7cm;
+                margin-top: 0.2cm;
+                margin-bottom: 0.2cm;
+                font-size: 12px;
+            }
+            
+            body .ui-widget{
+                font-size: 12px;
+            }
+            
+            .ui-fluid .ui-inputtextarea{
+                height: 2cm;
+            }
+
+        </style>
         <h:form>
             <div class="card">
-                <p:megaMenu orientation="horizontal" autoDisplay="false"> 
-                    <p:menuitem value = "Pharmacy" url="#" icon="pi pi-briefcase"/>
-                    <p:menuitem value = "Procedure Room" url="#"/>
+                <p:megaMenu orientation="horizontal" autoDisplay="false" style="height: 1.25cm; padding: 2px;"> 
+                    <p:menuitem value = "Pharmacy" url="#" style="margin-bottom:0.25cm; font-size: 12px;"/>
+                    <p:menuitem value = "Procedure Room" url="#" style="margin-bottom:0.25cm; font-size: 12px;"/>
                 </p:megaMenu>
             </div>   
         </h:form>
-        
+
         <div class="card"  align="left" style="float:left; width:10%; margin-top:0.5cm;">
             <h:form>
                 <p:growl>

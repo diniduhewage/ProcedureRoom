@@ -12,20 +12,6 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <style type="text/css">
-            .ui-filter-column .ui-column-customfilter .custom-filter {
-                width: 100%;
-                box-sizing: border-box;
-            }
-            body .ui-panelmenu .ui-panelmenu-header.ui-state-active, body .ui-panelmenu .ui-panelmenu-header{
-                font-size: 12px;
-                font-weight: normal;
-            }
-            body .ui-panelmenu li.ui-menuitem span.ui-menuitem-text{
-                font-size: 12px;
-                font-weight: normal;
-            } 
-        </style>
         <ui:composition template="/index.xhtml">
             <ui:define name="tabSection">
                 <div style="float:right; width:82%; margin-right: 0.5cm; ">
@@ -37,7 +23,7 @@ and open the template in the editor.
                                 <div>
                                     <p:commandButton value="New" icon="pi pi-plus" actionListener="#{ProcedureRoomTypeCtrl.openNew}"
                                                      update=":form:manage-room-type-content" oncomplete="PF('manageRoomTypeDialog').show()"
-                                                     styleClass="ui-button-success" style="margin-right: .5rem; width: 100px; height: 30px;"> 
+                                                     styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
                                         <p:resetInput target=":form:manage-room-type-content"/>
                                     </p:commandButton>
                                     
@@ -49,14 +35,8 @@ and open the template in the editor.
                                          selection="#{ProcedureRoomTypeCtrl.selected}" rowKey="#{item.id}" paginator="true"
                                          rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                                 <f:facet name="header">
-                                    <div class="products-table-header">
-                                        <span style="font-weight: bold">Procedure Room Type</span>
-
-                                        <span class="filter-container ui-input-icon-left">
-                                            <i class="pi pi-search"></i>
-                                            <p:inputText id="globalFilter" onkeyup="PF('dtProcedures').filter()" placeholder="Search"/>
-                                        </span>
-
+                                    <div class="products-table-header" style="height: 0.5cm">
+                                        <span style="font-weight: bold; font-size: 15px">Procedure Room Type</span>
                                     </div>
                                 </f:facet>                                
 
