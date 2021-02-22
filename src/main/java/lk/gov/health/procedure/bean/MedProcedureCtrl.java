@@ -10,6 +10,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import lk.gov.health.procedure.pojo.MedProcedurePojo;
@@ -28,8 +29,10 @@ public class MedProcedureCtrl implements Serializable {
 
     private MedProcedurePojo selected = new MedProcedurePojo();
     private ArrayList<ProcedureTypePojo> procTypes;
-    ProcedureTypePojo procType = new ProcedureTypePojo();
-    ProcedureRoomTypePojo roomType = new ProcedureRoomTypePojo();
+    private ProcedureTypePojo procType = new ProcedureTypePojo();
+    private ProcedureRoomTypePojo roomType = new ProcedureRoomTypePojo();
+    private ArrayList<ProcedureTypePojo> procTypeList;
+    
 
     private ArrayList<MedProcedurePojo> items;
 
@@ -82,7 +85,8 @@ public class MedProcedureCtrl implements Serializable {
         String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype/filer_list/"+qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
-        return procType.getObjectList(sc_.GetRequestList(url_));
+        procTypeList = procType.getObjectList(sc_.GetRequestList(url_));
+        return procTypeList;
     }
     
     public ArrayList<ProcedureRoomTypePojo> fetchRoomTypes(String qryVal) {
@@ -90,5 +94,29 @@ public class MedProcedureCtrl implements Serializable {
 
         ServiceConnector sc_ = new ServiceConnector();
         return roomType.getObjectList(sc_.GetRequestList(url_));
+    }
+
+    public ProcedureTypePojo getProcType() {
+        return procType;
+    }
+
+    public void setProcType(ProcedureTypePojo procType) {
+        this.procType = procType;
+    }
+
+    public ProcedureRoomTypePojo getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(ProcedureRoomTypePojo roomType) {
+        this.roomType = roomType;
+    }
+
+    public ArrayList<ProcedureTypePojo> getProcTypeList() {
+        return procTypeList;
+    }
+
+    public void setProcTypeList(ArrayList<ProcedureTypePojo> procTypeList) {
+        this.procTypeList = procTypeList;
     }
 }

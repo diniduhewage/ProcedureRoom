@@ -4,18 +4,11 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-
-    <h:head>
-        <div class="header">
-            <h1>HMIS Procedure and Pharmacy Modules</h1>
-        </div>
-    </h:head>
-
-    <h:body>
-        <style type="text/css">
+    
+    <style type="text/css">
             .header {
                 padding: 10px;
-                text-align: center;
+                text-align: left;
                 background: #D2d4d4;
                 color: white;
                 font-size: 13px;
@@ -50,21 +43,38 @@
                 margin-bottom: 0.2cm;
                 font-size: 12px;
             }
-            
+
             body .ui-widget{
                 font-size: 12px;
             }
-            
+
             .ui-fluid .ui-inputtextarea{
                 height: 2cm;
             }
 
+            .header-img {
+                width: 100%;
+                height: 100px;
+                background: url("resources/image/banner.jpg");
+                background-size: cover;
+            }
+
         </style>
+
+    <h:head>
+        <div class="header">
+            <!--<h:graphicImage name="resources/image/banner.jpg"/>-->
+            <h1>HMIS Procedure Room</h1>
+        </div>
+    </h:head>
+
+    <h:body>
+        
         <h:form>
             <div class="card">
-                <p:megaMenu orientation="horizontal" autoDisplay="false" style="height: 1.25cm; padding: 2px;"> 
-                    <p:menuitem value = "Pharmacy" url="#" style="margin-bottom:0.25cm; font-size: 12px;"/>
+                <p:megaMenu orientation="horizontal" autoDisplay="false" style="height: 1.25cm; padding: 2px;">                     
                     <p:menuitem value = "Procedure Room" url="#" style="margin-bottom:0.25cm; font-size: 12px;"/>
+                    <p:menuitem value = "Laboratory" url="#" style="margin-bottom:0.25cm; font-size: 12px;"/>
                 </p:megaMenu>
             </div>   
         </h:form>
