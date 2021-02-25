@@ -44,12 +44,23 @@ public class MedProcedurePojo {
         jo_.put("procId", this.getProcId());
         jo_.put("description", this.getDescription());
         jo_.put("procType", this.getProcType());
-        jo_.put("roomType", this.getRoomType());
+        jo_.put("roomType", getRoomTypeJsonObject());
         jo_.put("comment", this.getComment());
         jo_.put("status", this.getStatus());
 
         return jo_;
     }
+    
+    public JSONObject getRoomTypeJsonObject(){
+        JSONObject jo_ = new JSONObject();
+        
+        jo_.put("id", this.getRoomType().getId());
+        jo_.put("typeId", this.getRoomType().getTypeId());
+        jo_.put("description", this.getRoomType().getDescription());
+        
+        return jo_;        
+    } 
+    
 
     public MedProcedurePojo getObject(JSONObject jo_) {
         this.setId(Long.parseLong(jo_.get("id").toString()));

@@ -70,8 +70,8 @@ public class ProcedureTypeCtrl implements Serializable {
 
         ServiceConnector sc_ = new ServiceConnector();
         items = selected.getObjectList(sc_.GetRequestList(url_));
-    }
-
+    }   
+    
     public void deleteProcedureType() {
         Client client = Client.create();
         WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype/" + selected.getId());

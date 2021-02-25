@@ -13,35 +13,25 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Named;
-import lk.gov.health.procedure.bean.ProcedureTypeCtrl;
-import lk.gov.health.procedure.pojo.ProcedureTypePojo;
+import lk.gov.health.procedure.bean.ProcedureRoomTypeCtrl;
+import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
 
 /**
  *
  * @author user
  */
 @Named
-@FacesConverter(value = "procedureTypeConverter", managed = true)
 @ApplicationScoped
-public class ProcedureTypeConverter implements Converter<ProcedureTypePojo> {
+@FacesConverter(value="procRoomTypeConverter", managed=true)
+public class ProcRoomTypeConverter implements Converter<ProcedureRoomTypePojo> {
 
     @Override
-    public String getAsString(FacesContext fc, UIComponent uic, ProcedureTypePojo value) {
-        if (value != null) {
-            System.out.println(".............2222222222222222222");
-            return String.valueOf(value.getId());
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public ProcedureTypePojo getAsObject(FacesContext fc, UIComponent uic, String value) {
+    public ProcedureRoomTypePojo getAsObject(FacesContext fc, UIComponent uic, String value) {
         if (value != null && value.trim().length() > 0) {
             try {
-                ProcedureTypeCtrl proType = new ProcedureTypeCtrl();
-                proType.getProcTypes();
-                for (ProcedureTypePojo item : proType.getItems()) {
+                ProcedureRoomTypeCtrl proRoomType = new ProcedureRoomTypeCtrl();
+                proRoomType.getProcRoomTypes();
+                for (ProcedureRoomTypePojo item : proRoomType.getItems()) {
                     if (item.getId() == Long.parseLong(value)) {
                         return item;
                     }
@@ -55,4 +45,14 @@ public class ProcedureTypeConverter implements Converter<ProcedureTypePojo> {
         }
     }
 
+    @Override
+    public String getAsString(FacesContext fc, UIComponent uic, ProcedureRoomTypePojo value) {
+        if (value != null) {
+            System.out.println(".............2222222222222222222");
+            return String.valueOf(value.getId());
+        } else {
+            return null;
+        }
+    }
+    
 }

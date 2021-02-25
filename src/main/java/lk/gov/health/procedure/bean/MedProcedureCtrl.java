@@ -10,7 +10,6 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import lk.gov.health.procedure.pojo.MedProcedurePojo;
@@ -32,7 +31,6 @@ public class MedProcedureCtrl implements Serializable {
     private ProcedureTypePojo procType = new ProcedureTypePojo();
     private ProcedureRoomTypePojo roomType = new ProcedureRoomTypePojo();
     private ArrayList<ProcedureTypePojo> procTypeList;
-    
 
     private ArrayList<MedProcedurePojo> items;
 
@@ -62,38 +60,44 @@ public class MedProcedureCtrl implements Serializable {
 
     public String toMedProcedure() {
         selected = new MedProcedurePojo();
+        this.getMedicalProcedures();
         return "/pages/procedure";
     }
-    
-    public void saveProcedure(){
+
+    public void saveProcedure() {
         JSONObject jo = selected.getJsonObject();
 
         Client client = Client.create();
-        System.out.println("yyyyyyyyyy -->"+jo);
 
         if (selected.getId() == null) {
             jo.put("id", 123654);
             WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
-            webResource1.type("application/json").post(ClientResponse.class, jo);
+            webResource1.type("application/json").post(ClientResponse.class, jo.toString());
         } else {
             WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/" + selected.getId());
-            webResource2.type("application/json").put(ClientResponse.class, jo);
+            webResource2.type("application/json").put(ClientResponse.class, jo.toString());
         }
     }
 
     public ArrayList<ProcedureTypePojo> fetchProcTypes(String qryVal) {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype/filer_list/"+qryVal;
+        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype/filer_list/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
-        procTypeList = procType.getObjectList(sc_.GetRequestList(url_));
-        return procTypeList;
+        return procType.getObjectList(sc_.GetRequestList(url_));
     }
-    
+
     public ArrayList<ProcedureRoomTypePojo> fetchRoomTypes(String qryVal) {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroomtype/filer_list/"+qryVal;
+        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroomtype/filer_list/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return roomType.getObjectList(sc_.GetRequestList(url_));
+    }
+
+    public void getMedicalProcedures() {
+        Client client = Client.create();
+        WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
+        ClientResponse cr = webResource1.accept("application/json").put(ClientResponse.class);
+
     }
 
     public ProcedureTypePojo getProcType() {
