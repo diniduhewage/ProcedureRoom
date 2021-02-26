@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import lk.gov.health.procedure.pojo.MedProcedurePojo;
 import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
@@ -77,11 +80,26 @@ public class MedProcedureCtrl implements Serializable {
         if (selected.getId() == null) {
             jo.put("id", 123654);
             WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
-            webResource1.type("application/json").post(ClientResponse.class, jo.toString());
+            ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
+            if(response.getStatus() == 200 || response.getStatus() == 204){
+                addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Added Successfully");
+            }
+            else
+            {
+               addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to add new record");
+            }
+                    
         } else {
             jo.put("id", selected.getId());
             WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/" + selected.getId());
-            webResource2.type("application/json").put(ClientResponse.class, jo.toString());
+            ClientResponse response = webResource2.type("application/json").put(ClientResponse.class, jo.toString());
+            if(response.getStatus() == 200 || response.getStatus() == 204){
+                addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Updated Successfully");
+            }
+            else
+            {
+               addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
+            }
         }
     }
 
@@ -139,5 +157,11 @@ public class MedProcedureCtrl implements Serializable {
         Client client = Client.create();
         WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/" + selected.getId());
         webResource2.delete();
+        addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Removed Successfully");
+    }
+    
+    public void addMessage(Severity sev,String summary, String detail) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }
