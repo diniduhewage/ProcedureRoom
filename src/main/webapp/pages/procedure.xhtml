@@ -48,10 +48,10 @@ and open the template in the editor.
                                 <p:column headerText="Description" sortBy="#{item.description}" filterBy="#{item.description}">
                                     <h:outputText value="#{item.description}"/>
                                 </p:column>
-                                <p:column headerText="Type" sortBy="#{item.procType}" filterBy="#{item.procType}">
+                                <p:column headerText="Type" sortBy="#{item.procType.procedureType}" filterBy="#{item.procType.procedureType}">
                                     <h:outputText value="#{item.procType.procedureType}"/>
                                 </p:column>
-                                <p:column headerText="Room Type" sortBy="#{item.roomType}" filterBy="#{item.roomType}">
+                                <p:column headerText="Room Type" sortBy="#{item.roomType.typeId}" filterBy="#{item.roomType.typeId}">
                                     <h:outputText value="#{item.roomType.typeId}"/>
                                 </p:column>
                                 <p:column headerText="Comment" sortBy="#{item.comment}" filterBy="#{item.comment}">
