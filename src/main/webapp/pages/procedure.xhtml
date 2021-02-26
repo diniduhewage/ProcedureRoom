@@ -49,10 +49,10 @@ and open the template in the editor.
                                     <h:outputText value="#{item.description}"/>
                                 </p:column>
                                 <p:column headerText="Type" sortBy="#{item.procType}" filterBy="#{item.procType}">
-                                    <h:outputText value="#{item.procType}"/>
+                                    <h:outputText value="#{item.procType.procedureType}"/>
                                 </p:column>
                                 <p:column headerText="Room Type" sortBy="#{item.roomType}" filterBy="#{item.roomType}">
-                                    <h:outputText value="#{item.roomType}"/>
+                                    <h:outputText value="#{item.roomType.typeId}"/>
                                 </p:column>
                                 <p:column headerText="Comment" sortBy="#{item.comment}" filterBy="#{item.comment}">
                                     <h:outputText value="#{item.comment}"/>
@@ -103,7 +103,7 @@ and open the template in the editor.
                                         <p:autoComplete  id="roomType" value="#{MedProcedureCtrl.selected.roomType}" 
                                                          completeMethod="#{MedProcedureCtrl.fetchRoomTypes}"
                                                          var="i" itemLabel="#{i.typeId}" itemValue="#{i}"
-                                                         forceSelection="true" converter="#{procRoomTypeConverter}" >
+                                                         forceSelection="true" converter="#{procRoomTypeConverter}">
                                         </p:autoComplete >  
                                     </div>
                                     <div class="p-field">
@@ -123,7 +123,7 @@ and open the template in the editor.
 
                     <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
                                      message="Delete the procedure?" header="Confirm" severity="warn">
-                        <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudView.deleteProcedure}"
+                        <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{MedProcedureCtrl.deleteProcedure}"
                                          process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
                         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                          onclick="PF('deleteProcedureDialog').hide()"/>

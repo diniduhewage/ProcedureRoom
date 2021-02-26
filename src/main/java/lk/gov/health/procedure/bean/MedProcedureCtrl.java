@@ -10,13 +10,18 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import lk.gov.health.procedure.pojo.MedProcedurePojo;
 import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
 import lk.gov.health.procedure.pojo.ProcedureTypePojo;
 import lk.gov.health.procedure.util.ServiceConnector;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -74,6 +79,7 @@ public class MedProcedureCtrl implements Serializable {
             WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
             webResource1.type("application/json").post(ClientResponse.class, jo.toString());
         } else {
+            jo.put("id", selected.getId());
             WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/" + selected.getId());
             webResource2.type("application/json").put(ClientResponse.class, jo.toString());
         }
@@ -94,10 +100,15 @@ public class MedProcedureCtrl implements Serializable {
     }
 
     public void getMedicalProcedures() {
-        Client client = Client.create();
-        WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
-        ClientResponse cr = webResource1.accept("application/json").put(ClientResponse.class);
-
+        try {
+            Client client = Client.create();
+            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
+            ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
+            String outpt = cr.getEntity(String.class);
+            items = selected.getObjectList((JSONArray)new JSONParser().parse(outpt));
+        } catch (ParseException ex) {
+            Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public ProcedureTypePojo getProcType() {
@@ -122,5 +133,11 @@ public class MedProcedureCtrl implements Serializable {
 
     public void setProcTypeList(ArrayList<ProcedureTypePojo> procTypeList) {
         this.procTypeList = procTypeList;
+    }
+    
+    public void deleteProcedure() {
+        Client client = Client.create();
+        WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/" + selected.getId());
+        webResource2.delete();
     }
 }
