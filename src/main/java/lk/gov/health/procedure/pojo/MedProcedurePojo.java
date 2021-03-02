@@ -43,7 +43,7 @@ public class MedProcedurePojo {
 
         jo_.put("procId", this.getProcId());
         jo_.put("description", this.getDescription());
-        jo_.put("procType", this.getProcType());
+        jo_.put("procType", getProcedureTypeJsonObject());
         jo_.put("roomType", getRoomTypeJsonObject());
         jo_.put("comment", this.getComment());
         jo_.put("status", this.getStatus());
@@ -59,20 +59,41 @@ public class MedProcedurePojo {
         jo_.put("description", this.getRoomType().getDescription());
         
         return jo_;        
-    } 
+    }
+    
+    public JSONObject getProcedureTypeJsonObject(){
+        JSONObject jo_ = new JSONObject();
+        
+        jo_.put("id", this.getProcType().getId());
+        jo_.put("procedreTypeId", this.getProcType().getProcedureType());
+        jo_.put("description", this.getProcType().getDescription());
+        
+        return jo_;        
+    }
     
 
     public MedProcedurePojo getObject(JSONObject jo_) {
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setProcId(jo_.containsKey("procId") ? jo_.get("procId").toString() : null);
         this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
-        this.setProcType(jo_.containsKey("procType") ? (ProcedureTypePojo)(jo_.get("procType")) : null);
-        this.setRoomType(jo_.containsKey("roomType") ? (ProcedureRoomTypePojo)(jo_.get("roomType")) : null);
+        this.setProcType(jo_.containsKey("procType") ? (getProcTypeObject(jo_.get("procType"))) : null);
+        this.setRoomType(jo_.containsKey("roomType") ? (getRoomTypeObject(jo_.get("roomType"))) : null);
         this.setComment(jo_.containsKey("comment") ? jo_.get("comment").toString() : null);
         this.setStatus(jo_.containsKey("status") ? (ObjectStatus)jo_.get("status") : null);
         return this;
     }
     
+    public ProcedureRoomTypePojo getRoomTypeObject(Object obj){
+ 
+      ProcedureRoomTypePojo pojoInst = new ProcedureRoomTypePojo();
+      return pojoInst.getObject((JSONObject)obj);
+    }
+   
+    public ProcedureTypePojo getProcTypeObject(Object obj){
+ 
+      ProcedureTypePojo pojoInst = new ProcedureTypePojo();
+      return pojoInst.getObject((JSONObject)obj);
+    }
     public ArrayList<MedProcedurePojo> getObjectList(JSONArray ja_) {
         ArrayList<MedProcedurePojo> ObjectList = new ArrayList<>();
         
