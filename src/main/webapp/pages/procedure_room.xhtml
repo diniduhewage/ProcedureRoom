@@ -12,21 +12,6 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <style type="text/css">
-            .ui-filter-column .ui-column-customfilter .custom-filter {
-                width: 100%;
-                box-sizing: border-box;
-            }
-            body .ui-panelmenu .ui-panelmenu-header.ui-state-active, body .ui-panelmenu .ui-panelmenu-header{
-                font-size: 12px;
-                font-weight: normal;
-            }
-            body .ui-panelmenu li.ui-menuitem span.ui-menuitem-text{
-                font-size: 12px;
-                font-weight: normal;
-
-            } 
-        </style>
         <ui:composition template="/index.xhtml">
             <ui:define name="tabSection">
                 <div style="float:right; width:82%; margin-right: 0.5cm; ">
@@ -36,108 +21,116 @@ and open the template in the editor.
 
                             <div class="products-buttonbar" style="margin-top:0.5cm; margin-right: 0.25cm">
                                 <div>
-                                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{ProcedureRoomCtrl.openNew}"
-                                                     update=":form:manage-proc-room-content" oncomplete="PF('manageProcedureDialog').show()"
-                                                     styleClass="ui-button-success" style="margin-right: .5rem; width: 100px; height: 30px;"> 
-                                        <p:resetInput target=":form:manage-proc-room-content"/>
-                                    </p:commandButton>
-                                    <p:commandButton id="delete-products-button" value="Remove"
-                                                     icon="pi pi-trash" actionListener="#{crudView.deleteSelectedProducts}"
-                                                     styleClass="ui-button-danger" disabled="#{!crudView.hasSelectedProducts()}"
-                                                     update="@this" style="height: 30px;">
-                                        <p:confirm header="Confirmation" message="Delete the selected types?"
-                                                   icon="pi pi-exclamation-triangle"/>
-                                    </p:commandButton>
+                                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{procedureRoomCtrl.openNew}"
+                                                     update=":form:manage-procedure-room_content" oncomplete="PF('manageProcedureRoomDialog').show()"
+                                                     styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
+                                        <p:resetInput target=":form:manage-procedure-room_content"/>
+                                    </p:commandButton>  
+
                                 </div>
                             </div>
 
-                            <p:dataTable id="dt-procedures" widgetVar="dtProcedures" var="item" value="#{ProcedureRoomCtrl.items}"
+                            <p:dataTable id="dt-procedures" widgetVar="dtProceduresRoom" var="item" value="#{procedureRoomCtrl.items}"
                                          reflow="true" styleClass="products-table"
-                                         selection="#{ProcedureRoomCtrl.selected}" rowKey="#{item.id}" paginator="true"
-                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px">
+                                         selection="#{procedureRoomCtrl.selected}" rowKey="#{item.id}" paginator="true"
+                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                                 <f:facet name="header">
-                                    <div class="products-table-header">
-                                        <span style="font-weight: bold">Procedure Room</span>
-
-                                        <span class="filter-container ui-input-icon-left">
-                                            <i class="pi pi-search"></i>
-                                            <p:inputText id="globalFilter" onkeyup="PF('dtProcedures').filter()" placeholder="Search"/>
-                                        </span>
-
+                                    <div class="products-table-header" style="height: 0.5cm">
+                                        <span style="font-weight: bold; font-size: 15px">Procedure Rooms</span>
                                     </div>
-                                </f:facet>  
+                                </f:facet>                                
+
                                 <!--            <p:column selectionMode="multiple" exportable="false"></p:column>-->
-                                <p:column headerText="Room ID" sortBy="#{item.roomId}" filterBy="#{item.roomId}">
+                                <p:column width="100" styleClass="wrap">
+                                    <f:facet name="header">
+                                        <h:outputText value="No" />
+                                    </f:facet>
+                                    <h:outputText value="#{index + 1}"/>
+                                </p:column>
+                                <p:column headerText="Room Id" sortBy="#{item.roomId}" filterBy="#{item.roomId}">
                                     <h:outputText value="#{item.roomId}"/>
                                 </p:column>
                                 <p:column headerText="Description" sortBy="#{item.description}" filterBy="#{item.description}">
                                     <h:outputText value="#{item.description}"/>
                                 </p:column>
-                                <p:column headerText="Type" sortBy="#{item.type}" filterBy="#{item.type}">
-                                    <h:outputText value="#{item.type}"/>
-                                </p:column>
+                                <p:column headerText="Type" sortBy="#{item.type.typeId}" filterBy="#{item.type.typeId}">
+                                    <h:outputText value="#{item.type.typeId}"/>
+                                </p:column>                                
                                 <p:column headerText="Institute" sortBy="#{item.instituteId}" filterBy="#{item.instituteId}">
                                     <h:outputText value="#{item.instituteId}"/>
-                                </p:column>                                
+                                </p:column>
                                 <p:column headerText="Status" sortBy="#{item.status.label}" filterBy="#{item.status.label}">
                                     <h:outputText value="#{item.status.label}"/>
                                 </p:column>
                                 <p:column exportable="false">
-                                    <p:commandButton icon="pi pi-pencil" update=":form:manage-proc-room-content"
-                                                     oncomplete="PF('manageProcedureDialog').show()"
+                                    <p:commandButton icon="pi pi-pencil" update=":form:manage-procedure-room_content"
+                                                     oncomplete="PF('manageProcedureRoomDialog').show()"                                                     
                                                      styleClass="edit-button rounded-button ui-button-success" process="@this">
-                                        <f:setPropertyActionListener value="#{item}" target="#{ProcedureRoomCtrl.selected}"/>
-                                        <p:resetInput target=":form:manage-proc-room-content"/>
+                                        <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>
+                                        <p:resetInput target=":form:manage-procedure-room_content"/>
                                     </p:commandButton>
                                     <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-                                                     oncomplete="PF('deleteProcedureDialog').show()">
-                                        <f:setPropertyActionListener value="#{item}" target="#{ProcedureRoomCtrl.selected}"/>
+                                                     oncomplete="PF('deleteProcedureRoomDialog').show()">
+                                        <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>
                                     </p:commandButton>
                                 </p:column>
 
                             </p:dataTable>
 
                             <p:dialog header="New Procedure" width="450" showEffect="fade" modal="true"
-                                      widgetVar="manageProcedureDialog" responsive="true">
-                                <p:outputPanel id="manage-proc-room-content" class="ui-fluid">
-                                    <p:outputPanel rendered="#{not empty ProcedureRoomCtrl.selected}">
-<!--                                        <p:graphicImage name="images/product/#{crudView.selectedProduct.image}" library="demo"
+                                      widgetVar="manageProcedureRoomDialog" responsive="true">
+                                <p:outputPanel id="manage-procedure-room_content" class="ui-fluid">
+                                    <p:outputPanel rendered="#{not empty procedureRoomCtrl.selected}">
+    <!--                                        <p:graphicImage name="images/product/#{crudView.selectedProduct.image}" library="demo"
                                                         styleClass="product-image"
                                                         rendered="#{not empty crudView.selectedProduct.image}"/>-->
                                         <div class="p-field">
-                                            <p:outputLabel for="procedure">Procedure</p:outputLabel>
-                                            <p:inputText id="procedure" value="#{ProcedureRoomCtrl.selected.roomId}" required="true"/>
+                                            <p:outputLabel for="room_id">Room ID</p:outputLabel>
+                                            <p:inputText id="room_id" value="#{procedureRoomCtrl.selected.roomId}" required="true"/>
                                         </div>
                                         <div class="p-field">
                                             <p:outputLabel for="description">Description</p:outputLabel>
-                                            <p:inputTextarea id="description" value="#{ProcedureRoomCtrl.selected.description}"/>
+                                            <p:inputTextarea id="description" value="#{procedureRoomCtrl.selected.description}" autoResize="false"/>
                                         </div> 
-
                                         <div class="p-field">
                                             <p:outputLabel for="roomType">Room Type</p:outputLabel>
-                                            <p:autoComplete  id="roomType" value="#{ProcedureRoomCtrl.selected.type}" 
-                                                             completeMethod="#{ProcedureRoomCtrl.fetchRoomTypes}"
+                                            <p:autoComplete  id="roomType" value="#{procedureRoomCtrl.selected.type}" 
+                                                             completeMethod="#{MedProcedureCtrl.fetchRoomTypes}"
                                                              var="i" itemLabel="#{i.typeId}" itemValue="#{i}"
-                                                             forceSelection="true" >
+                                                             forceSelection="true" converter="#{procRoomTypeConverter}">
                                             </p:autoComplete >  
-                                        </div>                                        
+                                        </div>
+
+                                        <div class="p-field">
+                                            <p:outputLabel for="institution">Institution</p:outputLabel>
+                                            <p:inputText id="institution" value="#{procedureRoomCtrl.selected.instituteId}"/>
+                                        </div>
+                                        <div class="p-field">
+                                            <p:outputLabel for="procedureStatus">Status</p:outputLabel>
+                                            <p:selectOneMenu id="procedureStatus" value="#{procedureRoomCtrl.selected.status}" title="status">
+                                                <f:selectItems value="#{MedProcedureCtrl.objectStatus}"
+                                                               var="objStatus"
+                                                               itemValue="#{objStatus}"
+                                                               itemLabel="#{objStatus.label}"></f:selectItems>
+                                            </p:selectOneMenu>
+                                        </div>
                                     </p:outputPanel>
                                 </p:outputPanel>
 
                                 <f:facet name="footer">
-                                    <p:commandButton value="Save" icon="pi pi-check" actionListener="#{crudView.saveProduct}"
-                                                     update="manage-proc-room-content" process="manage-proc-room-content @this"/>
-                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureDialog').hide()"
+                                    <p:commandButton ajax="false" value="Save" icon="pi pi-check" actionListener="#{procedureRoomCtrl.saveProcedureRoom}"
+                                                     update="manage-procedure-room_content"/>
+                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureRoomDialog').hide()"
                                                      class="ui-button-secondary"/>
                                 </f:facet>
                             </p:dialog>
 
-                            <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
+                            <p:confirmDialog widgetVar="deleteProcedureRoomDialog" showEffect="fade" width="300"
                                              message="Delete the procedure?" header="Confirm" severity="warn">
-                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudView.deleteProduct}"
-                                                 process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
+                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{procedureRoomCtrl.deleteProcedureRoom}"
+                                                 process="@this" oncomplete="PF('deleteProcedureRoomDialog').hide()"/>
                                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                                 onclick="PF('deleteProcedureDialog').hide()"/>
+                                                 onclick="PF('deleteProcedureRoomDialog').hide()"/>
                             </p:confirmDialog>
 
                             <p:confirmDialog global="true" showEffect="fade" width="300">

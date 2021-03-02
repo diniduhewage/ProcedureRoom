@@ -33,15 +33,20 @@ and open the template in the editor.
                             <p:dataTable id="dt-procedures" widgetVar="dtProcedures" var="item" value="#{MedProcedureCtrl.items}"
                                          reflow="true" styleClass="products-table"
                                          selection="#{MedProcedureCtrl.selected}" rowKey="#{item.id}" paginator="true"
-                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px">
+                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                                 <f:facet name="header">
                                     <div class="products-table-header" style="height: 0.5cm">
-                                        <span style="font-weight: bold; font-size: 15px">Medical Procedure</span>
+                                        <span style="font-weight: bold; font-size: 15px">Medical Procedures</span>
                                     </div>
                                 </f:facet>                                
 
                                 <!--            <p:column selectionMode="multiple" exportable="false"></p:column>-->
-
+                                <p:column width="100" styleClass="wrap">
+                                    <f:facet name="header">
+                                        <h:outputText value="No" />
+                                    </f:facet>
+                                    <h:outputText value="#{index + 1}"/>
+                                </p:column>
                                 <p:column headerText="Procedure" sortBy="#{item.procId}" filterBy="#{item.procId}">
                                     <h:outputText value="#{item.procId}"/>
                                 </p:column>
@@ -75,65 +80,71 @@ and open the template in the editor.
 
                             </p:dataTable>
 
-                    <p:dialog header="New Procedure" width="450" showEffect="fade" modal="true"
-                              widgetVar="manageProcedureDialog" responsive="true">
-                            <p:outputPanel id="manage-procedure-content" class="ui-fluid">
-                                <p:outputPanel rendered="#{not empty MedProcedureCtrl.selected}">
-<!--                                        <p:graphicImage name="images/product/#{crudView.selectedProduct.image}" library="demo"
-                                                    styleClass="product-image"
-                                                    rendered="#{not empty crudView.selectedProduct.image}"/>-->
-                                    <div class="p-field">
-                                        <p:outputLabel for="procedure">Procedure</p:outputLabel>
-                                        <p:inputText id="procedure" value="#{MedProcedureCtrl.selected.procId}" required="true"/>
-                                    </div>
-                                    <div class="p-field">
-                                        <p:outputLabel for="description">Description</p:outputLabel>
-                                        <p:inputTextarea id="description" value="#{MedProcedureCtrl.selected.description}" autoResize="false"/>
-                                    </div> 
-                                    <div class="p-field">
-                                        <p:outputLabel for="procType">Procedure Type</p:outputLabel>
-                                        <p:autoComplete  id="procType" value="#{MedProcedureCtrl.selected.procType}" 
-                                                         completeMethod="#{MedProcedureCtrl.fetchProcTypes}"
-                                                         var="i" itemLabel="#{i.procedureType}" itemValue="#{i}"
+                            <p:dialog header="New Procedure" width="450" showEffect="fade" modal="true"
+                                      widgetVar="manageProcedureDialog" responsive="true">
+                                <p:outputPanel id="manage-procedure-content" class="ui-fluid">
+                                    <p:outputPanel rendered="#{not empty MedProcedureCtrl.selected}">
+    <!--                                        <p:graphicImage name="images/product/#{crudView.selectedProduct.image}" library="demo"
+                                                        styleClass="product-image"
+                                                        rendered="#{not empty crudView.selectedProduct.image}"/>-->
+                                        <div class="p-field">
+                                            <p:outputLabel for="procedure">Procedure</p:outputLabel>
+                                            <p:inputText id="procedure" value="#{MedProcedureCtrl.selected.procId}" required="true"/>
+                                        </div>
+                                        <div class="p-field">
+                                            <p:outputLabel for="description">Description</p:outputLabel>
+                                            <p:inputTextarea id="description" value="#{MedProcedureCtrl.selected.description}" autoResize="false"/>
+                                        </div> 
+                                        <div class="p-field">
+                                            <p:outputLabel for="procType">Procedure Type</p:outputLabel>
+                                            <p:autoComplete  id="procType" value="#{MedProcedureCtrl.selected.procType}" 
+                                                             completeMethod="#{MedProcedureCtrl.fetchProcTypes}"
+                                                             var="i" itemLabel="#{i.procedureType}" itemValue="#{i}"
                                                              forceSelection="true" converter="#{procedureTypeConverter}">
-                                        </p:autoComplete >  
-                                    </div>
-                                    <div class="p-field">
-                                        <p:outputLabel for="roomType">Room Type</p:outputLabel>
-                                        <p:autoComplete  id="roomType" value="#{MedProcedureCtrl.selected.roomType}" 
-                                                         completeMethod="#{MedProcedureCtrl.fetchRoomTypes}"
-                                                         var="i" itemLabel="#{i.typeId}" itemValue="#{i}"
-                                                         forceSelection="true" converter="#{procRoomTypeConverter}">
-                                        </p:autoComplete >  
-                                    </div>
-                                    <div class="p-field">
-                                        <p:outputLabel for="comment">Comment</p:outputLabel>
-                                        <p:inputTextarea id="comment" value="#{MedProcedureCtrl.selected.comment}" autoResize="false"/>
-                                    </div>
+                                            </p:autoComplete >  
+                                        </div>
+                                        <div class="p-field">
+                                            <p:outputLabel for="roomType">Room Type</p:outputLabel>
+                                            <p:autoComplete  id="roomType" value="#{MedProcedureCtrl.selected.roomType}" 
+                                                             completeMethod="#{MedProcedureCtrl.fetchRoomTypes}"
+                                                             var="i" itemLabel="#{i.typeId}" itemValue="#{i}"
+                                                             forceSelection="true" converter="#{procRoomTypeConverter}">
+                                            </p:autoComplete >  
+                                        </div>
+                                        <div class="p-field">
+                                            <p:outputLabel for="comment">Comment</p:outputLabel>
+                                            <p:inputTextarea id="comment" value="#{MedProcedureCtrl.selected.comment}" autoResize="false"/>
+                                        </div>
+                                        <p:selectOneMenu id="procedureStatus" value="#{MedProcedureCtrl.selected.status}" title="status">
+                                            <f:selectItems value="#{MedProcedureCtrl.objectStatus}"
+                                                           var="objStatus"
+                                                           itemValue="#{objStatus}"
+                                                           itemLabel="#{objStatus.label}"></f:selectItems>
+                                        </p:selectOneMenu>
+                                    </p:outputPanel>
                                 </p:outputPanel>
-                            </p:outputPanel>
 
-                            <f:facet name="footer">
-                                <p:commandButton ajax="false" value="Save" icon="pi pi-check" actionListener="#{MedProcedureCtrl.saveProcedure}"
+                                <f:facet name="footer">
+                                    <p:commandButton ajax="false" value="Save" icon="pi pi-check" actionListener="#{MedProcedureCtrl.saveProcedure}"
                                                      update="manage-procedure-content"/>
-                                <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureDialog').hide()"
-                                                 class="ui-button-secondary"/>
-                            </f:facet>
-                    </p:dialog>
+                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureDialog').hide()"
+                                                     class="ui-button-secondary"/>
+                                </f:facet>
+                            </p:dialog>
 
-                    <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
-                                     message="Delete the procedure?" header="Confirm" severity="warn">
-                        <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{MedProcedureCtrl.deleteProcedure}"
-                                         process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
-                        <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                         onclick="PF('deleteProcedureDialog').hide()"/>
-                    </p:confirmDialog>
+                            <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
+                                             message="Delete the procedure?" header="Confirm" severity="warn">
+                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{MedProcedureCtrl.deleteProcedure}"
+                                                 process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
+                                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                                 onclick="PF('deleteProcedureDialog').hide()"/>
+                            </p:confirmDialog>
 
-                    <p:confirmDialog global="true" showEffect="fade" width="300">
-                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                         icon="pi pi-times"/>
-                    </p:confirmDialog>
+                            <p:confirmDialog global="true" showEffect="fade" width="300">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                 icon="pi pi-times"/>
+                            </p:confirmDialog>
                         </div>
                     </h:form>
                 </div>

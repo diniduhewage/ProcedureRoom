@@ -71,8 +71,8 @@
 
     <h:head>
         <div class="header">
-            <!--<h:graphicImage name="resources/image/banner.jpg"/>-->
-            <h1>HMIS Procedure Room</h1>
+            <!--<h:graphicImage value="resources/image/hims_log.jpg"/>-->
+            <h1>HIMS Procedure Room</h1>
         </div>
     </h:head>
 
@@ -80,7 +80,7 @@
         
         <h:form>
             <div class="card">
-                <p:megaMenu orientation="horizontal" autoDisplay="false" style="height: 1.25cm; padding: 2px;">                     
+                <p:megaMenu orientation="horizontal" autoDisplay="false" style="height: 0.75cm; padding: 2px; background-color: royalblue;">                     
                     <p:menuitem value = "Procedure Room" url="#" style="margin-bottom:0.25cm; font-size: 12px;"/>
                     <p:menuitem value = "Laboratory" url="#" style="margin-bottom:0.25cm; font-size: 12px;"/>
                 </p:megaMenu>
@@ -96,9 +96,10 @@
                 <p:panelMenu style="width:200px" >
                     <p:submenu label="Preferences" expanded="true">
                         <p:menuitem value="Procedure" ajax="false" action="#{MedProcedureCtrl.toMedProcedure}"/>                        
-                        <p:menuitem value="Procedure Room" action="#{MedProcedureCtrl.save}"/>
+                        <p:menuitem value="Procedure Room" ajax="false" action="#{procedureRoomCtrl.toProcedureRoom}"/>
                         <p:menuitem value="Procedure Type" ajax="false" action="#{ProcedureTypeCtrl.toProcedureType}"/>
                         <p:menuitem value="Room Type" ajax="false" action="#{ProcedureRoomTypeCtrl.toProcRoomTypes}"/>
+                        <p:menuitem value="Add Procedure" ajax="false" action="#{procedurePerClientCtrl.toAddProcedure}"/>
                         <p:menuitem value="Procedure Log" action="#{MedProcedureCtrl.update}"/>
                     </p:submenu>
                 </p:panelMenu>

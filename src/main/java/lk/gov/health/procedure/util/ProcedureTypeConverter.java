@@ -28,7 +28,6 @@ public class ProcedureTypeConverter implements Converter<ProcedureTypePojo> {
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, ProcedureTypePojo value) {
         if (value != null) {
-            System.out.println(".............2222222222222222222");
             return String.valueOf(value.getId());
         } else {
             return null;

@@ -38,9 +38,19 @@ public class ProcedureRoomPojo {
         
         jo_.put("roomId", this.getRoomId());
         jo_.put("description", this.getDescription());
-        jo_.put("type", this.getType());
+        jo_.put("type", this.getRoomTypeJsonObject());
         jo_.put("instituteId", this.getInstituteId());
-        jo_.put("status", this.getStatus());
+        jo_.put("status", this.getStatus().toString());
+        
+        return jo_;        
+    }
+    
+    public JSONObject getRoomTypeJsonObject(){
+        JSONObject jo_ = new JSONObject();
+        
+        jo_.put("id", this.getType().getId());
+        jo_.put("typeId", this.getType().getTypeId());
+        jo_.put("description", this.getType().getDescription());
         
         return jo_;        
     }
@@ -49,9 +59,9 @@ public class ProcedureRoomPojo {
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setRoomId(jo_.containsKey("roomId") ? jo_.get("roomId").toString() : null);
         this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
-        this.setType(jo_.containsKey("type") ? (ProcedureRoomTypePojo)(jo_.get("type")) : null);
+        this.setType(jo_.containsKey("type") ? getRoomTypeObject(jo_.get("type")) : null);
         this.setInstituteId(jo_.containsKey("instituteId") ? Long.parseLong(jo_.get("instituteId").toString()) : null);
-        this.setStatus(jo_.containsKey("status") ? (ObjectStatus)jo_.get("status"): null); 
+        this.setStatus(jo_.containsKey("status") ? ObjectStatus.valueOf(jo_.get("status").toString()): null); 
         
         return this;
     }   
@@ -63,6 +73,12 @@ public class ProcedureRoomPojo {
             ObjectList.add(new ProcedureRoomPojo().getObject((JSONObject) ja_.get(i)));
         }
         return ObjectList;
+    }
+    
+    public ProcedureRoomTypePojo getRoomTypeObject(Object obj){
+ 
+      ProcedureRoomTypePojo pojoInst = new ProcedureRoomTypePojo();
+      return pojoInst.getObject((JSONObject)obj);
     }
 
     public String getRoomId() {

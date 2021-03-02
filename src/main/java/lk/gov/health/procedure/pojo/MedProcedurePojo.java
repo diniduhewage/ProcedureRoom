@@ -65,7 +65,7 @@ public class MedProcedurePojo {
         JSONObject jo_ = new JSONObject();
         
         jo_.put("id", this.getProcType().getId());
-        jo_.put("procedreTypeId", this.getProcType().getProcedureType());
+        jo_.put("procedureType", this.getProcType().getProcedureType());
         jo_.put("description", this.getProcType().getDescription());
         
         return jo_;        
@@ -79,7 +79,7 @@ public class MedProcedurePojo {
         this.setProcType(jo_.containsKey("procType") ? (getProcTypeObject(jo_.get("procType"))) : null);
         this.setRoomType(jo_.containsKey("roomType") ? (getRoomTypeObject(jo_.get("roomType"))) : null);
         this.setComment(jo_.containsKey("comment") ? jo_.get("comment").toString() : null);
-        this.setStatus(jo_.containsKey("status") ? (ObjectStatus)jo_.get("status") : null);
+        this.setStatus(jo_.containsKey("status") ? ObjectStatus.valueOf(jo_.get("status").toString()) : null);
         return this;
     }
     

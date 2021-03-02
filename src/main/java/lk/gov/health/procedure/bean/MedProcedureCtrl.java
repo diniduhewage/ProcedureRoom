@@ -17,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import lk.gov.health.procedure.enums.ObjectStatus;
 import lk.gov.health.procedure.pojo.MedProcedurePojo;
 import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
 import lk.gov.health.procedure.pojo.ProcedureTypePojo;
@@ -73,11 +74,10 @@ public class MedProcedureCtrl implements Serializable {
     }
 
     public void saveProcedure() {
-        JSONObject jo = selected.getJsonObject();
-
         Client client = Client.create();
 
         if (selected.getId() == null) {
+            JSONObject jo = selected.getJsonObject();
             jo.put("id", 123654);
             WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
             ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
@@ -90,6 +90,7 @@ public class MedProcedureCtrl implements Serializable {
             }
                     
         } else {
+            JSONObject jo = selected.getJsonObject();
             jo.put("id", selected.getId());
             WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/" + selected.getId());
             ClientResponse response = webResource2.type("application/json").put(ClientResponse.class, jo.toString());
@@ -127,6 +128,10 @@ public class MedProcedureCtrl implements Serializable {
         } catch (ParseException ex) {
             Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public ObjectStatus[] getObjectStatus() {
+        return ObjectStatus.values();
     }
 
     public ProcedureTypePojo getProcType() {

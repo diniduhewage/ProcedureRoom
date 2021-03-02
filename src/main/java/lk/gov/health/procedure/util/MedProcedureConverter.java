@@ -13,8 +13,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Named;
-import lk.gov.health.procedure.bean.ProcedureRoomTypeCtrl;
-import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
+import lk.gov.health.procedure.bean.MedProcedureCtrl;
+import lk.gov.health.procedure.pojo.MedProcedurePojo;
 
 /**
  *
@@ -22,16 +22,16 @@ import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
  */
 @Named
 @ApplicationScoped
-@FacesConverter(value = "procRoomTypeConverter", managed = true)
-public class ProcRoomTypeConverter implements Converter<ProcedureRoomTypePojo> {
+@FacesConverter(value = "medProcedureConverter", managed=true)
+public class MedProcedureConverter implements Converter<MedProcedurePojo> {
 
     @Override
-    public ProcedureRoomTypePojo getAsObject(FacesContext fc, UIComponent uic, String value) {
+    public MedProcedurePojo getAsObject(FacesContext fc, UIComponent uic, String value) {
         if (value != null && value.trim().length() > 0) {
             try {
-                ProcedureRoomTypeCtrl proRoomType = new ProcedureRoomTypeCtrl();
-                proRoomType.getProcRoomTypes();
-                for (ProcedureRoomTypePojo item : proRoomType.getItems()) {
+                MedProcedureCtrl medProcedure = new MedProcedureCtrl();
+                medProcedure.getMedicalProcedures();
+                for (MedProcedurePojo item : medProcedure.getItems()) {
                     if (item.getId() == Long.parseLong(value)) {
                         return item;
                     }
@@ -46,12 +46,12 @@ public class ProcRoomTypeConverter implements Converter<ProcedureRoomTypePojo> {
     }
 
     @Override
-    public String getAsString(FacesContext fc, UIComponent uic, ProcedureRoomTypePojo value) {
+    public String getAsString(FacesContext fc, UIComponent uic, MedProcedurePojo value) {
         if (value != null) {
             return String.valueOf(value.getId());
         } else {
             return null;
         }
     }
-
+    
 }
