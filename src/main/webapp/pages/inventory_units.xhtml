@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="/index.xhtml">
+            <ui:define name="tabSection">
+                <div style="float:right; width:82%; margin-right: 0.5cm; ">
+                    <h:form id="form">
+                        <div class="card crud-demo">
+                            <p:growl id="messages" showDetail="true"/>
+
+                            <div class="products-buttonbar" style="margin-top:0.5cm; margin-right: 0.25cm">
+                                <div>
+                                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{crudView.openNew}"
+                                                     update=":form:manage-inventory-unit-content" oncomplete="PF('manageInventoryUnitDialog').show()"
+                                                     styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
+                                        <p:resetInput target=":form:manage-inventory-unit-content"/>
+                                    </p:commandButton>
+                                    
+                                </div>
+                            </div>
+
+                            <p:dataTable id="dt-room-types" widgetVar="dtInventoryUnits" var="item" value="#{InventoryUnitCtrl.items}"
+                                         reflow="true" styleClass="products-table"
+                                         selection="#{InventoryUnitCtrl.selected}" rowKey="#{item.id}" paginator="true"
+                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
+                                <f:facet name="header">
+                                    <div class="products-table-header" style="height: 0.5cm">
+                                        <span style="font-weight: bold; font-size: 15px">Inventory Units</span>
+                                    </div>
+                                </f:facet>                                
+
+                                <!--            <p:column selectionMode="multiple" exportable="false"></p:column>-->
+
+                                <p:column width="100" styleClass="wrap">
+                                    <f:facet name="header">
+                                        <h:outputText value="No" />
+                                    </f:facet>
+                                    <h:outputText value="#{index + 1}"/>
+                                </p:column>
+                                <p:column headerText="Inventory Unit" sortBy="#{item.inventoryUnit}" filterBy="#{item.inventoryUnit}">
+                                    <h:outputText value="#{item.inventoryUnit}"/>
+                                </p:column>
+                                <p:column headerText="Quantity" sortBy="#{item.quantity}" filterBy="#{item.quantity}">
+                                    <h:outputText value="#{item.quantity}"/>
+                                </p:column>
+
+                                <p:column exportable="false">
+                                    <p:commandButton icon="pi pi-pencil" update=":form:manage-inventory-unit-content"
+                                                     oncomplete="PF('manageInventoryUnitDialog').show()"
+                                                     styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                        <f:setPropertyActionListener value="#{item}" target="#{InventoryUnitCtrl.selected}"/>
+                                        <p:resetInput target=":form:manage-inventory-unit-content"/>
+                                    </p:commandButton> 
+                                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                                     oncomplete="PF('deleteInventoryUnitDialog').show()">
+                                        <f:setPropertyActionListener value="#{item}" target="#{InventoryUnitCtrl.selected}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <p:dialog header="New Inventory Unit Type" width="450" showEffect="fade" modal="true"
+                                      widgetVar="manageInventoryUnitDialog" responsive="true">
+                                <p:outputPanel class="ui-fluid">
+                                    <p:outputPanel id="manage-inventory-unit-content" rendered="#{not empty InventoryUnitCtrl.selected}">                                       
+                                        <div class="p-field">
+                                            <p:outputLabel for="inventoryUnit">Inventory Unit</p:outputLabel>
+                                            <p:inputText id="inventoryUnit" value="#{InventoryUnitCtrl.selected.inventoryUnit}"/>
+                                        </div>
+                                        <div class="p-field">
+                                            <p:outputLabel for="description">Quantity</p:outputLabel>
+                                            <p:inputTextarea id="description" value="#{InventoryUnitCtrl.selected.quantity}"/>
+                                        </div> 
+                                    </p:outputPanel>
+                                </p:outputPanel>
+
+                                <f:facet name="footer">
+                                    <p:commandButton value="Save" icon="pi pi-check" class="ui-button-primary" actionListener="#{InventoryUnitCtrl.saveInventoryUnit}"
+                                                     update="manage-inventory-unit-content" process="manage-inventory-unit-content @this"/>                                    
+                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageInventoryUnitDialog').hide()" class="ui-button-secondary"/>
+                                </f:facet>
+                            </p:dialog>
+
+                            <p:confirmDialog widgetVar="deleteInventoryUnitDialog" showEffect="fade" width="300"
+                                             message="Delete this inventory unit?" header="Confirm" severity="warn">
+                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{InventoryUnitCtrl.deleteInventoryUnit}"
+                                                 process="@this" oncomplete="PF('deleteInventoryUnitDialog').hide()"/>
+                                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                                 onclick="PF('deleteInventoryUnitDialog').hide()"/>
+                            </p:confirmDialog>
+
+                            <p:confirmDialog global="true" showEffect="fade" width="300">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                 icon="pi pi-times"/>
+                            </p:confirmDialog>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>
+
