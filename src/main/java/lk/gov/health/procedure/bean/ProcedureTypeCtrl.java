@@ -11,6 +11,9 @@ import com.sun.jersey.api.client.WebResource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import lk.gov.health.procedure.pojo.ProcedureTypePojo;
 import lk.gov.health.procedure.util.ServiceConnector;
@@ -57,11 +60,22 @@ public class ProcedureTypeCtrl implements Serializable {
         if (selected.getId() == null) {
             jo.put("id", 123654);
             WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype");
-            webResource1.type("application/json").post(ClientResponse.class, jo.toString());
+            ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
+            if (response.getStatus() == 200 || response.getStatus() == 202) {
+                addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Type Added Successfully");
+            } else {
+                response.bufferEntity();
+                addMessage(FacesMessage.SEVERITY_ERROR, "Error", response.getEntity(String.class));
+            }
         } else {
             jo.put("id", selected.getId());
             WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype/" + selected.getId());
-            webResource2.type("application/json").put(ClientResponse.class, jo.toString());
+            ClientResponse response =  webResource2.type("application/json").put(ClientResponse.class, jo.toString());
+            if (response.getStatus() == 200 || response.getStatus() == 204) {
+                addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Type Updated Successfully");
+            } else {
+                addMessage(FacesMessage.SEVERITY_ERROR, "Error", response.getEntity(String.class));
+            }            
         }
     }
 
@@ -76,5 +90,10 @@ public class ProcedureTypeCtrl implements Serializable {
         Client client = Client.create();
         WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype/" + selected.getId());
         webResource2.delete();
+    }
+    
+    public void addMessage(Severity sev,String summary, String detail) {
+        FacesMessage message = new FacesMessage(sev, summary, detail);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }
