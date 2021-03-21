@@ -46,7 +46,7 @@ public class MedProcedurePojo {
         jo_.put("procType", getProcedureTypeJsonObject());
         jo_.put("roomType", getRoomTypeJsonObject());
         jo_.put("comment", this.getComment());
-        jo_.put("status", this.getStatus());
+        jo_.put("status", this.getStatus().toString());
 
         return jo_;
     }

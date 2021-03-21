@@ -15,18 +15,18 @@ and open the template in the editor.
         <ui:composition template="/index.xhtml">
             <ui:define name="tabSection">
                 <div style="float:right; width:82%; margin-right: 0.5cm; ">
-                    <h:form id="form">
+                    <h:form id="RoomTypeForm">
                         <div class="card crud-demo">
                             <p:growl id="messages" showDetail="true"/>
 
                             <div class="products-buttonbar" style="margin-top:0.5cm; margin-right: 0.25cm">
                                 <div>
-                                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{ProcedureRoomTypeCtrl.openNew}"
-                                                     update=":form:manage-room-type-content" oncomplete="PF('manageRoomTypeDialog').show()"
+                                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{ProcedureRoomTypeCtrl.prepareNew}"
+                                                     update=":NewRoomTypeForm:manage-room-type-content" oncomplete="PF('manageRoomTypeDialog').show()"
                                                      styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
-                                        <p:resetInput target=":form:manage-room-type-content"/>
+                                        <p:resetInput target=":NewRoomTypeForm:manage-room-type-content"/>
                                     </p:commandButton>
-                                    
+
                                 </div>
                             </div>
 
@@ -56,11 +56,11 @@ and open the template in the editor.
                                 </p:column>
 
                                 <p:column exportable="false">
-                                    <p:commandButton icon="pi pi-pencil" update=":form:manage-room-type-content"
+                                    <p:commandButton icon="pi pi-pencil" update=":NewRoomTypeForm:manage-room-type-content"
                                                      oncomplete="PF('manageRoomTypeDialog').show()"
                                                      styleClass="edit-button rounded-button ui-button-success" process="@this">
                                         <f:setPropertyActionListener value="#{item}" target="#{ProcedureRoomTypeCtrl.selected}"/>
-                                        <p:resetInput target=":form:manage-room-type-content"/>
+                                        <p:resetInput target=":NewRoomTypeForm:manage-room-type-content"/>
                                     </p:commandButton> 
                                     <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
                                                      oncomplete="PF('deleteRoomTypeDialog').show()">
@@ -69,44 +69,42 @@ and open the template in the editor.
                                 </p:column>
 
                             </p:dataTable>
-
-                            <p:dialog header="New Procedure Room Type" width="450" showEffect="fade" modal="true"
-                                      widgetVar="manageRoomTypeDialog" responsive="true">
-                                <p:outputPanel class="ui-fluid">
-                                    <p:outputPanel id="manage-room-type-content" rendered="#{not empty ProcedureRoomTypeCtrl.selected}">                                       
-                                        <div class="p-field">
-                                            <p:outputLabel for="typeId">Room Type</p:outputLabel>
-                                            <p:inputText id="typeId" value="#{ProcedureRoomTypeCtrl.selected.typeId}"/>
-                                        </div>
-                                        <div class="p-field">
-                                            <p:outputLabel for="description">Description</p:outputLabel>
-                                            <p:inputTextarea id="description" value="#{ProcedureRoomTypeCtrl.selected.description}"/>
-                                        </div> 
-                                    </p:outputPanel>
-                                </p:outputPanel>
-
-                                <f:facet name="footer">
-                                    <p:commandButton value="Save" icon="pi pi-check" class="ui-button-primary" actionListener="#{ProcedureRoomTypeCtrl.saveRoomType}"
-                                                     update="manage-room-type-content" process="manage-room-type-content @this"/>                                    
-                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageRoomTypeDialog').hide()" class="ui-button-secondary"/>
-                                </f:facet>
-                            </p:dialog>
-
-                            <p:confirmDialog widgetVar="deleteRoomTypeDialog" showEffect="fade" width="300"
-                                             message="Delete this room type?" header="Confirm" severity="warn">
-                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{ProcedureRoomTypeCtrl.deleteRoomType}"
-                                                 process="@this" oncomplete="PF('deleteRoomTypeDialog').hide()"/>
-                                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                                 onclick="PF('deleteProcedureDialog').hide()"/>
-                            </p:confirmDialog>
-
-                            <p:confirmDialog global="true" showEffect="fade" width="300">
-                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                                 icon="pi pi-times"/>
-                            </p:confirmDialog>
                         </div>
                     </h:form>
+
+                    <h:form id="NewRoomTypeForm">
+                        <p:dialog header="New Procedure Room Type" width="450" showEffect="fade" modal="true"
+                                  widgetVar="manageRoomTypeDialog" responsive="true">
+                            <p:outputPanel class="ui-fluid">
+                                <p:outputPanel id="manage-room-type-content" rendered="#{not empty ProcedureRoomTypeCtrl.selected}">                                       
+                                    <div class="p-field">
+                                        <p:outputLabel for="typeId">Room Type</p:outputLabel>
+                                        <p:inputText id="typeId" value="#{ProcedureRoomTypeCtrl.selected.typeId}"/>
+                                    </div>
+                                    <div class="p-field">
+                                        <p:outputLabel for="description">Description</p:outputLabel>
+                                        <p:inputTextarea id="description" value="#{ProcedureRoomTypeCtrl.selected.description}"/>
+                                    </div> 
+                                </p:outputPanel>
+                            </p:outputPanel>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Save" ajax="false" icon="pi pi-check" class="ui-button-primary" actionListener="#{ProcedureRoomTypeCtrl.saveRoomType}"
+                                                 oncomplete="handleSubmit(args,'manageRoomTypeDialog');" update=":RoomTypeForm:dtRoomTypes"/>                                    
+                                <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageRoomTypeDialog').hide()" class="ui-button-secondary"/>
+                            </f:facet>
+                        </p:dialog>
+                    </h:form>
+                    
+                    <h:form id="DeleteRoomTypeForm">
+                        <p:confirmDialog widgetVar="deleteRoomTypeDialog" showEffect="fade" width="300"
+                                         message="Delete this room type?" header="Confirm" severity="warn">
+                            <p:commandButton value="Yes" ajax="false" icon="pi pi-check" actionListener="#{ProcedureRoomTypeCtrl.deleteRoomType}"
+                                             oncomplete="handleSubmit(args,'deleteRoomTypeDialog');" update=":RoomTypeForm:dtRoomTypes"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                             onclick="PF('deleteProcedureDialog').hide()"/>
+                        </p:confirmDialog>
+                    </h:form>  
                 </div>
             </ui:define>
         </ui:composition>

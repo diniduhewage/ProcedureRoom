@@ -26,20 +26,36 @@ import org.json.simple.JSONObject;
  *
  * @author user
  */
-@Named
+@Named("webUserCtrl")
 @SessionScoped
 public class WebUserCtrl implements Serializable {
-
+    
     @EJB
     private WebUserFacade ejbFacade;
     @EJB
     private UserPrivilegeFacade userPrivilegeFacade;
 
     private String userName;
-    private String userPassword;
-    private WebUser loggedUser;
-    private List<UserPrivilege> loggedUserPrivileges;
-
+    private String privilege;
+    private String userId;
+    private String apiKey;
+    private String userRole;
+    private String insCode;
+    
+    public boolean IsSystemAdmin(){
+        return userRole!= null && this.userRole.equals("System_Admin");
+    }
+    public boolean IsInstituteAdmin(){
+        return userRole!= null && this.userRole.matches("Institute_Admin|System_Admin");
+    }
+    public boolean IsUser(){
+        return userRole!= null && this.userRole.matches("Nurse|Institute_Admin|System_Admin");
+    }
+    
+    public String imageLocation(){
+        return "resources/image/hims_logo.png";
+    }
+    
     public String loginNew() {
 
 //        if (userName == null || userName.trim().equals("")) {
@@ -68,24 +84,7 @@ public class WebUserCtrl implements Serializable {
         return "/index";
     }
 
-    private boolean checkLoginNew() {
-        if (getEjbFacade() != null) {
-            String jpql_ = "SELECT u FROM WebUser u WHERE lower(u.name)=:userName and u.retired =:ret";
-
-            Map m = new HashMap();
-            m.put("userName", userName.trim().toLowerCase());
-            m.put("ret", false);
-
-            loggedUser = getEjbFacade().findFirstByJpql(jpql_, m);
-            if (loggedUser != null) {
-                return matchPassword(userPassword, loggedUser.getWebUserPassword());
-            } else {
-                JsfUtil.addErrorMessage("Server Error");
-            }
-        }
-        loggedUser = null;
-        return false;
-    }
+    
 
     public boolean matchPassword(String planePassword, String encryptedPassword) {
         BasicPasswordEncryptor en = new BasicPasswordEncryptor();
@@ -131,36 +130,53 @@ public class WebUserCtrl implements Serializable {
         this.userName = userName;
     }
 
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
-
-    public WebUser getLoggedUser() {
-        return loggedUser;
-    }
-
-    public void setLoggedUser(WebUser loggedUser) {
-        this.loggedUser = loggedUser;
-    }
-
     public UserPrivilegeFacade getUserPrivilegeFacade() {
         return userPrivilegeFacade;
     }
 
     public void setUserPrivilegeFacade(UserPrivilegeFacade userPrivilegeFacade) {
         this.userPrivilegeFacade = userPrivilegeFacade;
+    }   
+
+    public String getPrivilege() {
+        return privilege;
     }
 
-    public List<UserPrivilege> getLoggedUserPrivileges() {
-        return loggedUserPrivileges;
+    public void setPrivilege(String privilege) {
+        this.privilege = privilege;
     }
 
-    public void setLoggedUserPrivileges(List<UserPrivilege> loggedUserPrivileges) {
-        this.loggedUserPrivileges = loggedUserPrivileges;
+    public String getUserId() {
+        return userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getInsCode() {
+        return insCode;
+    }
+
+    public void setInsCode(String insCode) {
+        this.insCode = insCode;
+    }
+
+    
 }

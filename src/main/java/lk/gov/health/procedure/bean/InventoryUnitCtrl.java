@@ -54,7 +54,7 @@ public class InventoryUnitCtrl implements Serializable{
     public void getInventoryUnits() {
         try {
             Client client = Client.create();
-            WebResource webResource1 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.inventoryunit");
+            WebResource webResource1 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.inventoryunit");
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
             items = selected.getObjectList((JSONArray)new JSONParser().parse(outpt));
@@ -71,7 +71,7 @@ public class InventoryUnitCtrl implements Serializable{
 
     public void deleteInventoryUnit(){
         Client client = Client.create();
-        WebResource webResource2 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.inventoryunit/" + selected.getId());
+        WebResource webResource2 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.inventoryunit/" + selected.getId());
         webResource2.delete();
     }     
     
@@ -82,11 +82,12 @@ public class InventoryUnitCtrl implements Serializable{
 
         if (selected.getId() == null) {
             jo.put("id", 123654);
-            WebResource webResource1 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.inventoryunit");
+            System.out.println("55555555555 -->"+jo.toString());
+            WebResource webResource1 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.inventoryunit");
             webResource1.type("application/json").post(ClientResponse.class, jo.toString());
         } else {
             jo.put("id", selected.getId());
-            WebResource webResource2 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.inventoryunit/" + selected.getId());
+            WebResource webResource2 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.inventoryunit/" + selected.getId());
             webResource2.type("application/json").put(ClientResponse.class, jo.toString());
         }
     }

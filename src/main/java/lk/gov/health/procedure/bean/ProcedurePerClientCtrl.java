@@ -10,7 +10,6 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
@@ -47,14 +46,13 @@ public class ProcedurePerClientCtrl implements Serializable {
         this.getProcedures();
         return "/pages/medicalprocedures";
     }
-
+    
     private void getProcedures() {
         try {
             Client client = Client.create();
             WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureperclient");
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
-            System.out.println("jjjjjjjjjjjjjj -->"+outpt);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
         } catch (ParseException ex) {
             Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,10 +77,8 @@ public class ProcedurePerClientCtrl implements Serializable {
         Client client = Client.create();
 
         if (selected.getId() == null) {
-            selected.setCreatedAt(new Date());
             JSONObject jo = selected.getJsonObject();
             jo.put("id", 123654);
-            System.out.println("uuuuuuuuuuu 11 -->"+jo.toString());
             WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureperclient");
             ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
             if(response.getStatus() == 200 || response.getStatus() == 204){

@@ -56,7 +56,7 @@ and open the template in the editor.
                                 <p:column headerText="Description" sortBy="#{item.procedureId.description}" filterBy="#{item.procedureId.description}">
                                     <h:outputText value="#{item.procedureId.description}"/>
                                 </p:column>
-                                
+
                                 <p:column headerText="Rooom ID" sortBy="#{item.roomId.roomId}" filterBy="#{item.roomId.roomId}">
                                     <h:outputText value="#{item.roomId.roomId}"/>
                                 </p:column>
@@ -64,23 +64,25 @@ and open the template in the editor.
                                     <h:outputText value="#{item.createdBy}"/>
                                 </p:column>
                                 <p:column headerText="Created At" sortBy="#{item.createdAt}" filterBy="#{item.createdAt}">
-                                    <h:outputText value="#{item.createdAt}"/>
+                                    <h:outputText value="#{item.createdAt.time}">
+                                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                                    </h:outputText>
                                 </p:column>
                                 <p:column headerText="Status" sortBy="#{item.status.label}" filterBy="#{item.status.label}">
                                     <h:outputText value="#{item.status.label}"/>
                                 </p:column>
-                                <p:column exportable="false">
-                                    <p:commandButton icon="pi pi-pencil" update=":form:add-procedure-content"
-                                                     oncomplete="PF('addNewProcedureDialog').show()"                                                     
-                                                     styleClass="edit-button rounded-button ui-button-success" process="@this">
-                                        <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
-                                        <p:resetInput target=":form:add-procedure-content"/>
-                                    </p:commandButton>
-                                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-                                                     oncomplete="PF('deleteProcedureDialog').show()">
-                                        <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
-                                    </p:commandButton>
-                                </p:column>
+                                    <p:column exportable="false">
+                                        <p:commandButton icon="pi pi-pencil" update=":form:add-procedure-content"
+                                                         oncomplete="PF('addNewProcedureDialog').show()"                                                     
+                                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                            <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
+                                            <p:resetInput target=":form:add-procedure-content"/>
+                                        </p:commandButton>
+                                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                                         oncomplete="PF('deleteProcedureDialog').show()">
+                                            <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
+                                        </p:commandButton>
+                                    </p:column>
 
                             </p:dataTable>
 

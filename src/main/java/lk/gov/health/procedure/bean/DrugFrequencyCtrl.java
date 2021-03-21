@@ -53,7 +53,7 @@ public class DrugFrequencyCtrl implements Serializable {
     public void getDrugFrequencies() {
         try {
             Client client = Client.create();
-            WebResource webResource1 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.drugfrequency");
+            WebResource webResource1 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.drugfrequency");
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
             items = selected.getObjectList((JSONArray)new JSONParser().parse(outpt));
@@ -71,7 +71,7 @@ public class DrugFrequencyCtrl implements Serializable {
 
     public void deleteDrugFreqency(){
         Client client = Client.create();
-        WebResource webResource2 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.drugfrequency/" + selected.getId());
+        WebResource webResource2 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.drugfrequency/" + selected.getId());
         webResource2.delete();
     }     
     
@@ -82,11 +82,11 @@ public class DrugFrequencyCtrl implements Serializable {
 
         if (selected.getId() == null) {
             jo.put("id", 123654);
-            WebResource webResource1 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.drugfrequency");
+            WebResource webResource1 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.drugfrequency");
             webResource1.type("application/json").post(ClientResponse.class, jo.toString());
         } else {
             jo.put("id", selected.getId());
-            WebResource webResource2 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.drugfrequency/" + selected.getId());
+            WebResource webResource2 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.drugfrequency/" + selected.getId());
             webResource2.type("application/json").put(ClientResponse.class, jo.toString());
         }
     }

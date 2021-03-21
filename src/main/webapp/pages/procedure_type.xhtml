@@ -15,18 +15,18 @@ and open the template in the editor.
         <ui:composition template="/index.xhtml">
             <ui:define name="tabSection">
                 <div style="float:right; width:82%; margin-right: 0.5cm; ">
-                    <h:form id="form">
+                    <h:form id="ProcedureTypeForm">
                         <div class="card crud-demo">
                             <p:growl id="messages" showDetail="true"/>
 
                             <div class="products-buttonbar" style="margin-top:0.5cm; margin-right: 0.25cm">
                                 <div>
-                                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{ProcedureTypeCtrl.openNew}" 
-                                                     update=":form:dt-procedure-types" oncomplete="PF('manageProcedureTypeDialog').show()"
+                                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{ProcedureTypeCtrl.prepareNew}" 
+                                                     update=":NewProcedureTypeForm" oncomplete="PF('manageProcedureTypeDialog').show()"
                                                      styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;" onclick="PF('manageProcedureTypeDialog').hide()"> 
-                                        <p:resetInput target=":form:dt-procedure-types"/>
+                                        <p:resetInput target=":NewProcedureTypeForm"/>
                                     </p:commandButton>                                   
-                                                                      
+
                                 </div>
                             </div>
 
@@ -56,56 +56,54 @@ and open the template in the editor.
                                 </p:column>
 
                                 <p:column headerText="Actions" exportable="false">
-                                    <p:commandButton icon="pi pi-pencil" update=":form:manage-proc-type-content"
+                                    <p:commandButton icon="pi pi-pencil" update=":NewProcedureTypeForm:manage-proc-type-content"
                                                      oncomplete="PF('manageProcedureTypeDialog').show()"
-                                                     styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                                     styleClass="edit-button rounded-button ui-button-success">
                                         <f:setPropertyActionListener value="#{item}" target="#{ProcedureTypeCtrl.selected}"/>
-                                        <p:resetInput target=":form:manage-proc-type-content"/>
+                                        <p:resetInput target=":NewProcedureTypeForm:manage-proc-type-content"/>
                                     </p:commandButton>
-                                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
                                                      oncomplete="PF('deleteProcedureDialog').show()">
                                         <f:setPropertyActionListener value="#{item}" target="#{ProcedureTypeCtrl.selected}"/>
                                     </p:commandButton>
                                 </p:column>
-
                             </p:dataTable>
-
-                            <p:dialog header="New Procedure Type" width="450" showEffect="fade" modal="true"
-                                      widgetVar="manageProcedureTypeDialog" responsive="true">
-                                <p:outputPanel class="ui-fluid">
-                                    <p:outputPanel id="manage-proc-type-content">                                       
-                                        <div class="p-field">
-                                            <p:outputLabel for="procedure">Procedure Type</p:outputLabel>
-                                            <p:inputText id="procedure" value="#{ProcedureTypeCtrl.selected.procedureType}" required="true"/>
-                                        </div>
-                                        <div class="p-field">
-                                            <p:outputLabel for="description">Description</p:outputLabel>
-                                            <p:inputTextarea id="description" value="#{ProcedureTypeCtrl.selected.description}"/>
-                                        </div> 
-                                    </p:outputPanel>
-                                </p:outputPanel>
-
-                                <f:facet name="footer">
-                                    <p:commandButton value="Save" icon="pi pi-check" class="ui-button-primary" actionListener="#{ProcedureTypeCtrl.saveProcedureType}"
-                                                     update="manage-proc-type-content" onclick="PF('manageProcedureTypeDialog').hide()" process="manage-proc-type-content @this"/>
-                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureTypeDialog').hide()" class="ui-button-secondary"/>
-                                </f:facet>
-                            </p:dialog>
-
-                            <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
-                                             message="Delete the Procedure Type?" header="Confirm" severity="warn">
-                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{ProcedureTypeCtrl.deleteProcedureType}"
-                                                 process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
-                                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                                 onclick="PF('deleteProcedureDialog').hide()"/>
-                            </p:confirmDialog>
-
-                            <p:confirmDialog global="true" showEffect="fade" width="300">
-                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                                 icon="pi pi-times"/>
-                            </p:confirmDialog>
                         </div>
+                    </h:form>
+
+                    <h:form id="NewProcedureTypeForm">
+                        <p:dialog header="New Procedure Type" width="450" showEffect="fade" modal="true"
+                                  widgetVar="manageProcedureTypeDialog" responsive="true">
+                            <p:outputPanel class="ui-fluid">
+                                <p:outputPanel id="manage-proc-type-content">                                       
+                                    <div class="p-field">
+                                        <p:outputLabel for="procedure">Procedure Type</p:outputLabel>
+                                        <p:inputText id="procedure" value="#{ProcedureTypeCtrl.selected.procedureType}" required="true"/>
+                                    </div>
+                                    <div class="p-field">
+                                        <p:outputLabel for="description">Description</p:outputLabel>
+                                        <p:inputTextarea id="description" value="#{ProcedureTypeCtrl.selected.description}"/>
+                                    </div> 
+                                </p:outputPanel>
+                            </p:outputPanel>
+
+                            <f:facet name="footer">
+                                <p:commandButton ajax="false" value="Save" icon="pi pi-check" class="ui-button-primary" actionListener="#{ProcedureTypeCtrl.saveProcedureType}"
+                                                 oncomplete="handleSubmit(args,'manageProcedureTypeDialog');" update=":ProcedureTypeForm:dtProcedureTypes" onclick="PF('manageProcedureTypeDialog').hide()"/>
+                                <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureTypeDialog').hide()" class="ui-button-secondary"/>
+                            </f:facet>
+                        </p:dialog>
+                    </h:form>
+                    
+                    <h:form id="DeleteProcedureTypeForm">
+                        <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
+                                         message="Delete the Procedure Type?" header="Confirm" severity="warn">
+                            <p:commandButton ajax="false" value="Yes" icon="pi pi-check" actionListener="#{ProcedureTypeCtrl.deleteProcedureType}"
+                                             oncomplete="handleSubmit(args,'deleteProcedureDialog');" update=":ProcedureTypeForm:dtProcedureTypes"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                             onclick="PF('deleteProcedureDialog').hide()" update=""/>
+                        </p:confirmDialog>
+                        
                     </h:form>
                 </div>
             </ui:define>

@@ -90,6 +90,7 @@
             <artifactId>jersey-client</artifactId>
             <version>1.19.2</version>
         </dependency>
+        
     </dependencies>
     
     <build>

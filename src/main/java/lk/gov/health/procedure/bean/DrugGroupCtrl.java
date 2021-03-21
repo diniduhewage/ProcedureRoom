@@ -96,7 +96,7 @@ public class DrugGroupCtrl implements Serializable {
 
         if (selected.getId() == null) {
             jo.put("id", 123654);
-            WebResource webResource1 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.druggroup");
+            WebResource webResource1 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.druggroup");
             ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
             if (response.getStatus() == 200 || response.getStatus() == 204) {
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Drug Group Added Successfully");
@@ -106,7 +106,7 @@ public class DrugGroupCtrl implements Serializable {
 
         } else {
             jo.put("id", selected.getId());
-            WebResource webResource2 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.druggroup/" + selected.getId());
+            WebResource webResource2 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.druggroup/" + selected.getId());
             ClientResponse response = webResource2.type("application/json").put(ClientResponse.class, jo.toString());
             if (response.getStatus() == 200 || response.getStatus() == 204) {
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Drug group Updated Successfully");
@@ -129,7 +129,7 @@ public class DrugGroupCtrl implements Serializable {
 
     public void deleteDrugGroup() {
         Client client = Client.create();
-        WebResource webResource2 = client.resource("http://localhost:8080/DrugService/resources/lk.gov.health.drugservice.druggroup/" + selected.getId());
+        WebResource webResource2 = client.resource("http://localhost:8080/DrugService_K/resources/lk.gov.health.drugservice.druggroup/" + selected.getId());
         webResource2.delete();
         addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Removed Successfully");
     }

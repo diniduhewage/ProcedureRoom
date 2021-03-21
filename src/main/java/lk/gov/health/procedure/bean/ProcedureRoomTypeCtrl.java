@@ -61,6 +61,11 @@ public class ProcedureRoomTypeCtrl implements Serializable {
         return "/pages/room_types";
     } 
     
+    public ProcedureRoomTypePojo prepareNew() {
+        selected = new ProcedureRoomTypePojo();
+        return selected;
+    }
+    
     public void saveRoomType(){
         JSONObject jo = selected.getJsonObject();
         

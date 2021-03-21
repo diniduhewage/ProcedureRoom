@@ -103,7 +103,11 @@ and open the template in the editor.
 
                                         <div class="p-field">
                                             <p:outputLabel for="institution">Institution</p:outputLabel>
-                                            <p:inputText id="institution" value="#{procedureRoomCtrl.selected.instituteId}"/>
+                                            <p:autoComplete  id="institution" value="#{procedureRoomCtrl.selected.instituteId}" 
+                                                             completeMethod="#{institutionListCtrl.fetchInstitutes}"
+                                                             var="i" itemLabel="#{i.name}" itemValue="#{i}"
+                                                             forceSelection="true" converter="#{institutionConverter}">
+                                            </p:autoComplete > 
                                         </div>
                                         <div class="p-field">
                                             <p:outputLabel for="procedureStatus">Status</p:outputLabel>
