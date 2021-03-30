@@ -121,8 +121,7 @@
                     <p:submenu label="Procedure Room" expanded="true">
                         <p:menuitem value="Procedure" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{MedProcedureCtrl.toMedProcedure}"/>                        
                         <p:menuitem value="Procedure Room" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{procedureRoomCtrl.toProcedureRoom}"/>
-                        <p:menuitem value="Procedure Type" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{ProcedureTypeCtrl.toProcedureType}"/>
-                        <p:menuitem value="Room Type" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{ProcedureRoomTypeCtrl.toProcRoomTypes}"/>
+                        <p:menuitem value="Procedure Type" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{ProcedureTypeCtrl.toProcedureType}"/>                        
                         <p:menuitem value="Add Procedure" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{procedurePerClientCtrl.toAddProcedure}"/>
                         <p:menuitem value="Procedure Log" rendered="#{webUserCtrl.IsSystemAdmin()}" action="#{MedProcedureCtrl.update}"/>
                         <p:menuitem value="Institution List" rendered="#{webUserCtrl.IsSystemAdmin()}" action="#{institutionListCtrl.toInstitutionList}"/>

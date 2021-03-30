@@ -14,16 +14,17 @@ import org.json.simple.JSONObject;
  * @author user
  */
 public class InstitutePojo {
+
     private Long id;
     private String code;
+    private String intituteTypeDb;
+    private String intituteType;
     private String name;
     private String hin;
-    private double longitude;
-    private double latitude;
     private String address;
     private String provinceId;
-    private String districtId; 
-    
+    private String districtId;
+
     public ArrayList<InstitutePojo> getObjectList(JSONArray ja_) {
         ArrayList<InstitutePojo> ObjectList = new ArrayList<>();
 
@@ -31,19 +32,19 @@ public class InstitutePojo {
             ObjectList.add(new InstitutePojo().getObject((JSONObject) ja_.get(i)));
         }
         return ObjectList;
-    } 
-    
+    }
+
     public InstitutePojo getObject(JSONObject jo_) {
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setCode(jo_.containsKey("code") ? jo_.get("code").toString() : null);
+        this.setIntituteTypeDb(jo_.containsKey("institute_type_db") ? jo_.get("institute_type_db").toString() : null);
+        this.setIntituteType(jo_.containsKey("institute_type") ? jo_.get("institute_type").toString() : null);
         this.setName(jo_.containsKey("name") ? jo_.get("name").toString() : null);
         this.setHin(jo_.containsKey("hin") ? jo_.get("hin").toString() : null);
-        this.setLongitude(jo_.containsKey("longitude") ? Double.valueOf(jo_.get("longitude").toString()) : null);
-        this.setLatitude(jo_.containsKey("latitude") ? Double.valueOf(jo_.get("latitude").toString()) : null);
         this.setAddress(jo_.containsKey("address") ? jo_.get("address").toString() : null);
         this.setProvinceId(jo_.containsKey("provinceId") ? jo_.get("provinceId").toString() : null);
         this.setDistrictId(jo_.containsKey("districtId") ? jo_.get("districtId").toString() : null);
-        
+
         return this;
     }
 
@@ -79,22 +80,6 @@ public class InstitutePojo {
         this.hin = hin;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -118,6 +103,21 @@ public class InstitutePojo {
     public void setDistrictId(String districtId) {
         this.districtId = districtId;
     }
-    
-    
+
+    public String getIntituteTypeDb() {
+        return intituteTypeDb;
+    }
+
+    public void setIntituteTypeDb(String intituteTypeDb) {
+        this.intituteTypeDb = intituteTypeDb;
+    }
+
+    public String getIntituteType() {
+        return intituteType;
+    }
+
+    public void setIntituteType(String intituteType) {
+        this.intituteType = intituteType;
+    }
+
 }

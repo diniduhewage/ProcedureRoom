@@ -22,9 +22,9 @@ and open the template in the editor.
                             <div class="products-buttonbar" style="margin-top:0.5cm; margin-right: 0.25cm">
                                 <div>
                                     <p:commandButton value="Sync Institutes" icon="pi pi-plus" actionListener="#{institutionListCtrl.openNew}"
-                                                     update=":form:manage-room-type-content" oncomplete="PF('manageRoomTypeDialog').show()"
+                                                     oncomplete="PF('manageRoomTypeDialog').show()"
                                                      styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
-                                        <p:resetInput target=":form:manage-room-type-content"/>
+                                        <!--<p:resetInput target=":form:manage-room-type-content"/>-->
                                     </p:commandButton>
 
                                 </div>
@@ -36,7 +36,7 @@ and open the template in the editor.
                                          rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                                 <f:facet name="header">
                                     <div class="products-table-header" style="height: 0.5cm">
-                                        <span style="font-weight: bold; font-size: 15px">Procedure Room Type</span>
+                                        <span style="font-weight: bold; font-size: 15px">Institutes</span>
                                     </div>
                                 </f:facet>                                
 
@@ -56,11 +56,8 @@ and open the template in the editor.
                                 <p:column headerText="Hin" sortBy="#{item.hin}" filterBy="#{item.hin}">
                                     <h:outputText value="#{item.hin}"/>
                                 </p:column>
-                                <p:column headerText="Longitude" sortBy="#{item.longitude}" filterBy="#{item.longitude}">
-                                    <h:outputText value="#{item.longitude}"/>
-                                </p:column>
-                                <p:column headerText="Latitude" sortBy="#{item.latitude}" filterBy="#{item.latitude}">
-                                    <h:outputText value="#{item.latitude}"/>
+                                <p:column headerText="Type" sortBy="#{intituteType}" filterBy="#{item.intituteType}">
+                                    <h:outputText value="#{item.intituteType}"/>
                                 </p:column>
                                 <p:column headerText="Address" sortBy="#{item.address}" filterBy="#{item.address}">
                                     <h:outputText value="#{item.address}"/>

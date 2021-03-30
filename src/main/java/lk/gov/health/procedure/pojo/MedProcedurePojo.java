@@ -20,16 +20,14 @@ public class MedProcedurePojo {
     private String procId;
     private String description;
     private ProcedureTypePojo procType;
-    private ProcedureRoomTypePojo roomType;
     private String comment;
     private ObjectStatus status;
 
-    public MedProcedurePojo(Long id, String proc_id_, String description_, ProcedureTypePojo proc_type_, ProcedureRoomTypePojo room_type_, String comment_, ObjectStatus status_) {
+    public MedProcedurePojo(Long id, String proc_id_, String description_, ProcedureTypePojo proc_type_,  String comment_, ObjectStatus status_) {
         this.id = id;
         this.procId = proc_id_;
         this.description = description_;
         this.procType = proc_type_;
-        this.roomType = room_type_;
         this.comment = comment_;
         this.status = status_;
     }
@@ -44,22 +42,11 @@ public class MedProcedurePojo {
         jo_.put("procId", this.getProcId());
         jo_.put("description", this.getDescription());
         jo_.put("procType", getProcedureTypeJsonObject());
-        jo_.put("roomType", getRoomTypeJsonObject());
         jo_.put("comment", this.getComment());
         jo_.put("status", this.getStatus().toString());
 
         return jo_;
-    }
-    
-    public JSONObject getRoomTypeJsonObject(){
-        JSONObject jo_ = new JSONObject();
-        
-        jo_.put("id", this.getRoomType().getId());
-        jo_.put("typeId", this.getRoomType().getTypeId());
-        jo_.put("description", this.getRoomType().getDescription());
-        
-        return jo_;        
-    }
+    } 
     
     public JSONObject getProcedureTypeJsonObject(){
         JSONObject jo_ = new JSONObject();
@@ -77,7 +64,6 @@ public class MedProcedurePojo {
         this.setProcId(jo_.containsKey("procId") ? jo_.get("procId").toString() : null);
         this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
         this.setProcType(jo_.containsKey("procType") ? (getProcTypeObject(jo_.get("procType"))) : null);
-        this.setRoomType(jo_.containsKey("roomType") ? (getRoomTypeObject(jo_.get("roomType"))) : null);
         this.setComment(jo_.containsKey("comment") ? jo_.get("comment").toString() : null);
         this.setStatus(jo_.containsKey("status") ? ObjectStatus.valueOf(jo_.get("status").toString()) : null);
         return this;
@@ -125,16 +111,7 @@ public class MedProcedurePojo {
 
     public void setProcType(ProcedureTypePojo procType) {
         this.procType = procType;
-    }
-
-    public ProcedureRoomTypePojo getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(ProcedureRoomTypePojo roomType) {
-        this.roomType = roomType;
-    }
-
+    } 
     public String getComment() {
         return comment;
     }

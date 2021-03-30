@@ -55,10 +55,7 @@ and open the template in the editor.
                                 </p:column>
                                 <p:column headerText="Type" sortBy="#{item.procType.procedureType}" filterBy="#{item.procType.procedureType}">
                                     <h:outputText value="#{item.procType.procedureType}"/>
-                                </p:column>
-                                <p:column headerText="Room Type" sortBy="#{item.roomType.typeId}" filterBy="#{item.roomType.typeId}">
-                                    <h:outputText value="#{item.roomType.typeId}"/>
-                                </p:column>
+                                </p:column>                                
                                 <p:column headerText="Comment" sortBy="#{item.comment}" filterBy="#{item.comment}">
                                     <h:outputText value="#{item.comment}"/>
                                 </p:column>
@@ -103,14 +100,7 @@ and open the template in the editor.
                                                              forceSelection="true" converter="#{procedureTypeConverter}">
                                             </p:autoComplete >  
                                         </div>
-                                        <div class="p-field">
-                                            <p:outputLabel for="roomType">Room Type</p:outputLabel>
-                                            <p:autoComplete  id="roomType" value="#{MedProcedureCtrl.selected.roomType}" 
-                                                             completeMethod="#{MedProcedureCtrl.fetchRoomTypes}"
-                                                             var="i" itemLabel="#{i.typeId}" itemValue="#{i}"
-                                                             forceSelection="true" converter="#{procRoomTypeConverter}">
-                                            </p:autoComplete >  
-                                        </div>
+                                        
                                         <div class="p-field">
                                             <p:outputLabel for="comment">Comment</p:outputLabel>
                                             <p:inputTextarea id="comment" value="#{MedProcedureCtrl.selected.comment}" autoResize="false"/>

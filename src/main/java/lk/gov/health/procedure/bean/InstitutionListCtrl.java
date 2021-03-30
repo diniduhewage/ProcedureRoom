@@ -42,9 +42,10 @@ public class InstitutionListCtrl implements Serializable {
     public void getInstitutes() {
         try {
             Client client = Client.create();
-            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.institute");
+            WebResource webResource1 = client.resource("https://chims.health.gov.lk/data?name=get_institutes_list");
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
+            System.out.println("11111111111 -->"+outpt);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
         } catch (ParseException ex) {
             Logger.getLogger(DrugFrequencyCtrl.class.getName()).log(Level.SEVERE, null, ex);

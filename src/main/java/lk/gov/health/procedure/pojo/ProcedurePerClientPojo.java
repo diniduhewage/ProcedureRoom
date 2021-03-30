@@ -66,7 +66,6 @@ public class ProcedurePerClientPojo {
         jo_.put("procId", this.getProcedureId().getProcId());
         jo_.put("description", this.getProcedureId().getDescription());
         jo_.put("procType", this.getProcedureId().getProcedureTypeJsonObject());
-        jo_.put("roomType", this.getProcedureId().getRoomTypeJsonObject());
         jo_.put("comment", this.getProcedureId().getComment());
         jo_.put("status", this.getProcedureId().getStatus().toString());
         
