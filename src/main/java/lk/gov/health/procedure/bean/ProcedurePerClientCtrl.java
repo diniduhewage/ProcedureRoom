@@ -18,9 +18,9 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import lk.gov.health.procedure.enums.ProcPerClientStates;
+import lk.gov.health.procedure.pojo.InstitutePojo;
 import lk.gov.health.procedure.pojo.MedProcedurePojo;
 import lk.gov.health.procedure.pojo.ProcedurePerClientPojo;
-import lk.gov.health.procedure.pojo.ProcedureRoomPojo;
 import lk.gov.health.procedure.util.ServiceConnector;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -37,7 +37,7 @@ public class ProcedurePerClientCtrl implements Serializable {
 
     private ProcedurePerClientPojo selected = new ProcedurePerClientPojo();
     private MedProcedurePojo MedProcedure = new MedProcedurePojo();
-    private ProcedureRoomPojo ProcRoom = new ProcedureRoomPojo();
+    private InstitutePojo ProcRoom = new InstitutePojo();
     private ArrayList<ProcedurePerClientPojo> items;
     private ArrayList<MedProcedurePojo> procList;
 
@@ -47,10 +47,24 @@ public class ProcedurePerClientCtrl implements Serializable {
         return "/pages/medicalprocedures";
     }
     
+    private final String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
+    
     private void getProcedures() {
         try {
             Client client = Client.create();
-            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureperclient");
+            WebResource webResource1 = client.resource(baseUrl+".procedureperclient");
+            ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
+            String outpt = cr.getEntity(String.class);
+            items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
+        } catch (ParseException ex) {
+            Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void getProceduresPerInstitution(String insCode) {
+        try {
+            Client client = Client.create();
+            WebResource webResource1 = client.resource(baseUrl+".procedureperclient/filer_list/"+insCode);
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
@@ -66,8 +80,8 @@ public class ProcedurePerClientCtrl implements Serializable {
         return MedProcedure.getObjectList(sc_.GetRequestList(url_));
     }
     
-    public ArrayList<ProcedureRoomPojo> fetchRooms(String qryVal) {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroom/filer_list/" + qryVal;
+    public ArrayList<InstitutePojo> fetchRooms(String qryVal) {
+        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.institute/filer_list/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return ProcRoom.getObjectList(sc_.GetRequestList(url_));
@@ -78,9 +92,10 @@ public class ProcedurePerClientCtrl implements Serializable {
 
         if (selected.getId() == null) {
             JSONObject jo = selected.getJsonObject();
-            jo.put("id", 123654);
-            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureperclient");
+            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureperclient/register_procedure");
             ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
+            System.out.println("9999999 ==>"+jo.toString());
+            System.out.println("9999999 ==>"+response.toString());
             if(response.getStatus() == 200 || response.getStatus() == 204){
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Added Successfully");
             }
@@ -102,6 +117,14 @@ public class ProcedurePerClientCtrl implements Serializable {
                addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
             }
         }
+    }
+    
+    public String toClientProcedurePerInstitute(InstitutePojo insCode){
+        selected = new ProcedurePerClientPojo();
+        System.out.println("kkkkkkkkkkkk -->"+insCode);
+        selected.setInstituteId(insCode);
+        this.getProceduresPerInstitution(insCode.getCode());
+        return "/pages/medicalprocedures";
     }
     
     public void addMessage(Severity sev,String summary, String detail) {

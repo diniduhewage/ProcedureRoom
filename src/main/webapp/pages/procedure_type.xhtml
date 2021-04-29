@@ -37,7 +37,7 @@ and open the template in the editor.
                                          rowIndexVar="index">
                                 <f:facet name="header">
                                     <div class="procedure-table-header" style="height: 0.5cm">
-                                        <span style="font-weight: bold; font-size: 15px">Procedure Type</span>
+                                        <span style="font-weight: bold; font-size: 15px">Procedure Types</span>
                                     </div>
                                 </f:facet>                                
 
@@ -78,7 +78,7 @@ and open the template in the editor.
                                 <p:outputPanel id="manage-proc-type-content">                                       
                                     <div class="p-field">
                                         <p:outputLabel for="procedure">Procedure Type</p:outputLabel>
-                                        <p:inputText id="procedure" value="#{ProcedureTypeCtrl.selected.procedureType}" required="true"/>
+                                        <p:inputText id="procedure" value="#{ProcedureTypeCtrl.selected.procedureType}"/>
                                     </div>
                                     <div class="p-field">
                                         <p:outputLabel for="description">Description</p:outputLabel>
