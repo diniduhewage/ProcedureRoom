@@ -13,8 +13,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Named;
-import lk.gov.health.procedure.bean.ProcedureRoomCtrl;
-import lk.gov.health.procedure.pojo.InstitutePojo;
+import lk.gov.health.procedure.bean.ProcedureGroupCtrl;
+import lk.gov.health.procedure.pojo.ProcedureGroupPojo;
 
 /**
  *
@@ -22,16 +22,16 @@ import lk.gov.health.procedure.pojo.InstitutePojo;
  */
 @Named
 @ApplicationScoped
-@FacesConverter(value="procRoomConverter",managed = true)
-public class ProcRoomConverter implements Converter<InstitutePojo>{
+@FacesConverter(value = "procedureGroupConverter", managed=true)
+public class ProcedureGroupConverter implements Converter<ProcedureGroupPojo> {
 
     @Override
-    public InstitutePojo getAsObject(FacesContext fc, UIComponent uic, String value) {
+    public ProcedureGroupPojo getAsObject(FacesContext fc, UIComponent uic, String value) {
         if (value != null && value.trim().length() > 0) {
             try {
-                ProcedureRoomCtrl proRoom = new ProcedureRoomCtrl();
-                proRoom.getProcedureRooms();
-                for (InstitutePojo item : proRoom.getItems()) {
+                ProcedureGroupCtrl procGroup = new ProcedureGroupCtrl();
+                procGroup.getProcedureGroups();
+                for (ProcedureGroupPojo item : procGroup.getItems()) {
                     if (item.getId() == Long.parseLong(value)) {
                         return item;
                     }
@@ -46,7 +46,7 @@ public class ProcRoomConverter implements Converter<InstitutePojo>{
     }
 
     @Override
-    public String getAsString(FacesContext fc, UIComponent uic, InstitutePojo value) {
+    public String getAsString(FacesContext fc, UIComponent uic, ProcedureGroupPojo value) {
         if (value != null) {
             return String.valueOf(value.getId());
         } else {

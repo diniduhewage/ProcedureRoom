@@ -42,6 +42,7 @@ public class MedProcedureCtrl implements Serializable {
     private ArrayList<ProcedureTypePojo> procTypeList;
 
     private ArrayList<MedProcedurePojo> items;
+    private final String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
 
     public MedProcedurePojo getSelected() {
         return selected;
@@ -77,42 +78,42 @@ public class MedProcedureCtrl implements Serializable {
         Client client = Client.create();
 
         if (selected.getId() == null) {
-            JSONObject jo = selected.getJsonObject();
-            jo.put("id", 123654);
-            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
-            ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
-            if(response.getStatus() == 200 || response.getStatus() == 204){
-                addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Added Successfully");
+            if (Validate_Params()) {
+                JSONObject jo = selected.getJsonObject();
+                jo.put("id", 123654);
+                WebResource webResource1 = client.resource(baseUrl + ".medprocedure");
+                ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
+                if (response.getStatus() == 200 || response.getStatus() == 204) {
+                    addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure added Successfully");
+                    getMedicalProcedures();
+                } else {
+                    addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to add new record");
+                }
             }
-            else
-            {
-               addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to add new record");
-            }
-                    
+
         } else {
             JSONObject jo = selected.getJsonObject();
             jo.put("id", selected.getId());
-            WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/" + selected.getId());
+            WebResource webResource2 = client.resource(baseUrl + ".medprocedure/" + selected.getId());
             ClientResponse response = webResource2.type("application/json").put(ClientResponse.class, jo.toString());
-            if(response.getStatus() == 200 || response.getStatus() == 204){
+            if (response.getStatus() == 200 || response.getStatus() == 204) {
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Updated Successfully");
-            }
-            else
-            {
-               addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
+                getMedicalProcedures();
+            } else {
+                addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
             }
         }
     }
 
     public ArrayList<ProcedureTypePojo> fetchProcTypes(String qryVal) {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.proceduretype/filer_list/" + qryVal;
+        String url_ = baseUrl + ".proceduretype/filer_list/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return procType.getObjectList(sc_.GetRequestList(url_));
     }
 
     public ArrayList<ProcedureRoomTypePojo> fetchRoomTypes(String qryVal) {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroomtype/filer_list/" + qryVal;
+        String url_ = baseUrl + ".procedureroomtype/filer_list/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return roomType.getObjectList(sc_.GetRequestList(url_));
@@ -121,15 +122,15 @@ public class MedProcedureCtrl implements Serializable {
     public void getMedicalProcedures() {
         try {
             Client client = Client.create();
-            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure");
+            WebResource webResource1 = client.resource(baseUrl + ".medprocedure");
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
-            items = selected.getObjectList((JSONArray)new JSONParser().parse(outpt));
+            items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
         } catch (ParseException ex) {
             Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public ObjectStatus[] getObjectStatus() {
         return ObjectStatus.values();
     }
@@ -157,16 +158,36 @@ public class MedProcedureCtrl implements Serializable {
     public void setProcTypeList(ArrayList<ProcedureTypePojo> procTypeList) {
         this.procTypeList = procTypeList;
     }
-    
+
     public void deleteProcedure() {
         Client client = Client.create();
-        WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/" + selected.getId());
-        webResource2.delete();
-        addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Removed Successfully");
+        WebResource r_ = client.resource(baseUrl + ".medprocedure/" + selected.getId());
+        ClientResponse response = r_.type("application/json").delete(ClientResponse.class);
+        if (response.getStatus() == 200 || response.getStatus() == 204) {
+            addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure deleted successfully");
+            getMedicalProcedures();
+        } else {
+            addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
+        }
     }
-    
-    public void addMessage(Severity sev,String summary, String detail) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
+
+    public void addMessage(Severity sev, String summary, String detail) {
+        FacesMessage message = new FacesMessage(sev, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    private boolean Validate_Params() {
+        if (selected.getProcId().equals("")) {
+            addMessage(FacesMessage.SEVERITY_FATAL, "Error", "Procedure ID must have a value");
+            return false;
+        } else if (selected.getDescription() == null) {
+            addMessage(FacesMessage.SEVERITY_FATAL, "Error", "Description must have a value");
+            return false;
+        } else if (selected.getProcType().getProcedureType() == null) {
+            addMessage(FacesMessage.SEVERITY_FATAL, "Error", "Procedure Type must have a value");
+            return false;
+        } else {
+            return true;
+        }
     }
 }

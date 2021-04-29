@@ -86,7 +86,7 @@ and open the template in the editor.
                                                         rendered="#{not empty crudView.selectedProduct.image}"/>-->
                                         <div class="p-field">
                                             <p:outputLabel for="procedure">Procedure</p:outputLabel>
-                                            <p:inputText id="procedure" value="#{MedProcedureCtrl.selected.procId}" required="true"/>
+                                            <p:inputText id="procedure" value="#{MedProcedureCtrl.selected.procId}"/>
                                         </div>
                                         <div class="p-field">
                                             <p:outputLabel for="description">Description</p:outputLabel>
@@ -124,8 +124,8 @@ and open the template in the editor.
 
                             <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
                                              message="Delete the procedure?" header="Confirm" severity="warn">
-                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{MedProcedureCtrl.deleteProcedure}"
-                                                 process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
+                                <p:commandButton ajax="false" value="Yes" icon="pi pi-check" actionListener="#{MedProcedureCtrl.deleteProcedure}"
+                                                 oncomplete="PF('deleteProcedureDialog').hide()"/>
                                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                                  onclick="PF('deleteProcedureDialog').hide()"/>
                             </p:confirmDialog>

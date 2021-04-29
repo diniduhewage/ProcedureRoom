@@ -55,11 +55,7 @@ and open the template in the editor.
                                 </p:column>
                                 <p:column headerText="Description" sortBy="#{item.procedureId.description}" filterBy="#{item.procedureId.description}">
                                     <h:outputText value="#{item.procedureId.description}"/>
-                                </p:column>
-
-                                <p:column headerText="Rooom ID" sortBy="#{item.roomId.roomId}" filterBy="#{item.roomId.roomId}">
-                                    <h:outputText value="#{item.roomId.roomId}"/>
-                                </p:column>
+                                </p:column>                                
                                 <p:column headerText="Created By" sortBy="#{item.createdBy}" filterBy="#{item.createdBy}">
                                     <h:outputText value="#{item.createdBy}"/>
                                 </p:column>
@@ -95,12 +91,8 @@ and open the template in the editor.
                                                         rendered="#{not empty crudView.selectedProduct.image}"/>-->
                                         <div class="p-field">
                                             <p:outputLabel for="procedure">PHN</p:outputLabel>
-                                            <p:inputText id="procedure" value="#{procedurePerClientCtrl.selected.phn}" required="true"/>
-                                        </div>
-                                        <div class="p-field">
-                                            <p:outputLabel for="description">Institution</p:outputLabel>
-                                            <p:inputText id="description" value="#{procedurePerClientCtrl.selected.instituteId}"/>
-                                        </div> 
+                                            <p:inputText id="procedure" value="#{procedurePerClientCtrl.selected.phn}"/>
+                                        </div>                                        
                                         <div class="p-field">
                                             <p:outputLabel for="procType">Procedure</p:outputLabel>
                                             <p:autoComplete  id="procType" value="#{procedurePerClientCtrl.selected.procedureId}" 
@@ -111,10 +103,10 @@ and open the template in the editor.
                                         </div>
                                         <div class="p-field">
                                             <p:outputLabel for="roomType">Procedure Room</p:outputLabel>
-                                            <p:autoComplete  id="roomType" value="#{procedurePerClientCtrl.selected.roomId}" 
+                                            <p:autoComplete  id="roomType" value="#{procedurePerClientCtrl.selected.instituteId}" 
                                                              completeMethod="#{procedurePerClientCtrl.fetchRooms}"
-                                                             var="i" itemLabel="#{i.roomId}" itemValue="#{i}"
-                                                             forceSelection="true" converter="#{procRoomConverter}">
+                                                             var="i" itemLabel="#{i.code}" itemValue="#{i}"
+                                                             forceSelection="true" converter="#{institutionConverter}">
                                             </p:autoComplete >  
                                         </div>
                                         <div class="p-field">

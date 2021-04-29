@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="/index.xhtml">
+            <ui:define name="tabSection">
+                <div style="float:right; width:82%; margin-right: 0.5cm; ">
+                    <h:form id="form">
+                        <div class="card crud-demo">
+                            <p:growl id="messages" showDetail="true"/>
+
+                            <div class="products-buttonbar" style="margin-top:0.5cm; margin-right: 0.25cm">
+                                <div>
+                                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{procedureGroupItemCtrl.openNew}"
+                                                     update=":form:manage-procedure-group-content" oncomplete="PF('manageProcedureGroupDialog').show()"
+                                                     styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
+                                        <p:resetInput target=":form:manage-procedure-group-content"/>
+                                    </p:commandButton>
+
+                                </div>
+                            </div>
+
+                            <p:dataTable id="dt-druggroups" widgetVar="dtProcedureGroups" var="item" value="#{procedureGroupItemCtrl.items}"
+                                         reflow="true" styleClass="products-table"
+                                         selection="#{procedureGroupItemCtrl.selected}" rowKey="#{item.id}" paginator="true"
+                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
+                                <f:facet name="header">
+                                    <div class="products-table-header" style="height: 0.5cm">
+                                        <span style="font-weight: bold; font-size: 15px">Group Items</span> - <span style="font-weight: bold; font-size: 15px">#{procedureGroupItemCtrl.procGroup.procGroup}</span>
+                                    </div>
+                                </f:facet> 
+                                <p:column width="100" styleClass="wrap">
+                                    <f:facet name="header">
+                                        <h:outputText value="No" />
+                                    </f:facet>
+                                    <h:outputText value="#{index + 1}"/>
+                                </p:column>                                
+                                <p:column headerText="Procedure" sortBy="#{item.procedure.procId}" filterBy="#{item.procedure.procId}">
+                                    <h:outputText value="#{item.procedure.procId}"/>
+                                </p:column>                                
+                                <p:column headerText="Description" sortBy="#{item.procedure.description}" filterBy="#{item.procedure.description}">
+                                    <h:outputText value="#{item.procedure.description}"/>
+                                </p:column>                                
+                                <p:column headerText="Type" sortBy="#{item.procedure.procType.procedureType}" filterBy="#{item.procedure.procType.procedureType}">
+                                    <h:outputText value="#{item.procedure.procType.procedureType}"/>
+                                </p:column>                                
+
+                                <p:column exportable="false">                                    
+                                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                                     oncomplete="PF('deleteProcedureGroupDialog').show()">
+                                        <f:setPropertyActionListener value="#{item}" target="#{procedureGroupItemCtrl.selected}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:dialog header="Add Procedure" width="450" showEffect="fade" modal="true"
+                                      widgetVar="manageProcedureGroupDialog" responsive="true">
+                                <p:outputPanel id="manage-procedure-group-content" class="ui-fluid">
+                                    <p:outputPanel>                                          
+                                        <div class="p-field">
+                                            <p:outputLabel for="MedProcedure">Procedure</p:outputLabel>
+                                            <p:autoComplete  id="MedProcedure" value="#{procedureGroupItemCtrl.selected.procedure}" 
+                                                             completeMethod="#{procedurePerClientCtrl.fetchProcedures}"
+                                                             var="i" itemLabel="#{i.procId}" itemValue="#{i}"
+                                                             forceSelection="true" converter="#{medProcedureConverter}">
+                                            </p:autoComplete >  
+                                        </div>
+                                    </p:outputPanel>
+                                </p:outputPanel>
+
+                                <f:facet name="footer">
+                                    <p:commandButton ajax="false" value="Save" icon="pi pi-check" actionListener="#{procedureGroupItemCtrl.addGroupItem()}"
+                                                     update="manage-procedure-group-content"/>
+                                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureGroupDialog').hide()"
+                                                     class="ui-button-secondary"/>
+                                </f:facet>
+                            </p:dialog>
+
+                            <p:confirmDialog widgetVar="deleteProcedureGroupDialog" showEffect="fade" width="300"
+                                             message="Delete the drug group record?" header="Confirm" severity="warn">
+                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{procedureGroupItemCtrl.removeProcedure}"
+                                                 process="@this" oncomplete="PF('deleteDrugGroupDialog').hide()"/>
+                                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                                 onclick="PF('deleteProcedureGroupDialog').hide()"/>
+                            </p:confirmDialog>
+
+                            <p:confirmDialog global="true" showEffect="fade" width="300">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                 icon="pi pi-times"/>
+                            </p:confirmDialog>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

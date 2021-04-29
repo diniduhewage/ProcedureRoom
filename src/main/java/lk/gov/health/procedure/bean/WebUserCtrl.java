@@ -43,18 +43,18 @@ public class WebUserCtrl implements Serializable {
     private String insCode;
     
     public boolean IsSystemAdmin(){
-        return userRole!= null && this.userRole.equals("System_Admin");
+        return userRole!= null && this.userRole.equals("System_Administrator");
     }
     public boolean IsInstituteAdmin(){
-        return userRole!= null && this.userRole.matches("Institute_Admin|System_Admin");
+        return userRole!= null && this.userRole.matches("Institution_Administrator|System_Administrator");
     }
     public boolean IsUser(){
-        return userRole!= null && this.userRole.matches("Nurse|Institute_Admin|System_Admin");
+        return userRole!= null && this.userRole.matches("Nurse|Institution_Administrator|System_Administrator");
     }
     
     public String imageLocation(){
         return "resources/image/hims_logo.png";
-    }
+    }   
     
     public String loginNew() {
 

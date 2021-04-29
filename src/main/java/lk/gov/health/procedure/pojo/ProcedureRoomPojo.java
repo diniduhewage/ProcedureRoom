@@ -57,11 +57,8 @@ public class ProcedureRoomPojo {
     
     public ProcedureRoomPojo getObject(JSONObject jo_) {
         this.setId(Long.parseLong(jo_.get("id").toString()));
-        this.setRoomId(jo_.containsKey("roomId") ? jo_.get("roomId").toString() : null);
-        this.setDescription(jo_.containsKey("description") ? jo_.get("description").toString() : null);
-        this.setType(jo_.containsKey("type") ? getRoomTypeObject(jo_.get("type")) : null);
-        this.setInstituteId(jo_.containsKey("instituteId") ? getInstituteObject(jo_.get("instituteId").toString()) : null);
-        this.setStatus(jo_.containsKey("status") ? ObjectStatus.valueOf(jo_.get("status").toString()): null); 
+        this.setRoomId(jo_.containsKey("institute_id") ? jo_.get("institute_id").toString() : null);
+        this.setDescription(jo_.containsKey("name") ? jo_.get("name").toString() : null); 
         
         return this;
     }   

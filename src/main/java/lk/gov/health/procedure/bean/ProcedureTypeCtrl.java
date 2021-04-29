@@ -67,6 +67,7 @@ public class ProcedureTypeCtrl implements Serializable {
             ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
             if (response.getStatus() == 200 || response.getStatus() == 204) {
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Type added successfully");
+                getProcTypes();
             } else {
                 addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to add new record");
             }
@@ -76,7 +77,8 @@ public class ProcedureTypeCtrl implements Serializable {
             ClientResponse response = webResource2.type("application/json").put(ClientResponse.class, jo.toString());
 
             if (response.getStatus() == 200 || response.getStatus() == 204) {
-                addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Updated Successfully");
+                addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Type updated Successfully");
+                getProcTypes();
             } else {
                 addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
             }

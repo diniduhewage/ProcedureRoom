@@ -5,7 +5,14 @@
  */
 package lk.gov.health.procedure.pojo;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -24,6 +31,8 @@ public class InstitutePojo {
     private String address;
     private String provinceId;
     private String districtId;
+    private String childInstitutes;
+    private Date editedAt;
 
     public ArrayList<InstitutePojo> getObjectList(JSONArray ja_) {
         ArrayList<InstitutePojo> ObjectList = new ArrayList<>();
@@ -34,7 +43,7 @@ public class InstitutePojo {
         return ObjectList;
     }
 
-    public InstitutePojo getObject(JSONObject jo_) {
+    public InstitutePojo getObject(JSONObject jo_) {        
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setCode(jo_.containsKey("code") ? jo_.get("code").toString() : null);
         this.setIntituteTypeDb(jo_.containsKey("institute_type_db") ? jo_.get("institute_type_db").toString() : null);
@@ -42,9 +51,18 @@ public class InstitutePojo {
         this.setName(jo_.containsKey("name") ? jo_.get("name").toString() : null);
         this.setHin(jo_.containsKey("hin") ? jo_.get("hin").toString() : null);
         this.setAddress(jo_.containsKey("address") ? jo_.get("address").toString() : null);
-        this.setProvinceId(jo_.containsKey("provinceId") ? jo_.get("provinceId").toString() : null);
-        this.setDistrictId(jo_.containsKey("districtId") ? jo_.get("districtId").toString() : null);
-
+        if (jo_.containsKey("provinceId") && jo_.get("provinceId") != null) {
+            this.setProvinceId(jo_.containsKey("provinceId") ? jo_.get("provinceId").toString() : null);
+        }
+        if (jo_.containsKey("districtId") && jo_.get("districtId") != null) {
+            this.setDistrictId(jo_.containsKey("districtId") ? jo_.get("districtId").toString() : null);
+        }
+        if (jo_.containsKey("childInstitutes") && jo_.get("childInstitutes") != null) {
+            this.setChildInstitutes(jo_.containsKey("childInstitutes") ? jo_.get("childInstitutes").toString() : null);
+        }        
+        if (jo_.containsKey("editedAt") && jo_.get("editedAt") != null) {
+            this.setEditedAt(jo_.containsKey("editedAt") ? jo_.get("editedAt").toString() : null);
+        }
         return this;
     }
 
@@ -120,4 +138,32 @@ public class InstitutePojo {
         this.intituteType = intituteType;
     }
 
+    public Date getEditedAt() {
+        return editedAt;
+    }
+
+    public void setEditedAt(Date editedAt) {
+        this.editedAt = editedAt;
+    }
+
+    public void setEditedAt(String editedAt) {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        Date date;
+        try {
+            System.out.println("11111111111111 -->" + editedAt);
+            date = formatter.parse(editedAt);
+            Timestamp timeStampDate = new Timestamp(date.getTime());
+            this.editedAt = timeStampDate;
+        } catch (ParseException ex) {
+            Logger.getLogger(InstitutePojo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public String getChildInstitutes() {
+        return childInstitutes;
+    }
+
+    public void setChildInstitutes(String childInstitutes) {
+        this.childInstitutes = childInstitutes;
+    }
 }

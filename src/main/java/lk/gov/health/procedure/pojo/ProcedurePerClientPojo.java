@@ -36,23 +36,23 @@ public class ProcedurePerClientPojo {
         
     }
     
-    public ProcedurePerClientPojo(String phn_,InstitutePojo institute_id_,MedProcedurePojo procedure_id_,ProcedureRoomPojo room_id_,Long created_by_,Date created_at_ , ProcPerClientStates status_){
-        this.phn = phn_;
-        this.instituteId = institute_id_;
-        this.procedureId = procedure_id_;
-        this.roomId = room_id_;
-        this.createdBy = created_by_;
-        this.createdAt = created_at_;
-        this.status = status_;
-    }
+//    public ProcedurePerClientPojo(String phn_,InstitutePojo institute_id_,MedProcedurePojo procedure_id_,ProcedureRoomPojo room_id_,Long created_by_,Date created_at_ , ProcPerClientStates status_){
+//        this.phn = phn_;
+//        this.instituteId = institute_id_;
+//        this.procedureId = procedure_id_;
+//        this.roomId = room_id_;
+//        this.createdBy = created_by_;
+//        this.createdAt = created_at_;
+//        this.status = status_;
+//    }
     
     public JSONObject getJsonObject(){
         JSONObject jo_ = new JSONObject();
         
         jo_.put("phn", this.getPhn());
-        jo_.put("instituteId", this.getInstituteId());
+        jo_.put("instituteId", this.getInstituteJSONObject());
         jo_.put("procedureId", this.getProcedureJsonObject());
-        jo_.put("roomId", this.getRoomJsonObject());
+//        jo_.put("roomId", this.getRoomJsonObject());
         jo_.put("createdBy", this.getCreatedBy());
         jo_.put("status", this.getStatus().toString());
         
@@ -70,6 +70,36 @@ public class ProcedurePerClientPojo {
         jo_.put("status", this.getProcedureId().getStatus().toString());
         
         return jo_;        
+    }
+    
+    public JSONObject getInstituteIdJsonObject(){
+        JSONObject jo_ = new JSONObject();
+        
+        jo_.put("id", this.getProcedureId().getId());
+        jo_.put("procId", this.getProcedureId().getProcId());
+        jo_.put("description", this.getProcedureId().getDescription());
+        jo_.put("procType", this.getProcedureId().getProcedureTypeJsonObject());
+        jo_.put("comment", this.getProcedureId().getComment());
+        jo_.put("status", this.getProcedureId().getStatus().toString());
+        
+        return jo_;        
+    }
+    
+    private JSONObject getInstituteJSONObject() {
+        JSONObject jo_ = new JSONObject();
+        System.out.println("qqqqqqqqqqqqqq -->"+this.getInstituteId());
+        System.out.println("ppppppppppp -->"+this.getInstituteId().getId());
+        jo_.put("id", this.getInstituteId().getId());
+        jo_.put("code", this.getInstituteId().getCode());
+        jo_.put("name", this.getInstituteId().getName());
+        jo_.put("hin", this.getInstituteId().getHin());
+        jo_.put("address", this.getInstituteId().getAddress());
+        jo_.put("provinceId", this.getInstituteId().getProvinceId());
+        jo_.put("districtId", this.getInstituteId().getDistrictId());
+        jo_.put("childInstitutes", this.getInstituteId().getChildInstitutes());
+        jo_.put("editedAt", this.getInstituteId().getEditedAt().toString());
+
+        return jo_;
     }
     
     public JSONObject getRoomJsonObject(){
