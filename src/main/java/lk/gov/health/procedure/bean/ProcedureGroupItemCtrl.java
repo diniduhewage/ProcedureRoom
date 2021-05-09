@@ -39,11 +39,16 @@ public class ProcedureGroupItemCtrl implements Serializable {
     public void fetchItemsPerGroup() {
         fetchItems(procGroup);
     }
+    
+    public void prepareNew(){
+        selected = new ProcedureGroupItemPojo();
+    }
 
     public void addGroupItem() {
         Client client = Client.create();
-        
+        System.out.println("333333333333 -->"+procGroup.toString());
         selected.setProcGroup(procGroup);
+        System.out.println("33333333333 33333333 -->"+selected.getId());
         if (selected.getId() == null) {
             JSONObject jo = selected.getJsonObject();
             jo.put("id", 123654);

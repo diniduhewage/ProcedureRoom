@@ -22,12 +22,14 @@ and open the template in the editor.
                                      rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                             <f:facet name="header">
                                 <div class="products-table-header" style="height: 0.5cm">
-                                    <p:commandButton value="New" icon="pi pi-plus"
+                                    <p:commandButton value="New" icon="pi pi-plus" rendered="#{webUserCtrl.IsInstituteAdmin()}"
                                                      update=":form:add-procedure-content" oncomplete="PF('addNewProcedureDialog').show()"
                                                      styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
                                         <p:resetInput target=":form:add-procedure-content"/>
                                     </p:commandButton>
-                                    <span style="font-weight: bold; font-size: 15px">Procedure List</span>
+                                    <span style="font-weight: bold; font-size: 15px">
+                                        <h:commandLink value="#{procedurePerClientCtrl.institute.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insCode)}"/>
+                                    </span> <div class="fa fa-angle-right"/> <span style="font-weight: bold; font-size: 15px">Procedure List</span>
                                 </div>
                             </f:facet>
                             <p:column width="100" styleClass="wrap">
@@ -57,13 +59,27 @@ and open the template in the editor.
                                 <h:outputText value="#{item.status.label}"/>
                             </p:column>
                             <p:column exportable="false">
-                                <p:commandButton icon="pi pi-pencil" update=":form:add-procedure-content"
+                                <p:commandButton id="btnManage" value="Manage"  icon="ui-icon-note"       
+                                                 action="#{procedureRoomCtrl.getAllocatedGroups()}" 
+                                                 ajax="false">
+                                    <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>                                        
+                                </p:commandButton>
+                            </p:column>
+                            <p:column exportable="false">
+                                <p:commandButton id="btnLog" value="View Log"  icon="ui-icon-note"       
+                                                 action="#{procedurePerClientCtrl.toProcedureLog()}" 
+                                                 ajax="false">
+                                    <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>                                        
+                                </p:commandButton>
+                            </p:column>
+                            <p:column exportable="false">
+                                <p:commandButton icon="pi pi-pencil" update=":form:add-procedure-content" rendered="#{webUserCtrl.IsInstituteAdmin()}"
                                                  oncomplete="PF('addNewProcedureDialog').show()"                                                     
                                                  styleClass="edit-button rounded-button ui-button-success" process="@this">
                                     <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
                                     <p:resetInput target=":form:add-procedure-content"/>
                                 </p:commandButton>
-                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this" rendered="#{webUserCtrl.IsInstituteAdmin()}"
                                                  oncomplete="PF('deleteProcedureDialog').show()">
                                     <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
                                 </p:commandButton>
@@ -76,20 +92,20 @@ and open the template in the editor.
                             <p:outputPanel id="add-procedure-content" class="ui-fluid">
                                 <p:outputPanel rendered="#{not empty procedurePerClientCtrl.selected}">
                                     <div class="p-field">
-                                        <p:outputLabel for="procedure">PHN</p:outputLabel>
-                                        <p:inputText id="procedure" value="#{procedurePerClientCtrl.selected.phn}"/>
+                                        <p:outputLabel for="phn">PHN</p:outputLabel>
+                                        <p:inputText id="phn" value="#{procedurePerClientCtrl.selected.phn}"/>
                                     </div> 
                                     <div class="p-field">
-                                        <p:outputLabel for="roomType">Procedure Room</p:outputLabel>
-                                        <p:autoComplete  id="roomType" value="#{procedurePerClientCtrl.selected.instituteId}" 
+                                        <p:outputLabel for="procedureRoom">Procedure Room</p:outputLabel>
+                                        <p:autoComplete  id="procedureRoom" value="#{procedurePerClientCtrl.selected.instituteId}" 
                                                          completeMethod="#{procedurePerClientCtrl.fetchRooms}"
                                                          var="i" itemLabel="#{i.name}" itemValue="#{i}"
                                                          forceSelection="true" converter="#{institutionConverter}">
                                         </p:autoComplete >  
                                     </div>
                                     <div class="p-field">
-                                        <p:outputLabel for="procType">Procedure</p:outputLabel>
-                                        <p:autoComplete  id="procType" value="#{procedurePerClientCtrl.selected.procedureId}" 
+                                        <p:outputLabel for="procedure">Procedure</p:outputLabel>
+                                        <p:autoComplete  id="procedure" value="#{procedurePerClientCtrl.selected.procedureId}" 
                                                          completeMethod="#{procedurePerClientCtrl.fetchProcedures}"
                                                          var="i" itemLabel="#{i.procedure.procId}" itemValue="#{i}"
                                                          forceSelection="true" converter="#{procedurePerInstituteConverter}">

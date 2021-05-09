@@ -22,7 +22,7 @@ and open the template in the editor.
                                      rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                             <f:facet name="header">
                                 <div class="products-table-header" style="height: 0.5cm">
-                                    <p:commandButton value="New" icon="pi pi-plus"
+                                    <p:commandButton value="New" icon="pi pi-plus" action="#{procedureGroupItemCtrl.prepareNew}"
                                                      update=":form:manage-procedure-group-content" oncomplete="PF('manageProcedureGroupDialog').show()"
                                                      styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
                                         <p:resetInput target=":form:manage-procedure-group-content"/>
@@ -63,7 +63,7 @@ and open the template in the editor.
                                     <div class="p-field">
                                         <p:outputLabel for="MedProcedure">Procedure</p:outputLabel>
                                         <p:autoComplete  id="MedProcedure" value="#{procedureGroupItemCtrl.selected.procedure}" 
-                                                         completeMethod="#{procedurePerClientCtrl.fetchProcedures}"
+                                                         completeMethod="#{MedProcedureCtrl.fetchMedicalProcedures}"
                                                          var="i" itemLabel="#{i.procId}" itemValue="#{i}"
                                                          forceSelection="true" converter="#{medProcedureConverter}">
                                         </p:autoComplete >  

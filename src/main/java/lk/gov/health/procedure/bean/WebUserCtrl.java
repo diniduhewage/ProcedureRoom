@@ -93,6 +93,10 @@ public class WebUserCtrl implements Serializable {
         JsfUtil.addSuccessMessage("Successfully Logged");
         return "/index";
     }
+    
+    public String logOut(){
+        return "/index";
+    }
 
     public boolean matchPassword(String planePassword, String encryptedPassword) {
         BasicPasswordEncryptor en = new BasicPasswordEncryptor();

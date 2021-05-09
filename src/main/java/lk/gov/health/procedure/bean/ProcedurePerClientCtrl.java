@@ -42,9 +42,14 @@ public class ProcedurePerClientCtrl implements Serializable {
     private ArrayList<ProcPerInstPojo> procList;
 
     public String toAddProcedure() {
-        selected = new ProcedurePerClientPojo();
         this.getProcedures();
         return "/pages/medicalprocedures";
+    }
+    
+    public String toProcedureLog() {
+        selected = new ProcedurePerClientPojo();
+//        this.getProcedureLog();
+        return "/pages/procedure_log";
     }
 
     private final String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
@@ -74,9 +79,8 @@ public class ProcedurePerClientCtrl implements Serializable {
     }
 
     public ArrayList<ProcPerInstPojo> fetchProcedures(String qryVal) {
-        System.out.println("111111111111 -->"+selected.getInstituteId().getCode());
-        System.out.println("222222222222 -->"+qryVal);
-        String url_ = baseUrl +".procedureperinstitute/filer_list/"+selected.getInstituteId().getCode()+"/" + qryVal;
+        System.out.println("bbbbbbbbbbb -->"+institute.getCode());
+        String url_ = baseUrl +".procedureperinstitute/filer_list/"+institute.getCode()+"/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return medProcPerInst.getObjectList(sc_.GetRequestList(url_));

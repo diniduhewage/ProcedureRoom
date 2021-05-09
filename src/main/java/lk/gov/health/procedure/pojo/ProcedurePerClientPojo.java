@@ -31,16 +31,6 @@ public class ProcedurePerClientPojo {
     private Date createdAt;
     private ProcPerClientStates status; 
     
-//    public ProcedurePerClientPojo(String phn_,InstitutePojo institute_id_,MedProcedurePojo procedure_id_,ProcedureRoomPojo room_id_,Long created_by_,Date created_at_ , ProcPerClientStates status_){
-//        this.phn = phn_;
-//        this.instituteId = institute_id_;
-//        this.procedureId = procedure_id_;
-//        this.roomId = room_id_;
-//        this.createdBy = created_by_;
-//        this.createdAt = created_at_;
-//        this.status = status_;
-//    }
-    
     public JSONObject getJsonObject(){
         JSONObject jo_ = new JSONObject();
         
@@ -50,7 +40,7 @@ public class ProcedurePerClientPojo {
         jo_.put("createdBy", this.getCreatedBy());
         
         return jo_;         
-    }
+    } 
     
     public JSONObject getProcedureJsonObject(){
         JSONObject jo_ = new JSONObject();
@@ -83,9 +73,7 @@ public class ProcedurePerClientPojo {
     public ProcedurePerClientPojo getObject(JSONObject jo_) {
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setPhn(jo_.containsKey("phn") ? jo_.get("phn").toString() : null);
-        System.out.println("33333333333333 -->"+jo_.get("instituteId"));
         this.setInstituteId(jo_.containsKey("instituteId") ? getInstituteObject(jo_.get("instituteId")) : null);
-        System.out.println("44444444444444 -->"+jo_.get("instituteId"));
         this.setProcedureId(jo_.containsKey("procedureId") ? getMedProcedureObject(jo_.get("procedureId")) : null);
         this.setCreatedBy(jo_.containsKey("createdBy") ? Long.parseLong(jo_.get("createdBy").toString()) : null);
         try {        
