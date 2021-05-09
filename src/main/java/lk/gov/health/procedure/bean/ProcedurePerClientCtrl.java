@@ -79,7 +79,6 @@ public class ProcedurePerClientCtrl implements Serializable {
     }
 
     public ArrayList<ProcPerInstPojo> fetchProcedures(String qryVal) {
-        System.out.println("bbbbbbbbbbb -->"+institute.getCode());
         String url_ = baseUrl +".procedureperinstitute/filer_list/"+institute.getCode()+"/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
@@ -95,7 +94,7 @@ public class ProcedurePerClientCtrl implements Serializable {
 
     public void saveClientProcedure() {
         Client client = Client.create();
-
+//To Dr.Buddhika
         if (selected.getId() == null) {
             JSONObject jo = selected.getJsonObject();
             WebResource webResource1 = client.resource(baseUrl+".procedureperclient/register_procedure");
