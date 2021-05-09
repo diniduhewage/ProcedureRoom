@@ -14,64 +14,56 @@ and open the template in the editor.
     <body>
         <ui:composition template="/index.xhtml">
             <ui:define name="tabSection">
-                <div style="float:right; width:82%; margin-right: 0.5cm; ">
-                    <h:form id="form">
-                        <div class="card crud-demo">
-                            <p:growl id="messages" showDetail="true"/>                          
-
-                            <p:dataTable id="dt-procedures" widgetVar="dtProcedures" var="item" value="#{procPerInstCtrl.items}"
-                                         reflow="true" styleClass="products-table"
-                                         selection="#{procPerInstCtrl.selected}" rowKey="#{item.id}" paginator="true"
-                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
+                <h:form id="form">
+                    <div class="card crud-demo">    
+                        <p:dataTable id="dt-procedures" widgetVar="dtProcedures" var="item" value="#{procPerInstCtrl.items}"
+                                     reflow="true" styleClass="products-table"
+                                     selection="#{procPerInstCtrl.selected}" rowKey="#{item.id}" paginator="true"
+                                     rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
+                            <f:facet name="header">
+                                <span style="font-weight: bold; font-size: 15px">
+                                    <h:commandLink value="#{procPerInstCtrl.institute.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insCode)}"/>
+                                    </span> -> <span style="font-weight: bold; font-size: 15px">Procedures</span>
+                            </f:facet>                                
+                            <p:column width="100" styleClass="wrap">
                                 <f:facet name="header">
-                                    <div class="products-table-header" style="height: 0.5cm">
-                                        <span style="font-weight: bold; font-size: 15px">Procedures Per Inst.</span>
-                                    </div>
-                                </f:facet>                                
+                                    <h:outputText value="No" />
+                                </f:facet>
+                                <h:outputText value="#{index + 1}"/>
+                            </p:column>
+                            <p:column headerText="Procedure" sortBy="#{item.procedure.procId}" filterBy="#{item.procedure.procId}">
+                                <h:outputText value="#{item.procedure.procId}"/>
+                            </p:column>
+                            <p:column headerText="Description" sortBy="#{item.procedure.description}" filterBy="#{item.procedure.description}">
+                                <h:outputText value="#{item.procedure.description}"/>
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{item.procedure.procType.procedureType}" filterBy="#{item.procedure.procType.procedureType}">
+                                <h:outputText value="#{item.procedure.procType.procedureType}"/>
+                            </p:column>  
+                            <p:column exportable="false">
+                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                                 oncomplete="PF('deleteProcedureDialog').show()">
+                                    <f:setPropertyActionListener value="#{item}" target="#{procPerInstCtrl.selected}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>                            
 
-                                <!--            <p:column selectionMode="multiple" exportable="false"></p:column>-->
-                                <p:column width="100" styleClass="wrap">
-                                    <f:facet name="header">
-                                        <h:outputText value="No" />
-                                    </f:facet>
-                                    <h:outputText value="#{index + 1}"/>
-                                </p:column>
-                                <p:column headerText="Procedure" sortBy="#{item.procedure.procId}" filterBy="#{item.procedure.procId}">
-                                    <h:outputText value="#{item.procedure.procId}"/>
-                                </p:column>
-                                <p:column headerText="Description" sortBy="#{item.procedure.description}" filterBy="#{item.procedure.description}">
-                                    <h:outputText value="#{item.procedure.description}"/>
-                                </p:column>
-                                <p:column headerText="Type" sortBy="#{item.procedure.procType.procedureType}" filterBy="#{item.procedure.procType.procedureType}">
-                                    <h:outputText value="#{item.procedure.procType.procedureType}"/>
-                                </p:column>  
-                                <p:column exportable="false">
-                                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-                                                     oncomplete="PF('deleteProcedureDialog').show()">
-                                        <f:setPropertyActionListener value="#{item}" target="#{procPerInstCtrl.selected}"/>
-                                    </p:commandButton>
-                                </p:column>
+                        <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
+                                         message="Delete the procedure?" header="Confirm" severity="warn">
+                            <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{procPerInstCtrl.deleteProcedure}"
+                                             process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                             onclick="PF('deleteProcedureDialog').hide()"/>
+                        </p:confirmDialog>
 
-                            </p:dataTable>                            
-
-                            <p:confirmDialog widgetVar="deleteProcedureDialog" showEffect="fade" width="300"
-                                             message="Delete the procedure?" header="Confirm" severity="warn">
-                                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{procPerInstCtrl.deleteProcedure}"
-                                                 process="@this" oncomplete="PF('deleteProcedureDialog').hide()"/>
-                                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                                 onclick="PF('deleteProcedureDialog').hide()"/>
-                            </p:confirmDialog>
-
-                            <p:confirmDialog global="true" showEffect="fade" width="300">
-                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                                 icon="pi pi-times"/>
-                            </p:confirmDialog>
-                        </div>
-                    </h:form>
-                </div>
+                        <p:confirmDialog global="true" showEffect="fade" width="300">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                             icon="pi pi-times"/>
+                        </p:confirmDialog>
+                    </div>
+                </h:form>
             </ui:define>
         </ui:composition>
-
     </body>
 </html>

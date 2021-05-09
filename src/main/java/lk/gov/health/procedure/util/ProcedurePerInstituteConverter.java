@@ -13,8 +13,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Named;
-import lk.gov.health.procedure.bean.InstitutionListCtrl;
-import lk.gov.health.procedure.pojo.InstitutePojo;
+import lk.gov.health.procedure.bean.ProcPerInstCtrl;
+import lk.gov.health.procedure.pojo.ProcPerInstPojo;
 
 /**
  *
@@ -22,16 +22,15 @@ import lk.gov.health.procedure.pojo.InstitutePojo;
  */
 @Named
 @ApplicationScoped
-@FacesConverter(value = "institutionConverter", managed = true)
-public class InstitutionConverter implements Converter<InstitutePojo> {
-
+@FacesConverter(value = "procedurePerInstituteConverter", managed=true)
+public class ProcedurePerInstituteConverter implements Converter<ProcPerInstPojo>{
     @Override
-    public InstitutePojo getAsObject(FacesContext fc, UIComponent uic, String value) {
+    public ProcPerInstPojo getAsObject(FacesContext fc, UIComponent uic, String value) {
         if (value != null && value.trim().length() > 0) {
             try {
-                InstitutionListCtrl inst = new InstitutionListCtrl();
-                inst.getProcedureRooms();
-                for (InstitutePojo item : inst.getItems()) {
+                ProcPerInstCtrl procPerInst = new ProcPerInstCtrl();
+                procPerInst.getProcPerInst();
+                for (ProcPerInstPojo item : procPerInst.getItems()) {
                     if (item.getId() == Long.parseLong(value)) {
                         return item;
                     }
@@ -46,7 +45,7 @@ public class InstitutionConverter implements Converter<InstitutePojo> {
     }
 
     @Override
-    public String getAsString(FacesContext fc, UIComponent uic, InstitutePojo value) {
+    public String getAsString(FacesContext fc, UIComponent uic, ProcPerInstPojo value) {
         if (value != null) {
             return String.valueOf(value.getId());
         } else {

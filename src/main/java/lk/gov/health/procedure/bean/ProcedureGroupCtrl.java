@@ -67,6 +67,17 @@ public class ProcedureGroupCtrl implements Serializable{
         }
     }
     
+    public void deleteProcedureGroup() {
+        Client client = Client.create();
+        WebResource r_ = client.resource(baseUrl + ".proceduregroup/" + selected.getId());
+        ClientResponse response = r_.type("application/json").delete(ClientResponse.class);
+        if (response.getStatus() == 200 || response.getStatus() == 204) {
+            addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure group deleted successfully");
+            getProcedureGroups();
+        } else {
+            addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
+        }
+    }    
     
     public void saveProcedureGroup() {
         JSONObject jo = selected.getJsonObject();

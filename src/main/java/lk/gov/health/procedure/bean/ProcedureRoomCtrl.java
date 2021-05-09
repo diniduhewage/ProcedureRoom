@@ -32,7 +32,11 @@ import org.json.simple.parser.ParseException;
 @SessionScoped
 public class ProcedureRoomCtrl implements Serializable {
     @Inject
-    private ProcGroupInstituteCtrl procGroupInstituteCtrl;
+    private ProcGroupInstituteCtrl procGroupInstituteCtrl;    
+    @Inject
+    private ProcPerInstCtrl procPerInstCtrl;
+    @Inject
+    private ProcedurePerClientCtrl procPerClientCtrl;
 
     private InstitutePojo selected = new InstitutePojo();
     private CurrentHashPojo selectedHash = new CurrentHashPojo();
@@ -62,6 +66,22 @@ public class ProcedureRoomCtrl implements Serializable {
 
         this.getProcedureRoomsPerInstitute(userRole, instituteCode);
         return "/pages/procedure_room";
+    }
+    
+    public String toProcedurePerInstitute() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Nothing to Manage");
+            return "";
+        }
+        procPerInstCtrl.setInstitute(selected);
+        procPerInstCtrl.getProceduresPerInstitution(selected.getCode());
+        return "/pages/procedure_per_institute";
+    }
+    
+    public String toClientProcedurePerInstitute(){
+        procPerClientCtrl.setInstitute(selected); 
+        procPerClientCtrl.getProceduresPerInstitution(selected.getCode());
+        return "/pages/medicalprocedures";
     }
     
     public void addMessage(FacesMessage.Severity sev, String summary, String detail) {
@@ -98,6 +118,7 @@ public class ProcedureRoomCtrl implements Serializable {
             if (userRole.equals("System_Administrator")) {
                 apiString = baseUrl + ".institute/get_procedure_rooms/NO_FILTER";
             } else {
+                System.out.println("5555555555 -->"+insCode);
                 apiString = baseUrl + ".institute/get_procedure_rooms/" + insCode;
             }            
             WebResource webResource1 = client.resource(apiString);
@@ -167,5 +188,21 @@ public class ProcedureRoomCtrl implements Serializable {
 
     public void setProcGroupInstituteCtrl(ProcGroupInstituteCtrl procGroupInstituteCtrl) {
         this.procGroupInstituteCtrl = procGroupInstituteCtrl;
+    }
+
+    public ProcPerInstCtrl getProcPerInstCtrl() {
+        return procPerInstCtrl;
+    }
+
+    public void setProcPerInstCtrl(ProcPerInstCtrl procPerInstCtrl) {
+        this.procPerInstCtrl = procPerInstCtrl;
+    }
+
+    public ProcedurePerClientCtrl getProcPerClientCtrl() {
+        return procPerClientCtrl;
+    }
+
+    public void setProcPerClientCtrl(ProcedurePerClientCtrl procPerClientCtrl) {
+        this.procPerClientCtrl = procPerClientCtrl;
     }
 }

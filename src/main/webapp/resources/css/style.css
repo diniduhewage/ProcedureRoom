@@ -1,0 +1,116 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 3, 2021, 6:49:10 AM
+    Author     : user
+*/
+
+.header {
+    padding: 10px;
+} 
+.ui-column-filter{
+    width: 100%;
+    box-sizing: border-box;
+    height: 0.7cm;
+}
+
+body .ui-panelmenu .ui-panelmenu-header.ui-state-active, body .ui-panelmenu .ui-panelmenu-header{
+    font-size: 12px;
+    font-weight: normal;
+    background-color: #2596be;
+}
+body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link
+body .ui-panelmenu li.ui-menuitem span.ui-menuitem-text{
+    font-size: 12px;
+    font-weight: normal;
+} 
+
+body .ui-panelmenu h3.ui-panelmenu-header.ui-state-active{
+    background-color: #D2d4d4;
+} 
+
+.ui-fluid .ui-inputfield{
+    height: 0.7cm;
+    margin-top: 0.2cm;
+    margin-bottom: 0.2cm;
+    font-size: 12px;
+}
+
+body .ui-widget{
+    font-size: 12px !important;
+}
+
+.ui-fluid .ui-inputtextarea{
+    height: 1cm;
+}        
+
+body .ui-datatable thead th{
+    height: 0.2cm;
+}
+
+.ui-widget-content .ui-datatable-even{
+    height: 0.5rem;
+}
+
+body .ui-button.rounded-button.ui-button-icon-only {
+    border-radius: 50%;
+    height: 1.5rem !important;
+    width: 1.5rem;
+    font-size: 5px;
+}
+
+body .ui-button.ui-button-icon-only .ui-icon {
+    margin-top: -0.3rem !important;
+    margin-left: -0.3rem !important;
+    font-size: 10px;
+}
+
+body .ui-datatable thead th .ui-sortable-column-icon.ui-icon-carat-2-n-s {
+    font-size: 10px;                 
+}
+
+body .ui-datatable .ui-datatable-data tr td {
+    padding: 0.25rem 0.25rem !important;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-width: 0 0 1px 0;
+}
+
+.navbar-header{
+    width: 100%;
+}
+
+.navbar-header .logo_img{
+    float: left;
+    width: 50%;
+}
+
+.navbar-header .user_details{
+    float: right;
+    width: 50%;
+}
+
+.user_details h6{
+    padding: 20px;
+    float: left;
+}
+
+.link_menu{
+    width: 100%;    
+}
+
+.link_menu .mega_menu{
+    height: 1cm;
+}
+
+.mega_menu-menuitem{
+    border-top: -10px;
+    height: 0.75cm;
+}
+
+.ui-menuitem-text{
+    padding-top: -20px;
+    height: 0.5cm;
+}

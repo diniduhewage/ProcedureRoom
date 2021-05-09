@@ -23,6 +23,10 @@
             30
         </session-timeout>
     </session-config>
+    <mime-mapping>        
+        <extension>css</extension>
+        <mime-type>text/css</mime-type>
+    </mime-mapping>
     <welcome-file-list>
         <welcome-file>app/index.xhtml</welcome-file>
     </welcome-file-list>

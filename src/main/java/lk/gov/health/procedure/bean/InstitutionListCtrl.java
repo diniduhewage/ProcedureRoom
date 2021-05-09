@@ -55,6 +55,18 @@ public class InstitutionListCtrl implements Serializable {
             Logger.getLogger(DrugFrequencyCtrl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void getProcedureRooms() {
+        try {
+            Client client = Client.create();
+            WebResource webResource1 = client.resource(baseUrl + ".institute/get_procedure_rooms/NO_FILTER");
+            ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
+            String outpt = cr.getEntity(String.class);
+            items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
+        } catch (ParseException ex) {
+            Logger.getLogger(DrugFrequencyCtrl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void syncInstitutes() {
         Client client = Client.create();
