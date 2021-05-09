@@ -4,75 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-    <style type="text/css">
-        .header {
-            padding: 10px;
-            text-align: left;
-            font-size: 13px;
-        }     
-
-        .ui-column-filter{
-            width: 100%;
-            box-sizing: border-box;
-            height: 0.7cm;
-        }
-
-        body .ui-panelmenu .ui-panelmenu-header.ui-state-active, body .ui-panelmenu .ui-panelmenu-header{
-            font-size: 12px;
-            font-weight: normal;
-            background-color: #2596be;
-        }
-        body .ui-panelmenu li.ui-menuitem span.ui-menuitem-text{
-            font-size: 12px;
-            font-weight: normal;
-        } 
-
-        body .ui-panelmenu h3.ui-panelmenu-header.ui-state-active{
-            background-color: #D2d4d4;
-        } 
-
-        .ui-fluid .ui-inputfield{
-            height: 0.7cm;
-            margin-top: 0.2cm;
-            margin-bottom: 0.2cm;
-            font-size: 12px;
-        }
-
-        body .ui-widget{
-            font-size: 12px !important;
-        }
-
-        .ui-fluid .ui-inputtextarea{
-            height: 2cm;
-        }        
-
-        body .ui-datatable thead th{
-            height: 0.2cm;
-        }
-
-        .ui-widget-content .ui-datatable-even{
-            height: 1.0rem;
-        }
-
-        body .ui-button.rounded-button.ui-button-icon-only {
-            border-radius: 50%;
-            height: 1.5rem !important;
-            width: 1.5rem;
-            font-size: 5px;
-        }
-
-        body .ui-button.ui-button-icon-only .ui-icon {
-            margin-top: -0.3rem !important;
-            margin-left: -0.3rem !important;
-            font-size: 10px;
-        }
-
-        body .ui-datatable thead th .ui-sortable-column-icon.ui-icon-carat-2-n-s {
-            font-size: 10px;                 
-        }
-    </style>
+      xmlns:f="http://xmlns.jcp.org/jsf/core">    
     <f:metadata>
         <f:viewParam name="User_Name" value="#{webUserCtrl.userName}"/>           
         <f:viewParam name="Privileges" value="#{webUserCtrl.privilege}"/>
@@ -82,53 +14,53 @@
         <f:viewParam name="Institution" value="#{webUserCtrl.insCode}"/>
     </f:metadata>
     <h:head>
-
+        <h:outputStylesheet name="bootstrap-4.6.0-dist/css/bootstrap.min.css" />
+        <h:outputStylesheet name="css/style.css"/>
     </h:head>
 
     <h:body>
-        <h:form>
-            <div class="header">
-                <div class="head_img" style="float: left;">
-                    <h:graphicImage library="image" name="banner.jpg"></h:graphicImage> 
+        <nav class="navbar row">
+            <div class="container-fluid">                
+                <div class="navbar-header">
+                    <div class="logo_img">
+                        <h:graphicImage library="image" name="banner.jpg"></h:graphicImage> 
+                    </div>
+                    <div class="user_details">
+                        <h6>#{webUserCtrl.webUserRoleLabel}</h6>
+                        <h6>#{webUserCtrl.insName}</h6>
+                        <h6>#{webUserCtrl.userName}</h6>
+                    </div>
                 </div>
-                <div class="user_details" align="right" style="padding-left: 200px;" >
-                    <h3>#{webUserCtrl.userRole}</h3>
-                    <h3>#{webUserCtrl.insCode}</h3>
-                    <h3>#{webUserCtrl.userName}</h3>
+                <div class="link_menu">
+                    <h:form>
+                        <p:megaMenu orientation="horizontal" autoDisplay="false" class="mega_menu">                     
+                            <p:menuitem value = "Home" url="#" class="mega_menu-menuitem"/>
+                            <p:menuitem value = "" url="#" class="mega_menu-menuitem"/>
+                        </p:megaMenu>
+                    </h:form>
                 </div>
             </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row content">
+                <div class="col-md-2 sidenav">                  
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Navigator" expanded="true">
+                                <p:menuitem value="Procedure" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{MedProcedureCtrl.toMedProcedure}"/>
+                                <p:menuitem value="Procedure Type" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{ProcedureTypeCtrl.toProcedureType}"/>
+                                <p:menuitem value="Procedure Room" ajax="false" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insCode)}"/>
+                                <p:menuitem value="Groups" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{procedureGroupCtrl.toProcedureGroups}"/>                                               
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </div>
+                <div class="col-md-10">
+                    <ui:insert name="tabSection" >
 
-            <div class="card">
-                <p:megaMenu orientation="horizontal" autoDisplay="false" style="height: 1.25cm; padding: 2px;">                     
-                    <p:menuitem value = "" url="#" style="margin-bottom:0.25cm; font-size: 12px;"/>
-                    <p:menuitem value = "" url="#" style="margin-bottom:0.25cm; font-size: 12px;"/>
-                </p:megaMenu>
-            </div>   
-        </h:form>
-
-        <div class="card"  align="left" style="float:left; width:10%; margin-top:0.5cm;">
-            <h:form>
-                <p:growl>
-                    <p:autoUpdate/>
-                </p:growl>
-
-                <p:panelMenu style="width:200px" >
-                    <p:submenu label="Navigator" expanded="true">
-                        <p:menuitem value="Procedure" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{MedProcedureCtrl.toMedProcedure}"/>
-                        <p:menuitem value="Procedure Type" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{ProcedureTypeCtrl.toProcedureType}"/>
-                        <p:menuitem value="Procedure Room" ajax="false" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insCode)}"/>
-                        <p:menuitem value="Groups" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{procedureGroupCtrl.toProcedureGroups}"/>
-                        <p:menuitem value="Add Procedure" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{procedurePerClientCtrl.toAddProcedure}"/>
-                        <p:menuitem value="Procedure Log" rendered="#{webUserCtrl.IsSystemAdmin()}" action="#{MedProcedureCtrl.update}"/>
-                        <p:menuitem value="Institution List" rendered="#{webUserCtrl.IsSystemAdmin()}" action="#{institutionListCtrl.toInstitutionList}"/>                        
-                    </p:submenu>
-                </p:panelMenu>
-            </h:form>
-        </div> 
-
-        <ui:insert name="tabSection" >
-
-        </ui:insert>
-
+                    </ui:insert>
+                </div>
+            </div> 
+        </div>
     </h:body>
 </html>

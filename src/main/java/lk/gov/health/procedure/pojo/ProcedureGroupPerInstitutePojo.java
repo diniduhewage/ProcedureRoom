@@ -28,7 +28,6 @@ public class ProcedureGroupPerInstitutePojo {
     }
     
     public ProcedureGroupPerInstitutePojo getObject(JSONObject jo_) {
-        System.out.println("dinidu -->"+jo_.toString());
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setProcedureGroup(jo_.containsKey("procGroup") ? getProcedureGroupObject(jo_.get("procGroup")) : null);
         this.setInstitute(jo_.containsKey("institute") ? getInstituteObject(jo_.get("institute")) : null);        

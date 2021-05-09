@@ -14,74 +14,69 @@ and open the template in the editor.
     <body>
         <ui:composition template="/index.xhtml">
             <ui:define name="tabSection">
-                <div style="float:right; width:82%; margin-right: 0.5cm; ">
-                    <h:form id="form">
-                        <div class="card crud-demo">
-                            <p:growl id="messages" showDetail="true"/>                            
-
-                            <p:dataTable id="dt-procedures" widgetVar="dtProceduresRoom" var="item" value="#{procedureRoomCtrl.items}"
-                                         reflow="true" styleClass="products-table"
-                                         selection="#{procedureRoomCtrl.selected}" rowKey="#{item.id}" paginator="true"
-                                         rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
+                <h:form id="form">
+                    <div class="card crud-demo"> 
+                        <p:dataTable id="dt-procedures" widgetVar="dtProceduresRoom" var="item" value="#{procedureRoomCtrl.items}"
+                                     reflow="true" styleClass="products-table"
+                                     selection="#{procedureRoomCtrl.selected}" rowKey="#{item.id}" paginator="true"
+                                     rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
+                            <f:facet name="header">
+                                <div class="products-table-header" style="height: 0.5cm">
+                                    <span style="font-weight: bold; font-size: 15px">Procedure Rooms</span>
+                                </div>
+                            </f:facet>
+                            <p:column width="100" styleClass="wrap">
                                 <f:facet name="header">
-                                    <div class="products-table-header" style="height: 0.5cm">
-                                        <span style="font-weight: bold; font-size: 15px">Procedure Rooms</span>
-                                    </div>
+                                    <h:outputText value="No" />
                                 </f:facet>
-                                <p:column width="100" styleClass="wrap">
-                                    <f:facet name="header">
-                                        <h:outputText value="No" />
-                                    </f:facet>
-                                    <h:outputText value="#{index + 1}"/>
-                                </p:column>
-                                <p:column headerText="Room Id" sortBy="#{item.code}" filterBy="#{item.code}">
-                                    <h:outputText value="#{item.code}"/>
-                                </p:column>
-                                <p:column headerText="Name" sortBy="#{item.name}" filterBy="#{item.name}">
-                                    <h:outputText value="#{item.name}"/>
-                                </p:column>
-                                <p:column headerText="Hin" sortBy="#{item.hin}" filterBy="#{item.hin}">
-                                    <h:outputText value="#{item.hin}"/>
-                                </p:column>                                
-                                <p:column headerText="Address" sortBy="#{item.address}" filterBy="#{item.address}">
-                                    <h:outputText value="#{item.address}"/>
-                                </p:column>
-                                <p:column headerText="District" sortBy="#{item.districtId}" filterBy="#{item.districtId}">
-                                    <h:outputText value="#{item.districtId}"/>
-                                </p:column> 
-                                <p:column headerText="Items" rendered="#{webUserCtrl.IsInstituteAdmin()}">
-                                    <p:commandButton id="btnItems" value="Groups"  icon="ui-icon-note"       
-                                                     action="#{procedureRoomCtrl.getAllocatedGroups()}" 
-                                                     ajax="false">
-                                        <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>                                        
-                                    </p:commandButton>
-                                </p:column>
-                                <p:column headerText="Procedure" rendered="#{webUserCtrl.IsInstituteAdmin()}">
-                                    <p:commandButton id="btnProcedure" value="Procedures"  icon="ui-icon-note"       
-                                                     action="#{procPerInstCtrl.toProcedurePerInstitute(item.code)}" 
-                                                     ajax="false">
-                                        <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>                                        
-                                    </p:commandButton>
-                                </p:column>
-                                <p:column headerText="To Do">
-                                    <p:commandButton id="btnToDo" value="To Do"  icon="ui-icon-note"       
-                                                     action="#{procedurePerClientCtrl.toClientProcedurePerInstitute(item)}" 
-                                                     ajax="false">
-                                        <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>                                        
-                                    </p:commandButton>
-                                </p:column>
-                            </p:dataTable>  
+                                <h:outputText value="#{index + 1}"/>
+                            </p:column>
+                            <p:column headerText="Room Id" sortBy="#{item.code}" filterBy="#{item.code}">
+                                <h:outputText value="#{item.code}"/>
+                            </p:column>
+                            <p:column headerText="Name" sortBy="#{item.name}" filterBy="#{item.name}">
+                                <h:outputText value="#{item.name}"/>
+                            </p:column>
+                            <p:column headerText="Hin" sortBy="#{item.hin}" filterBy="#{item.hin}">
+                                <h:outputText value="#{item.hin}"/>
+                            </p:column>                                
+                            <p:column headerText="Address" sortBy="#{item.address}" filterBy="#{item.address}">
+                                <h:outputText value="#{item.address}"/>
+                            </p:column>
+                            <p:column headerText="District" sortBy="#{item.districtId}" filterBy="#{item.districtId}">
+                                <h:outputText value="#{item.districtId}"/>
+                            </p:column> 
+                            <p:column headerText="Items" rendered="#{webUserCtrl.IsInstituteAdmin()}">
+                                <p:commandButton id="btnItems" value="Add Groups"  icon="ui-icon-note"       
+                                                 action="#{procedureRoomCtrl.getAllocatedGroups()}" 
+                                                 ajax="false">
+                                    <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>                                        
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="Procedure" rendered="#{webUserCtrl.IsInstituteAdmin()}">
+                                <p:commandButton id="btnProcedure" value="Procedures"  icon="ui-icon-note"       
+                                                 action="#{procedureRoomCtrl.toProcedurePerInstitute()}" 
+                                                 ajax="false">
+                                    <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>                                        
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="To Do">
+                                <p:commandButton id="btnToDo" value="To Do"  icon="ui-icon-note"       
+                                                 action="#{procedureRoomCtrl.toClientProcedurePerInstitute()}" 
+                                                 ajax="false">
+                                    <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>                                        
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>  
 
-                            <p:confirmDialog global="true" showEffect="fade" width="300">
-                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                                 icon="pi pi-times"/>
-                            </p:confirmDialog>
-                        </div>
-                    </h:form>
-                </div>
+                        <p:confirmDialog global="true" showEffect="fade" width="300">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                             icon="pi pi-times"/>
+                        </p:confirmDialog>
+                    </div>
+                </h:form>
             </ui:define>
         </ui:composition>
-
     </body>
 </html>

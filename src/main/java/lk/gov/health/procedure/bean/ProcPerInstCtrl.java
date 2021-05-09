@@ -16,6 +16,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import lk.gov.health.procedure.pojo.InstitutePojo;
 import lk.gov.health.procedure.pojo.ProcPerInstPojo;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -33,13 +34,8 @@ public class ProcPerInstCtrl implements Serializable{
     }
     private ProcPerInstPojo selected = new ProcPerInstPojo();
     private ArrayList<ProcPerInstPojo> items = new ArrayList<>();
+    private InstitutePojo institute;
     private final String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
-    
-    public String toProcedurePerInstitute(String insCode) {
-        selected = new ProcPerInstPojo();
-        this.getProceduresPerInstitution(insCode);
-        return "/pages/procedure_per_institute";
-    }
 
     public ProcPerInstPojo getSelected() {
         return selected;
@@ -84,5 +80,25 @@ public class ProcPerInstCtrl implements Serializable{
     public void addMessage(FacesMessage.Severity sev, String summary, String detail) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
+    public void getProcPerInst() {
+        try {
+            Client client = Client.create();
+            WebResource webResource1 = client.resource(baseUrl + ".procedureperinstitute");
+            ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
+            String outpt = cr.getEntity(String.class);
+            items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
+        } catch (ParseException ex) {
+            Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public InstitutePojo getInstitute() {
+        return institute;
+    }
+
+    public void setInstitute(InstitutePojo institute) {
+        this.institute = institute;
     }
 }

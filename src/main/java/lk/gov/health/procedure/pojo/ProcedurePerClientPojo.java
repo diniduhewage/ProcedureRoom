@@ -25,16 +25,11 @@ public class ProcedurePerClientPojo {
     private Long id;
     private String phn;
     private InstitutePojo instituteId;
-    private MedProcedurePojo procedureId;
-    private ProcedureRoomPojo roomId;
+    private ProcPerInstPojo procedureId;
     private Long createdBy; 
     @Temporal(value=TemporalType.TIMESTAMP)
     private Date createdAt;
-    private ProcPerClientStates status;
-    
-    public ProcedurePerClientPojo(){
-        
-    }
+    private ProcPerClientStates status; 
     
 //    public ProcedurePerClientPojo(String phn_,InstitutePojo institute_id_,MedProcedurePojo procedure_id_,ProcedureRoomPojo room_id_,Long created_by_,Date created_at_ , ProcPerClientStates status_){
 //        this.phn = phn_;
@@ -50,45 +45,28 @@ public class ProcedurePerClientPojo {
         JSONObject jo_ = new JSONObject();
         
         jo_.put("phn", this.getPhn());
-        jo_.put("instituteId", this.getInstituteJSONObject());
-        jo_.put("procedureId", this.getProcedureJsonObject());
-//        jo_.put("roomId", this.getRoomJsonObject());
+        jo_.put("instituteId", this.getInstituteId().getCode());
+        jo_.put("procedureCode", this.getProcedureId().getProcedure().getProcId());
         jo_.put("createdBy", this.getCreatedBy());
-        jo_.put("status", this.getStatus().toString());
         
-        return jo_;        
+        return jo_;         
     }
     
     public JSONObject getProcedureJsonObject(){
         JSONObject jo_ = new JSONObject();
         
-        jo_.put("id", this.getProcedureId().getId());
-        jo_.put("procId", this.getProcedureId().getProcId());
-        jo_.put("description", this.getProcedureId().getDescription());
-        jo_.put("procType", this.getProcedureId().getProcedureTypeJsonObject());
-        jo_.put("comment", this.getProcedureId().getComment());
-        jo_.put("status", this.getProcedureId().getStatus().toString());
+        jo_.put("id", this.getProcedureId().getProcedure().getId());
+        jo_.put("procId", this.getProcedureId().getProcedure().getProcId());
+        jo_.put("description", this.getProcedureId().getProcedure().getDescription());
+        jo_.put("procType", this.getProcedureId().getProcedure().getProcedureTypeJsonObject());
+        jo_.put("comment", this.getProcedureId().getProcedure().getComment());
+        jo_.put("status", this.getProcedureId().getProcedure().getStatus().toString());
         
         return jo_;        
-    }
-    
-    public JSONObject getInstituteIdJsonObject(){
-        JSONObject jo_ = new JSONObject();
-        
-        jo_.put("id", this.getProcedureId().getId());
-        jo_.put("procId", this.getProcedureId().getProcId());
-        jo_.put("description", this.getProcedureId().getDescription());
-        jo_.put("procType", this.getProcedureId().getProcedureTypeJsonObject());
-        jo_.put("comment", this.getProcedureId().getComment());
-        jo_.put("status", this.getProcedureId().getStatus().toString());
-        
-        return jo_;        
-    }
+    } 
     
     private JSONObject getInstituteJSONObject() {
         JSONObject jo_ = new JSONObject();
-        System.out.println("qqqqqqqqqqqqqq -->"+this.getInstituteId());
-        System.out.println("ppppppppppp -->"+this.getInstituteId().getId());
         jo_.put("id", this.getInstituteId().getId());
         jo_.put("code", this.getInstituteId().getCode());
         jo_.put("name", this.getInstituteId().getName());
@@ -100,27 +78,15 @@ public class ProcedurePerClientPojo {
         jo_.put("editedAt", this.getInstituteId().getEditedAt().toString());
 
         return jo_;
-    }
-    
-    public JSONObject getRoomJsonObject(){
-        JSONObject jo_ = new JSONObject();
-        
-        jo_.put("id", this.getRoomId().getId());
-        jo_.put("roomId", this.getRoomId().getRoomId());
-        jo_.put("description", this.getRoomId().getDescription());
-        jo_.put("type", this.getRoomId().getRoomTypeJsonObject());
-        jo_.put("instituteId", this.getRoomId().getInstituteId());
-        jo_.put("status", this.getRoomId().getStatus().toString());
-        
-        return jo_;        
-    }
+    } 
     
     public ProcedurePerClientPojo getObject(JSONObject jo_) {
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setPhn(jo_.containsKey("phn") ? jo_.get("phn").toString() : null);
+        System.out.println("33333333333333 -->"+jo_.get("instituteId"));
         this.setInstituteId(jo_.containsKey("instituteId") ? getInstituteObject(jo_.get("instituteId")) : null);
+        System.out.println("44444444444444 -->"+jo_.get("instituteId"));
         this.setProcedureId(jo_.containsKey("procedureId") ? getMedProcedureObject(jo_.get("procedureId")) : null);
-        this.setRoomId(jo_.containsKey("roomId") ? getProcRoomObject(jo_.get("roomId")) : null);
         this.setCreatedBy(jo_.containsKey("createdBy") ? Long.parseLong(jo_.get("createdBy").toString()) : null);
         try {        
             this.setCreatedAt(jo_.containsKey("createdAt") ? new SimpleDateFormat("yyyy-MM-dd").parse(jo_.get("createdAt").toString()) : null);
@@ -132,8 +98,8 @@ public class ProcedurePerClientPojo {
         return this;
     } 
     
-    public MedProcedurePojo getMedProcedureObject(Object obj){ 
-      MedProcedurePojo medProcedure = new MedProcedurePojo();
+    public ProcPerInstPojo getMedProcedureObject(Object obj){ 
+      ProcPerInstPojo medProcedure = new ProcPerInstPojo();
       return medProcedure.getObject((JSONObject)obj);
     }
     
@@ -171,23 +137,7 @@ public class ProcedurePerClientPojo {
 
     public void setInstituteId(InstitutePojo instituteId) {
         this.instituteId = instituteId;
-    }
-
-    public MedProcedurePojo getProcedureId() {
-        return procedureId;
-    }
-
-    public void setProcedureId(MedProcedurePojo procedureId) {
-        this.procedureId = procedureId;
-    }
-
-    public ProcedureRoomPojo getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(ProcedureRoomPojo roomId) {
-        this.roomId = roomId;
-    }
+    }      
 
     public Long getCreatedBy() {
         return createdBy;
@@ -220,5 +170,13 @@ public class ProcedurePerClientPojo {
     public void setId(Long id) {
         this.id = id;
     }  
+
+    public ProcPerInstPojo getProcedureId() {
+        return procedureId;
+    }
+
+    public void setProcedureId(ProcPerInstPojo procedureId) {
+        this.procedureId = procedureId;
+    }
     
 }

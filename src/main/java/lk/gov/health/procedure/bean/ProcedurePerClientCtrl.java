@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import lk.gov.health.procedure.enums.ProcPerClientStates;
 import lk.gov.health.procedure.pojo.InstitutePojo;
-import lk.gov.health.procedure.pojo.MedProcedurePojo;
+import lk.gov.health.procedure.pojo.ProcPerInstPojo;
 import lk.gov.health.procedure.pojo.ProcedurePerClientPojo;
 import lk.gov.health.procedure.util.ServiceConnector;
 import org.json.simple.JSONArray;
@@ -36,103 +36,91 @@ import org.json.simple.parser.ParseException;
 public class ProcedurePerClientCtrl implements Serializable {
 
     private ProcedurePerClientPojo selected = new ProcedurePerClientPojo();
-    private MedProcedurePojo MedProcedure = new MedProcedurePojo();
-    private InstitutePojo ProcRoom = new InstitutePojo();
+    private ProcPerInstPojo medProcPerInst = new ProcPerInstPojo();
+    private InstitutePojo institute = new InstitutePojo();
     private ArrayList<ProcedurePerClientPojo> items;
-    private ArrayList<MedProcedurePojo> procList;
+    private ArrayList<ProcPerInstPojo> procList;
 
     public String toAddProcedure() {
         selected = new ProcedurePerClientPojo();
         this.getProcedures();
         return "/pages/medicalprocedures";
     }
-    
+
     private final String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
-    
+
     private void getProcedures() {
         try {
             Client client = Client.create();
-            WebResource webResource1 = client.resource(baseUrl+".procedureperclient");
+            WebResource webResource1 = client.resource(baseUrl + ".procedureperclient");
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
         } catch (ParseException ex) {
-            Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcPerInstCtrl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void getProceduresPerInstitution(String insCode) {
+
+    public void getProceduresPerInstitution(String insCode) {
         try {
             Client client = Client.create();
-            WebResource webResource1 = client.resource(baseUrl+".procedureperclient/filer_list/"+insCode);
+            WebResource webResource1 = client.resource(baseUrl + ".procedureperclient/filer_list/" + insCode);
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
         } catch (ParseException ex) {
-            Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcPerInstCtrl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public ArrayList<MedProcedurePojo> fetchProcedures(String qryVal) {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.medprocedure/filer_list/" + qryVal;
+
+    public ArrayList<ProcPerInstPojo> fetchProcedures(String qryVal) {
+        System.out.println("111111111111 -->"+selected.getInstituteId().getCode());
+        System.out.println("222222222222 -->"+qryVal);
+        String url_ = baseUrl +".procedureperinstitute/filer_list/"+selected.getInstituteId().getCode()+"/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
-        return MedProcedure.getObjectList(sc_.GetRequestList(url_));
+        return medProcPerInst.getObjectList(sc_.GetRequestList(url_));
     }
-    
+
     public ArrayList<InstitutePojo> fetchRooms(String qryVal) {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.institute/filer_list/" + qryVal;
+        String url_ = baseUrl +".institute/filer_list/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
-        return ProcRoom.getObjectList(sc_.GetRequestList(url_));
+        return institute.getObjectList(sc_.GetRequestList(url_));
     }
-    
+
     public void saveClientProcedure() {
         Client client = Client.create();
 
         if (selected.getId() == null) {
             JSONObject jo = selected.getJsonObject();
-            WebResource webResource1 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureperclient/register_procedure");
+            WebResource webResource1 = client.resource(baseUrl+".procedureperclient/register_procedure");
             ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
-            System.out.println("9999999 ==>"+jo.toString());
-            System.out.println("9999999 ==>"+response.toString());
-            if(response.getStatus() == 200 || response.getStatus() == 204){
-                addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Added Successfully");
+            if (response.getStatus() == 200 || response.getStatus() == 204) {
+                addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure added successfully");
+            } else {
+                addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to add new record");
             }
-            else
-            {
-               addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to add new record");
-            }
-                    
+
         } else {
             JSONObject jo = selected.getJsonObject();
             jo.put("id", selected.getId());
-            WebResource webResource2 = client.resource("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureperclient/" + selected.getId());
+            WebResource webResource2 = client.resource(baseUrl+".procedureperclient/" + selected.getId());
             ClientResponse response = webResource2.type("application/json").put(ClientResponse.class, jo.toString());
-            if(response.getStatus() == 200 || response.getStatus() == 204){
+            if (response.getStatus() == 200 || response.getStatus() == 204) {
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Updated Successfully");
-            }
-            else
-            {
-               addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
+            } else {
+                addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
             }
         }
     }
-    
-    public String toClientProcedurePerInstitute(InstitutePojo insCode){
-        selected = new ProcedurePerClientPojo();
-        System.out.println("kkkkkkkkkkkk -->"+insCode);
-        selected.setInstituteId(insCode);
-        this.getProceduresPerInstitution(insCode.getCode());
-        return "/pages/medicalprocedures";
-    }
-    
-    public void addMessage(Severity sev,String summary, String detail) {
+
+    public void addMessage(Severity sev, String summary, String detail) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
-    public ProcPerClientStates[] getProcClientStatus(){
+
+    public ProcPerClientStates[] getProcClientStatus() {
         return ProcPerClientStates.values();
     }
 
@@ -152,20 +140,27 @@ public class ProcedurePerClientCtrl implements Serializable {
         this.items = items;
     }
 
-    public ArrayList<MedProcedurePojo> getProcList() {
+    public ArrayList<ProcPerInstPojo> getProcList() {
         return procList;
     }
 
-    public void setProcList(ArrayList<MedProcedurePojo> procList) {
+    public void setProcList(ArrayList<ProcPerInstPojo> procList) {
         this.procList = procList;
     }
 
-    public MedProcedurePojo getMedProcedure() {
-        return MedProcedure;
+    public ProcPerInstPojo getmedProcPerInst() {
+        return medProcPerInst;
     }
 
-    public void setMedProcedure(MedProcedurePojo MedProcedure) {
-        this.MedProcedure = MedProcedure;
+    public void setmedProcPerInst(ProcPerInstPojo medProcPerInst) {
+        this.medProcPerInst = medProcPerInst;
     }
 
+    public InstitutePojo getInstitute() {
+        return institute;
+    }
+
+    public void setInstitute(InstitutePojo institute) {
+        this.institute = institute;
+    }
 }
