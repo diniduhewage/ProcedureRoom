@@ -79,7 +79,7 @@ public class ProcedureRoomCtrl implements Serializable {
     }
     
     public String toClientProcedurePerInstitute(){
-        procPerClientCtrl.setInstitute(selected); 
+        procPerClientCtrl.setInstitute(selected);         
         procPerClientCtrl.getProceduresPerInstitution(selected.getCode());
         return "/pages/medicalprocedures";
     }
@@ -118,7 +118,6 @@ public class ProcedureRoomCtrl implements Serializable {
             if (userRole.equals("System_Administrator")) {
                 apiString = baseUrl + ".institute/get_procedure_rooms/NO_FILTER";
             } else {
-                System.out.println("5555555555 -->"+insCode);
                 apiString = baseUrl + ".institute/get_procedure_rooms/" + insCode;
             }            
             WebResource webResource1 = client.resource(apiString);

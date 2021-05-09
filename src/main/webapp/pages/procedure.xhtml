@@ -22,7 +22,7 @@ and open the template in the editor.
                                      rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                             <f:facet name="header">
                                 <div class="products-table-header" style="height: 0.25cm">                                      
-                                    <p:commandButton value="New" icon="pi pi-plus"
+                                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{MedProcedureCtrl.prepareNew}" 
                                                      update=":form:manage-procedure-content" oncomplete="PF('manageProcedureDialog').show()"
                                                      styleClass="ui-button-success" style="margin-right: .25rem;  height: 30px; font-size: 11px;"> 
                                         <p:resetInput target=":form:manage-procedure-content"/>

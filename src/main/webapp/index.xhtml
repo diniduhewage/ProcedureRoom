@@ -25,11 +25,16 @@
                     <div class="logo_img">
                         <h:graphicImage library="image" name="banner.jpg"></h:graphicImage> 
                     </div>
-                    <div class="user_details">
+                    <div class="user_details float-left">
                         <h6>#{webUserCtrl.webUserRoleLabel}</h6>
                         <h6>#{webUserCtrl.insName}</h6>
                         <h6>#{webUserCtrl.userName}</h6>
+                        <h:form>
+                            <p:commandButton action="#{webUserCtrl.logOut()}" ajax="false"
+                                             rendered="#{webUserCtrl.userName ne null}" value="#{webUserCtrl.userName} - Logout" />
+                        </h:form>
                     </div>
+
                 </div>
                 <div class="link_menu">
                     <h:form>

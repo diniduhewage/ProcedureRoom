@@ -45,6 +45,10 @@ public class ProcedureGroupCtrl implements Serializable{
         return "/pages/procedure_group";
     }
     
+    public void prepareNew(){
+        selected = new ProcedureGroupPojo();
+    }
+    
     public String getProcedureGroupItems() {
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing to Manage");

@@ -19,7 +19,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import lk.gov.health.procedure.enums.ObjectStatus;
 import lk.gov.health.procedure.pojo.MedProcedurePojo;
-import lk.gov.health.procedure.pojo.ProcedureRoomTypePojo;
 import lk.gov.health.procedure.pojo.ProcedureTypePojo;
 import lk.gov.health.procedure.util.ServiceConnector;
 import org.json.simple.JSONArray;
@@ -38,7 +37,6 @@ public class MedProcedureCtrl implements Serializable {
     private MedProcedurePojo selected = new MedProcedurePojo();
     private ArrayList<ProcedureTypePojo> procTypes;
     private ProcedureTypePojo procType = new ProcedureTypePojo();
-    private ProcedureRoomTypePojo roomType = new ProcedureRoomTypePojo();
     private ArrayList<ProcedureTypePojo> procTypeList;
 
     private ArrayList<MedProcedurePojo> items;
@@ -72,6 +70,10 @@ public class MedProcedureCtrl implements Serializable {
         selected = new MedProcedurePojo();
         this.getMedicalProcedures();
         return "/pages/procedure";
+    }
+    
+    public void prepareNew(){
+        selected = new MedProcedurePojo();
     }
 
     public void saveProcedure() {
@@ -112,11 +114,11 @@ public class MedProcedureCtrl implements Serializable {
         return procType.getObjectList(sc_.GetRequestList(url_));
     }
 
-    public ArrayList<ProcedureRoomTypePojo> fetchRoomTypes(String qryVal) {
-        String url_ = baseUrl + ".procedureroomtype/filer_list/" + qryVal;
+    public ArrayList<MedProcedurePojo> fetchMedicalProcedures(String qryVal) {
+        String url_ = baseUrl + ".medprocedure/filer_list/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
-        return roomType.getObjectList(sc_.GetRequestList(url_));
+        return selected.getObjectList(sc_.GetRequestList(url_));
     }
 
     public void getMedicalProcedures() {
@@ -141,15 +143,7 @@ public class MedProcedureCtrl implements Serializable {
 
     public void setProcType(ProcedureTypePojo procType) {
         this.procType = procType;
-    }
-
-    public ProcedureRoomTypePojo getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(ProcedureRoomTypePojo roomType) {
-        this.roomType = roomType;
-    }
+    }    
 
     public ArrayList<ProcedureTypePojo> getProcTypeList() {
         return procTypeList;

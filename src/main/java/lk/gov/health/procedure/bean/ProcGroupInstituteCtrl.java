@@ -69,6 +69,10 @@ public class ProcGroupInstituteCtrl implements Serializable {
     public void openNew(){
         selected = new ProcedureGroupPerInstitutePojo();
     }
+    
+    public void prepareNew(){
+        selected =  new ProcedureGroupPerInstitutePojo();
+    }
 
     void fetchGroupsPerInstitute() {
         try {
@@ -110,7 +114,6 @@ public class ProcGroupInstituteCtrl implements Serializable {
         for (ProcedureGroupItemPojo i_ : getProcedurePerGroup(procGroup)) {
             Client client = Client.create();
             JSONObject jo = procsPerInstitution.getJsonObject(i_.getProcedure(),selected.getInstitute());
-            System.out.println("mmmmmmmmmm -->"+jo.toString());
             WebResource webResource1 = client.resource(baseUrl + ".procedureperinstitute");
             ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());            
         }
