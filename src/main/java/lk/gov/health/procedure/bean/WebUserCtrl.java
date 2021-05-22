@@ -48,7 +48,7 @@ public class WebUserCtrl implements Serializable {
     private String insId;
     private String insName;
 
-    String mainAppUrl = "https://localhost:8080/chimsd/data";
+    String mainAppUrl = "http://localhost:8080/chimsd/data";
 
     public boolean IsSystemAdmin() {
         return userRole != null && this.userRole.equals("System_Administrator");
