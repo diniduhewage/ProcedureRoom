@@ -22,7 +22,7 @@ and open the template in the editor.
                                      rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                             <f:facet name="header">
                                 <span style="font-weight: bold; font-size: 15px">
-                                    <h:commandLink value="#{procPerInstCtrl.institute.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insCode)}"/>
+                                    <h:commandLink value="#{procPerInstCtrl.institute.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insId)}"/>
                                     </span> -> <span style="font-weight: bold; font-size: 15px">Procedures</span>
                             </f:facet>                                
                             <p:column width="100" styleClass="wrap">

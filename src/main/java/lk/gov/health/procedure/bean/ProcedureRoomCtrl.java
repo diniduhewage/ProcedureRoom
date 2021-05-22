@@ -18,7 +18,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lk.gov.health.procedure.facade.util.JsfUtil;
-import lk.gov.health.procedure.pojo.CurrentHashPojo;
 import lk.gov.health.procedure.pojo.InstitutePojo;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -37,33 +36,31 @@ public class ProcedureRoomCtrl implements Serializable {
     private ProcPerInstCtrl procPerInstCtrl;
     @Inject
     private ProcedurePerClientCtrl procPerClientCtrl;
-
+    
     private InstitutePojo selected = new InstitutePojo();
-    private CurrentHashPojo selectedHash = new CurrentHashPojo();
-    private CurrentHashPojo selectedHash2 = new CurrentHashPojo();
     private ArrayList<InstitutePojo> items;
-    String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
-    String mainAppUrl = "http://localhost:8080/chims/data?name=";
-
+    String baseUrl = "http://chims.health.gov.lk/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
+    String mainAppUrl = "http://chims.health.gov.lk/chimsd/data?name=";
+    
     public InstitutePojo getSelected() {
         return selected;
     }
-
+    
     public void setSelected(InstitutePojo selected) {
         this.selected = selected;
     }
-
+    
     public ArrayList<InstitutePojo> getItems() {
         return items;
     }
-
+    
     public void setItems(ArrayList<InstitutePojo> items) {
         this.items = items;
     }
-
+    
     public String toProcedureRoom(String userRole, String instituteCode) {
         selected = new InstitutePojo();
-
+        
         this.getProcedureRoomsPerInstitute(userRole, instituteCode);
         return "/pages/procedure_room";
     }
@@ -78,9 +75,10 @@ public class ProcedureRoomCtrl implements Serializable {
         return "/pages/procedure_per_institute";
     }
     
-    public String toClientProcedurePerInstitute(){
-        procPerClientCtrl.setInstitute(selected);         
-        procPerClientCtrl.getProceduresPerInstitution(selected.getCode());
+    public String toClientProcedurePerInstitute() {
+        procPerClientCtrl.getSelected().setInstituteId(selected);        
+        procPerClientCtrl.setInstitute(selected);
+        procPerClientCtrl.getProceduresPerInstitution();
         return "/pages/medicalprocedures";
     }
     
@@ -88,7 +86,7 @@ public class ProcedureRoomCtrl implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-
+    
     public void getProcedureRooms() {
         try {
             Client client = Client.create();
@@ -101,7 +99,7 @@ public class ProcedureRoomCtrl implements Serializable {
         }
     }
     
-    public String getAllocatedGroups(){
+    public String getAllocatedGroups() {
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing to Manage");
             return "";
@@ -110,7 +108,7 @@ public class ProcedureRoomCtrl implements Serializable {
         procGroupInstituteCtrl.fetchGroupsPerInstitute();
         return "/pages/procedure_group_institute";
     }
-
+    
     public void getProcedureRoomsPerInstitute(String userRole, String insCode) {
         try {
             String apiString;
@@ -127,80 +125,28 @@ public class ProcedureRoomCtrl implements Serializable {
         } catch (ParseException ex) {
             Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public boolean checkInstituteHash() {
-        return (getForeignInstituteHash() != null && getLocalInstituteHash() != null ? getForeignInstituteHash().equals(getLocalInstituteHash()) : false);
-    }
-
-    public String getLocalInstituteHash() {
-        Client client = Client.create();
-        String apiPath = baseUrl + "/find_by_owner/INSTITUTE";
-
-        WebResource r_ = client.resource(apiPath);
-        ClientResponse cr = r_.accept("application/json").get(ClientResponse.class);
-        String outpt = cr.getEntity(String.class);
-        try {
-            CurrentHashPojo currHash = selectedHash.getObjectList((JSONArray) new JSONParser().parse(outpt)).get(0);
-            return currHash.getCurrHash();
-        } catch (ParseException ex) {
-            Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    public String getForeignInstituteHash() {
-        Client client = Client.create();
-        String apiPath = mainAppUrl + "get_value_list_hash";
-
-        WebResource r_ = client.resource(apiPath);
-        ClientResponse cr = r_.accept("application/json").get(ClientResponse.class);
-        String outpt = cr.getEntity(String.class);
-        try {
-            CurrentHashPojo currHash = selectedHash2.getObjectList((JSONArray) new JSONParser().parse(outpt)).get(0);
-            return currHash.getCurrHash();
-        } catch (ParseException ex) {
-            Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    public CurrentHashPojo getSelectedHash() {
-        return selectedHash;
-    }
-
-    public void setSelectedHash(CurrentHashPojo selectedHash) {
-        this.selectedHash = selectedHash;
-    }
-
-    public CurrentHashPojo getSelectedHash2() {
-        return selectedHash2;
-    }
-
-    public void setSelectedHash2(CurrentHashPojo selectedHash2) {
-        this.selectedHash2 = selectedHash2;
-    }
-
+    } 
+    
     public ProcGroupInstituteCtrl getProcGroupInstituteCtrl() {
         return procGroupInstituteCtrl;
     }
-
+    
     public void setProcGroupInstituteCtrl(ProcGroupInstituteCtrl procGroupInstituteCtrl) {
         this.procGroupInstituteCtrl = procGroupInstituteCtrl;
     }
-
+    
     public ProcPerInstCtrl getProcPerInstCtrl() {
         return procPerInstCtrl;
     }
-
+    
     public void setProcPerInstCtrl(ProcPerInstCtrl procPerInstCtrl) {
         this.procPerInstCtrl = procPerInstCtrl;
     }
-
+    
     public ProcedurePerClientCtrl getProcPerClientCtrl() {
         return procPerClientCtrl;
     }
-
+    
     public void setProcPerClientCtrl(ProcedurePerClientCtrl procPerClientCtrl) {
         this.procPerClientCtrl = procPerClientCtrl;
     }

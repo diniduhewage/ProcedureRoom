@@ -28,7 +28,7 @@ and open the template in the editor.
                                         <p:resetInput target=":form:manage-procedure-group-content"/>
                                     </p:commandButton>
                                     <span style="font-weight: bold; font-size: 15px">
-                                        <h:commandLink value="#{procGroupInstituteCtrl.institute.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insCode)}"/>
+                                        <h:commandLink value="#{procGroupInstituteCtrl.institute.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insId)}"/>
                                     </span> -> <span style="font-weight: bold; font-size: 15px">Procedure Groups</span>
                                 </div>
                             </f:facet> 

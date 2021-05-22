@@ -35,8 +35,8 @@ public class InstitutionListCtrl implements Serializable {
     private InstitutePojo selected = new InstitutePojo();
     private ArrayList<InstitutePojo> items = new ArrayList<>();
 
-    String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
-    String mainAppUrl = "http://localhost:8080/chims/data?name=";
+    String baseUrl = "https://chims.health.gov.lk/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
+    String mainAppUrl = "http://chims.health.gov.lk/chimsd/data?name=";
 
     public String toInstitutionList() {
         selected = new InstitutePojo();
@@ -80,7 +80,7 @@ public class InstitutionListCtrl implements Serializable {
     }
 
     public ArrayList<InstitutePojo> fetchInstitutes(String qryVal) {
-        String url_ = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.institute/filer_list/" + qryVal;
+        String url_ = baseUrl+".institute/filer_list/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return selected.getObjectList(sc_.GetRequestList(url_));

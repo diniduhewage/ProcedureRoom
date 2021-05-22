@@ -40,6 +40,7 @@ public class ProcedurePerClientCtrl implements Serializable {
     private InstitutePojo institute = new InstitutePojo();
     private ArrayList<ProcedurePerClientPojo> items;
     private ArrayList<ProcPerInstPojo> procList;
+    private String outputComment;
 
     public String toAddProcedure() {
         this.getProcedures();
@@ -51,8 +52,12 @@ public class ProcedurePerClientCtrl implements Serializable {
 //        this.getProcedureLog();
         return "/pages/procedure_log";
     }
+    
+    public void prepareNew(){
+        selected =  new ProcedurePerClientPojo();
+    }
 
-    private final String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
+    private final String baseUrl = "http://chims.health.gov.lk/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
 
     private void getProcedures() {
         try {
@@ -66,10 +71,10 @@ public class ProcedurePerClientCtrl implements Serializable {
         }
     }
 
-    public void getProceduresPerInstitution(String insCode) {
+    public void getProceduresPerInstitution() {
         try {
             Client client = Client.create();
-            WebResource webResource1 = client.resource(baseUrl + ".procedureperclient/filer_list/" + insCode);
+            WebResource webResource1 = client.resource(baseUrl + ".procedureperclient/filer_list/" + selected.getInstituteId().getCode());
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
@@ -106,15 +111,26 @@ public class ProcedurePerClientCtrl implements Serializable {
             }
 
         } else {
-            JSONObject jo = selected.getJsonObject();
+            JSONObject jo = selected.getUpdJsonObject();
             jo.put("id", selected.getId());
-            WebResource webResource2 = client.resource(baseUrl+".procedureperclient/" + selected.getId());
+            WebResource webResource2 = client.resource(baseUrl+".procedureperclient/update_procedure/" + selected.getId());
             ClientResponse response = webResource2.type("application/json").put(ClientResponse.class, jo.toString());
             if (response.getStatus() == 200 || response.getStatus() == 204) {
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Updated Successfully");
             } else {
                 addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
             }
+        }
+    }
+    
+    public void deleteClientProcedure(){
+        Client client = Client.create();
+        WebResource r_ = client.resource(baseUrl + ".procedureperclient/" + selected.getId());
+        ClientResponse response = r_.type("application/json").delete(ClientResponse.class);
+        if (response.getStatus() == 200 || response.getStatus() == 204) {
+            addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure deleted successfully");
+        } else {
+            addMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error ocured..! Unable to update record");
         }
     }
 
@@ -165,5 +181,13 @@ public class ProcedurePerClientCtrl implements Serializable {
 
     public void setInstitute(InstitutePojo institute) {
         this.institute = institute;
+    }
+
+    public String getOutputComment() {
+        return outputComment;
+    }
+
+    public void setOutputComment(String outputComment) {
+        this.outputComment = outputComment;
     }
 }

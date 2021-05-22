@@ -11,7 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONArray;
@@ -46,7 +45,6 @@ public class InstitutePojo {
 
     public InstitutePojo getObject(JSONObject jo_) {        
         this.setId(Long.parseLong(jo_.get("id").toString()));
-        System.out.println("3333333333 -->"+this.getId());
         this.setCode(jo_.containsKey("code") ? jo_.get("code").toString() : null);
         this.setIntituteTypeDb(jo_.containsKey("institute_type_db") ? jo_.get("institute_type_db").toString() : null);
         this.setIntituteType(jo_.containsKey("institute_type") ? jo_.get("institute_type").toString() : null);

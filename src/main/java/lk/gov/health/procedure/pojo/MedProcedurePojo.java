@@ -56,8 +56,7 @@ public class MedProcedurePojo {
         jo_.put("description", this.getProcType().getDescription());
         
         return jo_;        
-    }
-    
+    }   
 
     public MedProcedurePojo getObject(JSONObject jo_) {
         this.setId(Long.parseLong(jo_.get("id").toString()));

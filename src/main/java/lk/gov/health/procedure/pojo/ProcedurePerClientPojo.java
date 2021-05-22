@@ -33,11 +33,24 @@ public class ProcedurePerClientPojo {
     
     public JSONObject getJsonObject(){
         JSONObject jo_ = new JSONObject();
-        
+        jo_.put("id", this.getId()!=null?this.getId():null);
         jo_.put("phn", this.getPhn());
         jo_.put("instituteId", this.getInstituteId().getCode());
         jo_.put("procedureCode", this.getProcedureId().getProcedure().getProcId());
         jo_.put("createdBy", this.getCreatedBy());
+        
+        return jo_;         
+    } 
+    
+    public JSONObject getUpdJsonObject(){
+        JSONObject jo_ = new JSONObject();
+        jo_.put("id", this.getId()!=null?this.getId():null);
+        jo_.put("phn", this.getPhn());
+        jo_.put("instituteId", this.getInstituteId().getCode());
+        jo_.put("procedureCode", this.getProcedureId().getProcedure().getProcId());
+        jo_.put("createdAt", this.getCreatedAt());
+        jo_.put("createdBy", this.getCreatedBy());
+        jo_.put("status", this.getStatus());
         
         return jo_;         
     } 

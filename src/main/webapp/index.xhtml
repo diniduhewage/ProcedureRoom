@@ -5,13 +5,13 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">    
-    <f:metadata>
-        <f:viewParam name="User_Name" value="#{webUserCtrl.userName}"/>           
-        <f:viewParam name="Privileges" value="#{webUserCtrl.privilege}"/>
-        <f:viewParam name="User_Role" value="#{webUserCtrl.userRole}"/>
-        <f:viewParam name="UserID" value="#{webUserCtrl.userId}"/>
+    <f:metadata>          
+        <f:viewParam name="Proc_Rooms" value="#{webUserCtrl.procRoomList}"/>
+        <f:viewParam name="UserRole" value="#{webUserCtrl.userRole}"/>
+        <f:viewParam name="UserId" value="#{webUserCtrl.userId}"/>
+        <f:viewParam name="UserName" value="#{webUserCtrl.userName}"/>
         <f:viewParam name="API_KEY" value="#{webUserCtrl.apiKey}"/>
-        <f:viewParam name="Institution" value="#{webUserCtrl.insCode}"/>
+        <f:viewParam name="userInstitution" value="#{webUserCtrl.insId}"/>
     </f:metadata>
     <h:head>
         <h:outputStylesheet name="bootstrap-4.6.0-dist/css/bootstrap.min.css" />
@@ -28,11 +28,10 @@
                     <div class="user_details float-left">
                         <h6>#{webUserCtrl.webUserRoleLabel}</h6>
                         <h6>#{webUserCtrl.insName}</h6>
-                        <h6>#{webUserCtrl.userName}</h6>
-                        <h:form>
+                        <h6><h:form>
                             <p:commandButton action="#{webUserCtrl.logOut()}" ajax="false"
                                              rendered="#{webUserCtrl.userName ne null}" value="#{webUserCtrl.userName} - Logout" />
-                        </h:form>
+                            </h:form></h6>
                     </div>
 
                 </div>
@@ -54,7 +53,7 @@
                             <p:submenu label="Navigator" expanded="true">
                                 <p:menuitem value="Procedure" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{MedProcedureCtrl.toMedProcedure}"/>
                                 <p:menuitem value="Procedure Type" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{ProcedureTypeCtrl.toProcedureType}"/>
-                                <p:menuitem value="Procedure Room" ajax="false" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insCode)}"/>
+                                <p:menuitem value="Procedure Room" ajax="false" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insId)}"/>
                                 <p:menuitem value="Groups" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{procedureGroupCtrl.toProcedureGroups}"/>                                               
                             </p:submenu>
                         </p:panelMenu>

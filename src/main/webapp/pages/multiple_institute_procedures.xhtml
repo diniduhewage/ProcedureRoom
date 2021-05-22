@@ -10,7 +10,14 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+    <f:metadata>
+        <f:viewParam name="User_Name" value="#{webUserCtrl.userName}"/>           
+        <f:viewParam name="Proc_Rooms" value="#{webUserCtrl.procRoomList}"/>
+        <f:viewParam name="User_Role" value="#{webUserCtrl.userRole}"/>
+        <f:viewParam name="UserID" value="#{webUserCtrl.userId}"/>
+        <f:viewParam name="API_KEY" value="#{webUserCtrl.apiKey}"/>
+        <f:viewParam name="Institution" value="#{webUserCtrl.insCode}"/>
+    </f:metadata>
     <body>
         <ui:composition template="/index.xhtml">
             <ui:define name="tabSection">
@@ -28,7 +35,7 @@ and open the template in the editor.
                                         <p:resetInput target=":form:add-procedure-content"/>
                                     </p:commandButton>
                                     <span style="font-weight: bold; font-size: 15px">
-                                        <h:commandLink value="#{procedurePerClientCtrl.selected.instituteId.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insId)}"/>
+                                        <h:commandLink value="#{procedurePerClientCtrl.selected.instituteId.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insCode)}"/>
                                     </span> <div class="fa fa-angle-right"/> <span style="font-weight: bold; font-size: 15px">Procedure List</span>
                                 </div>
                             </f:facet>
@@ -129,7 +136,7 @@ and open the template in the editor.
                                 <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('addNewProcedureDialog').hide()" class="ui-button-secondary"/>
                             </f:facet>
                         </p:dialog>
-                        
+
                         <p:dialog header="Manage Procedure" width="450" showEffect="fade" modal="true"
                                   widgetVar="manageProcedureDialog" responsive="true">
                             <p:outputPanel id="manage-procedure-content" class="ui-fluid">

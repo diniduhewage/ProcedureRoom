@@ -12,8 +12,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -25,10 +23,7 @@ import lk.gov.health.procedure.facade.WebUserFacade;
 import lk.gov.health.procedure.facade.util.JsfUtil;
 import lk.gov.health.procedure.util.ServiceConnector;
 import org.jasypt.util.password.BasicPasswordEncryptor;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -44,15 +39,16 @@ public class WebUserCtrl implements Serializable {
     private UserPrivilegeFacade userPrivilegeFacade;
 
     private String userName;
-    private String privilege;
+    private String personName;
+    private String procRoomList;
     private String userId;
     private String apiKey;
     private String userRole;
     private String userRoleLabel;
-    private String insCode;
+    private String insId;
     private String insName;
 
-    String mainAppUrl = "http://localhost:8080/chims/data";
+    String mainAppUrl = "https://chims.health.gov.lk/chimsd/data";
 
     public boolean IsSystemAdmin() {
         return userRole != null && this.userRole.equals("System_Administrator");
@@ -86,15 +82,15 @@ public class WebUserCtrl implements Serializable {
 //        }
 //        loggedUserPrivileges = userPrivilegeList(loggedUser);
         ServiceConnector sc = new ServiceConnector();
-        JSONObject obj = sc.GetRequest("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroom/count");
+        JSONObject obj = sc.GetRequest("http://chims.health.gov.lk/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroom/count");
 
         userName = obj.get("room_count").toString();
 
         JsfUtil.addSuccessMessage("Successfully Logged");
         return "/index";
     }
-    
-    public String logOut(){
+
+    public String logOut() {
         return "/index";
     }
 
@@ -157,14 +153,6 @@ public class WebUserCtrl implements Serializable {
         this.userPrivilegeFacade = userPrivilegeFacade;
     }
 
-    public String getPrivilege() {
-        return privilege;
-    }
-
-    public void setPrivilege(String privilege) {
-        this.privilege = privilege;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -188,15 +176,7 @@ public class WebUserCtrl implements Serializable {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
-
-    public String getInsCode() {
-        return insCode;
-    }
-
-    public void setInsCode(String insCode) {
-        this.insCode = insCode;
-    }
-
+    
     public String getUserRoleLabel() {
         return userRoleLabel;
     }
@@ -206,10 +186,40 @@ public class WebUserCtrl implements Serializable {
     }
 
     public String getInsName() {
-        return insName;
+        Client client = Client.create();
+        WebResource webResource1 = client.resource(mainAppUrl + "/get_institution_name/" + this.insId);
+        ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
+        return cr.getEntity(String.class);
     }
 
     public void setInsName(String insName) {
         this.insName = insName;
+    }
+
+    public String getProcRoomList() {
+        return procRoomList;
+    }
+
+    public void setProcRoomList(String procRoomList) {
+        this.procRoomList = procRoomList;
+    }
+
+    public String getPersonName() {
+        Client client = Client.create();
+        WebResource webResource1 = client.resource(mainAppUrl + "/get_user_name/" + this.userId);
+        ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
+        return cr.getEntity(String.class);
+    }
+
+    public void setPersonName(String personName) {
+        this.personName = personName;
+    }
+
+    public String getInsId() {
+        return insId;
+    }
+
+    public void setInsId(String insId) {
+        this.insId = insId;
     }
 }
