@@ -48,7 +48,7 @@ public class WebUserCtrl implements Serializable {
     private String insId;
     private String insName;
 
-    String mainAppUrl = "https://chims.health.gov.lk/chimsd/data";
+    String mainAppUrl = "https://localhost:8080/chimsd/data";
 
     public boolean IsSystemAdmin() {
         return userRole != null && this.userRole.equals("System_Administrator");
@@ -82,7 +82,7 @@ public class WebUserCtrl implements Serializable {
 //        }
 //        loggedUserPrivileges = userPrivilegeList(loggedUser);
         ServiceConnector sc = new ServiceConnector();
-        JSONObject obj = sc.GetRequest("http://chims.health.gov.lk/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroom/count");
+        JSONObject obj = sc.GetRequest("http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.procedureroom/count");
 
         userName = obj.get("room_count").toString();
 

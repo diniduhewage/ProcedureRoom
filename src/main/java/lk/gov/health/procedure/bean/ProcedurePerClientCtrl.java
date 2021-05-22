@@ -57,7 +57,7 @@ public class ProcedurePerClientCtrl implements Serializable {
         selected =  new ProcedurePerClientPojo();
     }
 
-    private final String baseUrl = "http://chims.health.gov.lk/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
+    private final String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
 
     private void getProcedures() {
         try {
