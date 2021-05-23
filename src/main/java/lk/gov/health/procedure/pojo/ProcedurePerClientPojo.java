@@ -25,7 +25,7 @@ public class ProcedurePerClientPojo {
     private Long id;
     private String phn;
     private InstitutePojo instituteId;
-    private ProcPerInstPojo procedureId;
+    private String procedureId;
     private Long createdBy; 
     @Temporal(value=TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -36,7 +36,7 @@ public class ProcedurePerClientPojo {
         jo_.put("id", this.getId()!=null?this.getId():null);
         jo_.put("phn", this.getPhn());
         jo_.put("instituteId", this.getInstituteId().getCode());
-        jo_.put("procedureCode", this.getProcedureId().getProcedure().getProcId());
+        jo_.put("procedureCode", this.getProcedureId());
         jo_.put("createdBy", this.getCreatedBy());
         
         return jo_;         
@@ -47,7 +47,7 @@ public class ProcedurePerClientPojo {
         jo_.put("id", this.getId()!=null?this.getId():null);
         jo_.put("phn", this.getPhn());
         jo_.put("instituteId", this.getInstituteId().getCode());
-        jo_.put("procedureCode", this.getProcedureId().getProcedure().getProcId());
+        jo_.put("procedureCode", this.getProcedureId());
         jo_.put("createdAt", this.getCreatedAt());
         jo_.put("createdBy", this.getCreatedBy());
         jo_.put("status", this.getStatus());
@@ -55,18 +55,18 @@ public class ProcedurePerClientPojo {
         return jo_;         
     } 
     
-    public JSONObject getProcedureJsonObject(){
-        JSONObject jo_ = new JSONObject();
-        
-        jo_.put("id", this.getProcedureId().getProcedure().getId());
-        jo_.put("procId", this.getProcedureId().getProcedure().getProcId());
-        jo_.put("description", this.getProcedureId().getProcedure().getDescription());
-        jo_.put("procType", this.getProcedureId().getProcedure().getProcedureTypeJsonObject());
-        jo_.put("comment", this.getProcedureId().getProcedure().getComment());
-        jo_.put("status", this.getProcedureId().getProcedure().getStatus().toString());
-        
-        return jo_;        
-    } 
+//    public JSONObject getProcedureJsonObject(){
+//        JSONObject jo_ = new JSONObject();
+//        
+//        jo_.put("id", this.getProcedureId().getProcedure().getId());
+//        jo_.put("procId", this.getProcedureId().getProcedure().getProcId());
+//        jo_.put("description", this.getProcedureId().getProcedure().getDescription());
+//        jo_.put("procType", this.getProcedureId().getProcedure().getProcedureTypeJsonObject());
+//        jo_.put("comment", this.getProcedureId().getProcedure().getComment());
+//        jo_.put("status", this.getProcedureId().getProcedure().getStatus().toString());
+//        
+//        return jo_;        
+//    } 
     
     private JSONObject getInstituteJSONObject() {
         JSONObject jo_ = new JSONObject();
@@ -87,8 +87,8 @@ public class ProcedurePerClientPojo {
         this.setId(Long.parseLong(jo_.get("id").toString()));
         this.setPhn(jo_.containsKey("phn") ? jo_.get("phn").toString() : null);
         this.setInstituteId(jo_.containsKey("instituteId") ? getInstituteObject(jo_.get("instituteId")) : null);
-        this.setProcedureId(jo_.containsKey("procedureId") ? getMedProcedureObject(jo_.get("procedureId")) : null);
-        this.setCreatedBy(jo_.containsKey("createdBy") ? Long.parseLong(jo_.get("createdBy").toString()) : null);
+        this.setProcedureId(jo_.containsKey("procedureId") ? jo_.get("procedureId").toString() : null);
+//        this.setCreatedBy(jo_.containsKey("createdBy") ? Long.parseLong(jo_.get("createdBy").toString()) : null);
         try {        
             this.setCreatedAt(jo_.containsKey("createdAt") ? new SimpleDateFormat("yyyy-MM-dd").parse(jo_.get("createdAt").toString()) : null);
         } catch (ParseException ex) {
@@ -172,12 +172,12 @@ public class ProcedurePerClientPojo {
         this.id = id;
     }  
 
-    public ProcPerInstPojo getProcedureId() {
+    public String getProcedureId() {
         return procedureId;
     }
 
-    public void setProcedureId(ProcPerInstPojo procedureId) {
+    public void setProcedureId(String procedureId) {
         this.procedureId = procedureId;
     }
-    
+
 }
