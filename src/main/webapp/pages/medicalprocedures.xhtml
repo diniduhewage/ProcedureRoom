@@ -41,11 +41,11 @@ and open the template in the editor.
                             <p:column headerText="PHN" sortBy="#{item.phn}" filterBy="#{item.phn}">
                                 <h:outputText value="#{item.phn}"/>
                             </p:column>
-                            <p:column headerText="Procedure" sortBy="#{item.procedureId.procedure.procId}" filterBy="#{item.procedureId.procedure.procId}">
-                                <h:outputText value="#{item.procedureId.procedure.procId}"/>
+                            <p:column headerText="Name" sortBy="#{item.clientName}" filterBy="#{item.clientName}">
+                                <h:outputText value="#{item.clientName}"/>
                             </p:column>
-                            <p:column headerText="Description" sortBy="#{item.procedureId.procedure.description}" filterBy="#{item.procedureId.procedure.description}">
-                                <h:outputText value="#{item.procedureId.procedure.description}"/>
+                            <p:column headerText="Procedure" sortBy="#{item.procedureName}" filterBy="#{item.procedureName}">
+                                <h:outputText value="#{item.procedureName}"/>
                             </p:column>                                
                             <p:column headerText="Created By" sortBy="#{item.createdBy}" filterBy="#{item.createdBy}">
                                 <h:outputText value="#{item.createdBy}"/>

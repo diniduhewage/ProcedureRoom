@@ -51,10 +51,8 @@
                     <h:form>
                         <p:panelMenu>
                             <p:submenu label="Navigator" expanded="true">
-                                <p:menuitem value="Procedure" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{MedProcedureCtrl.toMedProcedure}"/>
-                                <p:menuitem value="Procedure Type" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{ProcedureTypeCtrl.toProcedureType}"/>
                                 <p:menuitem value="Procedure Room" ajax="false" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insId)}"/>
-                                <p:menuitem value="Groups" rendered="#{webUserCtrl.IsSystemAdmin()}" ajax="false" action="#{procedureGroupCtrl.toProcedureGroups}"/>                                               
+                                                        
                             </p:submenu>
                         </p:panelMenu>
                     </h:form>

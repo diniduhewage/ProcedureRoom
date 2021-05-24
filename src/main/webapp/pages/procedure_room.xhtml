@@ -46,20 +46,7 @@ and open the template in the editor.
                             <p:column headerText="District" sortBy="#{item.districtId}" filterBy="#{item.districtId}">
                                 <h:outputText value="#{item.districtId}"/>
                             </p:column> 
-                            <p:column headerText="Items" rendered="#{webUserCtrl.IsInstituteAdmin()}">
-                                <p:commandButton id="btnItems" value="Add Groups"  icon="ui-icon-note"       
-                                                 action="#{procedureRoomCtrl.getAllocatedGroups()}" 
-                                                 ajax="false">
-                                    <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>                                        
-                                </p:commandButton>
-                            </p:column>
-                            <p:column headerText="Procedure" rendered="#{webUserCtrl.IsInstituteAdmin()}">
-                                <p:commandButton id="btnProcedure" value="Procedures"  icon="ui-icon-note"       
-                                                 action="#{procedureRoomCtrl.toProcedurePerInstitute()}" 
-                                                 ajax="false">
-                                    <f:setPropertyActionListener value="#{item}" target="#{procedureRoomCtrl.selected}"/>                                        
-                                </p:commandButton>
-                            </p:column>
+                            
                             <p:column headerText="To Do">
                                 <p:commandButton id="btnToDo" value="To Do"  icon="ui-icon-note"       
                                                  action="#{procedureRoomCtrl.toClientProcedurePerInstitute()}" 

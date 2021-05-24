@@ -26,7 +26,9 @@ public class ProcedurePerClientPojo {
     private String phn;
     private InstitutePojo instituteId;
     private String procedureId;
-    private Long createdBy; 
+    private String procedureName;
+    private String clientName;
+    private String createdBy; 
     @Temporal(value=TemporalType.TIMESTAMP)
     private Date createdAt;
     private ProcPerClientStates status; 
@@ -88,7 +90,9 @@ public class ProcedurePerClientPojo {
         this.setPhn(jo_.containsKey("phn") ? jo_.get("phn").toString() : null);
         this.setInstituteId(jo_.containsKey("instituteId") ? getInstituteObject(jo_.get("instituteId")) : null);
         this.setProcedureId(jo_.containsKey("procedureId") ? jo_.get("procedureId").toString() : null);
-//        this.setCreatedBy(jo_.containsKey("createdBy") ? Long.parseLong(jo_.get("createdBy").toString()) : null);
+        this.setProcedureName(jo_.containsKey("procedureName") ? jo_.get("procedureName").toString() : null);
+        this.setClientName(jo_.containsKey("clientName") ? jo_.get("clientName").toString() : null);
+        this.setCreatedBy(jo_.containsKey("createdBy") ? jo_.get("createdBy").toString() : null);
         try {        
             this.setCreatedAt(jo_.containsKey("createdAt") ? new SimpleDateFormat("yyyy-MM-dd").parse(jo_.get("createdAt").toString()) : null);
         } catch (ParseException ex) {
@@ -138,15 +142,7 @@ public class ProcedurePerClientPojo {
 
     public void setInstituteId(InstitutePojo instituteId) {
         this.instituteId = instituteId;
-    }      
-
-    public Long getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
-    }
+    }    
 
     public Date getCreatedAt() {
         return createdAt;
@@ -178,6 +174,30 @@ public class ProcedurePerClientPojo {
 
     public void setProcedureId(String procedureId) {
         this.procedureId = procedureId;
+    }
+
+    public String getProcedureName() {
+        return procedureName;
+    }
+
+    public void setProcedureName(String procedureName) {
+        this.procedureName = procedureName;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
 }
