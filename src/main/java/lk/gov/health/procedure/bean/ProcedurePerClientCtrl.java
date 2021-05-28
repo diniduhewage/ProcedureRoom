@@ -74,7 +74,6 @@ public class ProcedurePerClientCtrl implements Serializable {
     public void getProceduresPerInstitution() {
         try {
             Client client = Client.create();
-            System.out.println("222222222222222 -->"+selected.getInstituteId().getId());
             WebResource webResource1 = client.resource(baseUrl + ".procedureperclient/filer_list/" + selected.getInstituteId().getId());
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
@@ -100,7 +99,6 @@ public class ProcedurePerClientCtrl implements Serializable {
 
     public void saveClientProcedure() {
         Client client = Client.create();
-//To Dr.Buddhika
         if (selected.getId() == null) {
             JSONObject jo = selected.getJsonObject();
             WebResource webResource1 = client.resource(baseUrl+".procedureperclient/register_procedure");
@@ -114,7 +112,7 @@ public class ProcedurePerClientCtrl implements Serializable {
         } else {
             JSONObject jo = selected.getUpdJsonObject();
             jo.put("id", selected.getId());
-            WebResource webResource2 = client.resource(baseUrl+".procedureperclient/update_procedure/" + selected.getId());
+            WebResource webResource2 = client.resource(baseUrl+".procedureperclient/update_procedure/" + selected.getId()+"/"+selected.getStatus());
             ClientResponse response = webResource2.type("application/json").put(ClientResponse.class, jo.toString());
             if (response.getStatus() == 200 || response.getStatus() == 204) {
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Updated Successfully");
