@@ -71,20 +71,7 @@ and open the template in the editor.
                                                  ajax="false">
                                     <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>                                        
                                 </p:commandButton>
-                            </p:column>
-                            <p:column exportable="false">
-                                <p:commandButton icon="pi pi-pencil" update=":form:add-procedure-content" rendered="#{webUserCtrl.IsInstituteAdmin()}"
-                                                 oncomplete="PF('addNewProcedureDialog').show()"                                                     
-                                                 styleClass="edit-button rounded-button ui-button-success" process="@this">
-                                    <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
-                                    <p:resetInput target=":form:add-procedure-content"/>
-                                </p:commandButton>
-                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this" rendered="#{webUserCtrl.IsInstituteAdmin()}"
-                                                 oncomplete="PF('deleteProcedureDialog').show()">
-                                    <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
-                                </p:commandButton>
-                            </p:column>
-
+                            </p:column> 
                         </p:dataTable>
 
                         <p:dialog header="New Procedure" width="450" showEffect="fade" modal="true"
