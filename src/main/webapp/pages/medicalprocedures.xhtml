@@ -59,7 +59,7 @@ and open the template in the editor.
                                 <h:outputText value="#{item.status.label}"/>
                             </p:column>
                             <p:column exportable="false">
-                                <p:commandButton id="btnManage" value="Manage"  icon="ui-icon-note"       
+                                <p:commandButton id="btnManage" value="Manage"       
                                                  oncomplete="PF('manageProcedureDialog').show()"                                                     
                                                  styleClass="edit-button rounded-button ui-button-success">
                                     <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>                                        
@@ -136,7 +136,7 @@ and open the template in the editor.
 
                             <f:facet name="footer">
                                 <p:commandButton ajax="false" value="Save" icon="pi pi-check" actionListener="#{procedurePerClientCtrl.saveClientProcedure}" update="add-procedure-content"/>
-                                <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('addNewProcedureDialog').hide()" class="ui-button-secondary"/>
+                                <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProcedureDialog').hide()" class="ui-button-secondary"/>
                             </f:facet>
                         </p:dialog>
 

@@ -73,6 +73,7 @@ public class ProcedurePerClientCtrl implements Serializable {
 
     public void getProceduresPerInstitution() {
         try {
+            items = null;
             Client client = Client.create();
             WebResource webResource1 = client.resource(baseUrl + ".procedureperclient/filer_list/" + selected.getInstituteId().getId());
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
