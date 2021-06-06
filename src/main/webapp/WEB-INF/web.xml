@@ -8,6 +8,14 @@
         <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
     </context-param>
+    <context-param>
+        <param-name>BASE_APP_URL</param-name>
+        <param-value>http://localhost:8080/chims/data</param-value>
+    </context-param>
+    <context-param>
+        <param-name>SERVICE_APP_URL</param-name>
+        <param-value>http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice.</param-value>
+    </context-param>
     
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

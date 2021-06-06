@@ -28,12 +28,7 @@ and open the template in the editor.
                                      selection="#{procedurePerClientCtrl.selected}" rowKey="#{item.id}" paginator="true"
                                      rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                             <f:facet name="header">
-                                <div class="products-table-header" style="height: 0.5cm">
-                                    <p:commandButton value="New" icon="pi pi-plus" rendered="#{webUserCtrl.IsInstituteAdmin()}" actionListener="#{procedurePerClientCtrl.prepareNew}"
-                                                     update=":form:add-procedure-content" oncomplete="PF('addNewProcedureDialog').show()"
-                                                     styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
-                                        <p:resetInput target=":form:add-procedure-content"/>
-                                    </p:commandButton>
+                                <div class="products-table-header" style="height: 0.5cm">                                    
                                     <span style="font-weight: bold; font-size: 15px">
                                         <h:commandLink value="#{procedurePerClientCtrl.selected.instituteId.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insCode)}"/>
                                     </span> <div class="fa fa-angle-right"/> <span style="font-weight: bold; font-size: 15px">Procedure List</span>
@@ -78,19 +73,7 @@ and open the template in the editor.
                                                  ajax="false">
                                     <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>                                        
                                 </p:commandButton>
-                            </p:column>
-                            <p:column exportable="false">
-                                <p:commandButton icon="pi pi-pencil" update=":form:add-procedure-content" rendered="#{webUserCtrl.IsInstituteAdmin()}"
-                                                 oncomplete="PF('addNewProcedureDialog').show()"                                                     
-                                                 styleClass="edit-button rounded-button ui-button-success" process="@this">
-                                    <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
-                                    <p:resetInput target=":form:add-procedure-content"/>
-                                </p:commandButton>
-                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this" rendered="#{webUserCtrl.IsInstituteAdmin()}"
-                                                 oncomplete="PF('deleteProcedureDialog').show()">
-                                    <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>
-                                </p:commandButton>
-                            </p:column>
+                            </p:column>                            
 
                         </p:dataTable>
 

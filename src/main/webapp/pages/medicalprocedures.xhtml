@@ -117,8 +117,7 @@ and open the template in the editor.
                             </f:facet>
                         </p:dialog>
                         
-                        <p:dialog header="Manage Procedure" width="450" showEffect="fade" modal="true"
-                                  widgetVar="manageProcedureDialog" responsive="true">
+                        <p:dialog header="Manage Procedure" width="450" showEffect="fade" modal="true" widgetVar="manageProcedureDialog" responsive="true">
                             <p:outputPanel id="manage-procedure-content" class="ui-fluid">
                                 <p:outputPanel rendered="#{not empty procedurePerClientCtrl.selected}">                                                                            
                                     <p:selectOneMenu id="outputStatus" value="#{procedurePerClientCtrl.selected.status}" title="status">
