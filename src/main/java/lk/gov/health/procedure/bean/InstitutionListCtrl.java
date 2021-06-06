@@ -17,7 +17,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
+import javax.ws.rs.client.WebTarget;
 import lk.gov.health.procedure.pojo.InstitutePojo;
 import lk.gov.health.procedure.util.ServiceConnector;
 import org.json.simple.JSONArray;
@@ -38,6 +40,16 @@ public class InstitutionListCtrl implements Serializable {
     String baseUrl = "https://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
     String mainAppUrl = "http://localhost:8080/chims/data?name=";
 
+    private static String SERVICE_URI;
+    private WebTarget webTarget;
+    private javax.ws.rs.client.Client client;
+
+    public InstitutionListCtrl() {
+        SERVICE_URI = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("SERVICE_APP_URL") + "institute";
+        client = javax.ws.rs.client.ClientBuilder.newBuilder().sslContext(getSSLContext()).build();
+        webTarget = client.target(SERVICE_URI);
+    }
+
     public String toInstitutionList() {
         selected = new InstitutePojo();
         this.getInstitutes();
@@ -55,13 +67,12 @@ public class InstitutionListCtrl implements Serializable {
             Logger.getLogger(DrugFrequencyCtrl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void getProcedureRooms() {
         try {
-            Client client = Client.create();
-            WebResource webResource1 = client.resource(baseUrl + ".institute/get_procedure_rooms/NO_FILTER");
-            ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
-            String outpt = cr.getEntity(String.class);
+            WebTarget resource = webTarget;
+            resource = resource.path("/get_all_procedure_rooms");
+            String outpt = resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
         } catch (ParseException ex) {
             Logger.getLogger(DrugFrequencyCtrl.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,7 +91,7 @@ public class InstitutionListCtrl implements Serializable {
     }
 
     public ArrayList<InstitutePojo> fetchInstitutes(String qryVal) {
-        String url_ = baseUrl+".institute/filer_list/" + qryVal;
+        String url_ = baseUrl + ".institute/filer_list/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return selected.getObjectList(sc_.GetRequestList(url_));
@@ -89,7 +100,7 @@ public class InstitutionListCtrl implements Serializable {
     public void addMessage(FacesMessage.Severity sev, String summary, String detail) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
-    }    
+    }
 
     static {
         HttpsURLConnection.setDefaultHostnameVerifier((String hostname, SSLSession session) -> hostname.equals("192.168.202.39"));
@@ -111,4 +122,30 @@ public class InstitutionListCtrl implements Serializable {
         this.items = items;
     }
 
+    private SSLContext getSSLContext() {
+        // for alternative implementation checkout org.glassfish.jersey.SslConfigurator
+        javax.net.ssl.TrustManager x509 = new javax.net.ssl.X509TrustManager() {
+            @Override
+            public void checkClientTrusted(java.security.cert.X509Certificate[] arg0, String arg1) throws java.security.cert.CertificateException {
+                return;
+            }
+
+            @Override
+            public void checkServerTrusted(java.security.cert.X509Certificate[] arg0, String arg1) throws java.security.cert.CertificateException {
+                return;
+            }
+
+            @Override
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+        };
+        SSLContext ctx = null;
+        try {
+            ctx = SSLContext.getInstance("SSL");
+            ctx.init(null, new javax.net.ssl.TrustManager[]{x509}, null);
+        } catch (java.security.GeneralSecurityException ex) {
+        }
+        return ctx;
+    }
 }

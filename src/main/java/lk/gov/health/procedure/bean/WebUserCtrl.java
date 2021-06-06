@@ -5,12 +5,16 @@
  */
 package lk.gov.health.procedure.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.net.ssl.SSLContext;
@@ -111,7 +115,6 @@ public class WebUserCtrl implements Serializable {
     }
     
     public String getInsName() {   
-        System.out.println("1111111111111111 -->"+this.insId);
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("/get_institution_name/{0}",new Object[]{this.insId}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
@@ -121,6 +124,16 @@ public class WebUserCtrl implements Serializable {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("/get_user_name/{0}",new Object[]{this.userId}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+    
+    public String toMainApplication(){
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            externalContext.redirect("https://chims.health.gov.lk/chims/app/index.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(WebUserCtrl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public WebUserFacade getEjbFacade() {

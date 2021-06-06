@@ -48,7 +48,6 @@ public class ProcedurePerClientPojo {
         JSONObject jo_ = new JSONObject();
         jo_.put("id", this.getId()!=null?this.getId():null);
         jo_.put("phn", this.getPhn());
-        jo_.put("instituteId", this.getInstituteId().getCode());
         jo_.put("procedureCode", this.getProcedureId());
         jo_.put("createdAt", this.getCreatedAt());
         jo_.put("createdBy", this.getCreatedBy());

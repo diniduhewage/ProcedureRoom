@@ -99,11 +99,10 @@ public class ProcedureRoomCtrl implements Serializable {
     }
 
     public void getProcedureRooms() {
+        WebTarget resource = webTarget;
         try {
-            Client client = Client.create();
-            WebResource webResource1 = client.resource(SERVICE_URI + "procedureroom");
-            ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
-            String outpt = cr.getEntity(String.class);
+            resource = resource.path(java.text.MessageFormat.format("get_procedure_rooms/{0}", new Object[]{"NO_FILTER"}));
+            String outpt = resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
         } catch (ParseException ex) {
             Logger.getLogger(MedProcedureCtrl.class.getName()).log(Level.SEVERE, null, ex);
@@ -128,7 +127,6 @@ public class ProcedureRoomCtrl implements Serializable {
             } else {
                 resource = resource.path(java.text.MessageFormat.format("get_procedure_rooms/{0}", new Object[]{insCode}));
             }
-            System.out.println("22222222222 -->"+resource.toString());
             String outpt = resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
             
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));

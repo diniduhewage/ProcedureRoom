@@ -17,6 +17,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.net.ssl.SSLContext;
+import javax.ws.rs.client.WebTarget;
 import lk.gov.health.procedure.enums.ProcPerClientStates;
 import lk.gov.health.procedure.pojo.InstitutePojo;
 import lk.gov.health.procedure.pojo.ProcPerInstPojo;
@@ -42,27 +44,35 @@ public class ProcedurePerClientCtrl implements Serializable {
     private ArrayList<ProcPerInstPojo> procList;
     private String outputComment;
 
+    private static String SERVICE_URI;
+    private WebTarget webTarget;
+    private javax.ws.rs.client.Client client;
+
+    public ProcedurePerClientCtrl() {
+        SERVICE_URI = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("SERVICE_APP_URL") + "procedureperclient";
+        client = javax.ws.rs.client.ClientBuilder.newBuilder().sslContext(getSSLContext()).build();
+        webTarget = client.target(SERVICE_URI);
+    }
+
     public String toAddProcedure() {
         this.getProcedures();
         return "/pages/medicalprocedures";
     }
-    
+
     public String toProcedureLog() {
         selected = new ProcedurePerClientPojo();
 //        this.getProcedureLog();
         return "/pages/procedure_log";
     }
-    
-    public void prepareNew(){
-        selected =  new ProcedurePerClientPojo();
-    }
 
-    private final String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
+    public void prepareNew() {
+        selected = new ProcedurePerClientPojo();
+    }
 
     private void getProcedures() {
         try {
             Client client = Client.create();
-            WebResource webResource1 = client.resource(baseUrl + ".procedureperclient");
+            WebResource webResource1 = client.resource(SERVICE_URI);
             ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
             String outpt = cr.getEntity(String.class);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
@@ -74,10 +84,9 @@ public class ProcedurePerClientCtrl implements Serializable {
     public void getProceduresPerInstitution() {
         try {
             items = null;
-            Client client = Client.create();
-            WebResource webResource1 = client.resource(baseUrl + ".procedureperclient/filer_list/" + selected.getInstituteId().getId());
-            ClientResponse cr = webResource1.accept("application/json").get(ClientResponse.class);
-            String outpt = cr.getEntity(String.class);
+            WebTarget resource = webTarget;
+            resource = resource.path(java.text.MessageFormat.format("/filer_list/{0}", new Object[]{selected.getInstituteId().getId().toString()}));
+            String outpt = resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
             items = selected.getObjectList((JSONArray) new JSONParser().parse(outpt));
         } catch (ParseException ex) {
             Logger.getLogger(ProcPerInstCtrl.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,24 +94,17 @@ public class ProcedurePerClientCtrl implements Serializable {
     }
 
     public ArrayList<ProcPerInstPojo> fetchProcedures(String qryVal) {
-        String url_ = baseUrl +".procedureperinstitute/filer_list/"+institute.getCode()+"/" + qryVal;
+        String url_ = SERVICE_URI+"/filer_list/" + institute.getCode() + "/" + qryVal;
 
         ServiceConnector sc_ = new ServiceConnector();
         return medProcPerInst.getObjectList(sc_.GetRequestList(url_));
-    }
-
-    public ArrayList<InstitutePojo> fetchRooms(String qryVal) {
-        String url_ = baseUrl +".institute/filer_list/" + qryVal;
-
-        ServiceConnector sc_ = new ServiceConnector();
-        return institute.getObjectList(sc_.GetRequestList(url_));
-    }
+    }    
 
     public void saveClientProcedure() {
         Client client = Client.create();
         if (selected.getId() == null) {
             JSONObject jo = selected.getJsonObject();
-            WebResource webResource1 = client.resource(baseUrl+".procedureperclient/register_procedure");
+            WebResource webResource1 = client.resource(SERVICE_URI+"/register_procedure");
             ClientResponse response = webResource1.type("application/json").post(ClientResponse.class, jo.toString());
             if (response.getStatus() == 200 || response.getStatus() == 204) {
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure added successfully");
@@ -113,7 +115,7 @@ public class ProcedurePerClientCtrl implements Serializable {
         } else {
             JSONObject jo = selected.getUpdJsonObject();
             jo.put("id", selected.getId());
-            WebResource webResource2 = client.resource(baseUrl+".procedureperclient/update_procedure/" + selected.getId()+"/"+selected.getStatus());
+            WebResource webResource2 = client.resource(SERVICE_URI+"/update_procedure/" + selected.getId()+"/"+selected.getStatus());
             ClientResponse response = webResource2.type("application/json").put(ClientResponse.class, jo.toString());
             if (response.getStatus() == 200 || response.getStatus() == 204) {
                 addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure Updated Successfully");
@@ -122,10 +124,10 @@ public class ProcedurePerClientCtrl implements Serializable {
             }
         }
     }
-    
-    public void deleteClientProcedure(){
+
+    public void deleteClientProcedure() {
         Client client = Client.create();
-        WebResource r_ = client.resource(baseUrl + ".procedureperclient/" + selected.getId());
+        WebResource r_ = client.resource(SERVICE_URI + selected.getId());
         ClientResponse response = r_.type("application/json").delete(ClientResponse.class);
         if (response.getStatus() == 200 || response.getStatus() == 204) {
             addMessage(FacesMessage.SEVERITY_INFO, "Success", "Procedure deleted successfully");
@@ -189,5 +191,32 @@ public class ProcedurePerClientCtrl implements Serializable {
 
     public void setOutputComment(String outputComment) {
         this.outputComment = outputComment;
+    }
+
+    private SSLContext getSSLContext() {
+        // for alternative implementation checkout org.glassfish.jersey.SslConfigurator
+        javax.net.ssl.TrustManager x509 = new javax.net.ssl.X509TrustManager() {
+            @Override
+            public void checkClientTrusted(java.security.cert.X509Certificate[] arg0, String arg1) throws java.security.cert.CertificateException {
+                return;
+            }
+
+            @Override
+            public void checkServerTrusted(java.security.cert.X509Certificate[] arg0, String arg1) throws java.security.cert.CertificateException {
+                return;
+            }
+
+            @Override
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+        };
+        SSLContext ctx = null;
+        try {
+            ctx = SSLContext.getInstance("SSL");
+            ctx.init(null, new javax.net.ssl.TrustManager[]{x509}, null);
+        } catch (java.security.GeneralSecurityException ex) {
+        }
+        return ctx;
     }
 }

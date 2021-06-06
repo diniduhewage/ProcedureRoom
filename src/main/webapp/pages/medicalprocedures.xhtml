@@ -21,12 +21,7 @@ and open the template in the editor.
                                      selection="#{procedurePerClientCtrl.selected}" rowKey="#{item.id}" paginator="true"
                                      rows="10" rowSelectMode="add" paginatorPosition="bottom" style="margin-top:0.25cm; font-size: 12px" rowIndexVar="index">
                             <f:facet name="header">
-                                <div class="products-table-header" style="height: 0.5cm">
-                                    <p:commandButton value="New" icon="pi pi-plus" rendered="#{webUserCtrl.IsInstituteAdmin()}" actionListener="#{procedurePerClientCtrl.prepareNew}"
-                                                     update=":form:add-procedure-content" oncomplete="PF('addNewProcedureDialog').show()"
-                                                     styleClass="ui-button-success" style="margin-right: .5rem;  height: 30px; font-size: 11px;"> 
-                                        <p:resetInput target=":form:add-procedure-content"/>
-                                    </p:commandButton>
+                                <div class="products-table-header" style="height: 0.5cm">                                    
                                     <span style="font-weight: bold; font-size: 15px">
                                         <h:commandLink value="#{procedurePerClientCtrl.selected.instituteId.name}" action="#{procedureRoomCtrl.toProcedureRoom(webUserCtrl.userRole, webUserCtrl.insId)}"/>
                                     </span> <div class="fa fa-angle-right"/> <span style="font-weight: bold; font-size: 15px">Procedure List</span>
@@ -72,50 +67,7 @@ and open the template in the editor.
                                     <f:setPropertyActionListener value="#{item}" target="#{procedurePerClientCtrl.selected}"/>                                        
                                 </p:commandButton>
                             </p:column> 
-                        </p:dataTable>
-
-                        <p:dialog header="New Procedure" width="450" showEffect="fade" modal="true"
-                                  widgetVar="addNewProcedureDialog" responsive="true">
-                            <p:outputPanel id="add-procedure-content" class="ui-fluid">
-                                <p:outputPanel rendered="#{not empty procedurePerClientCtrl.selected}">
-                                    <div class="p-field">
-                                        <p:outputLabel for="phn">PHN</p:outputLabel>
-                                        <p:inputText id="phn" value="#{procedurePerClientCtrl.selected.phn}"/>
-                                    </div> 
-                                    <div class="p-field">
-                                        <p:outputLabel for="procedureRoom">Procedure Room</p:outputLabel>
-                                        <p:autoComplete  id="procedureRoom" value="#{procedurePerClientCtrl.selected.instituteId}" 
-                                                         completeMethod="#{procedurePerClientCtrl.fetchRooms}"
-                                                         var="i" itemLabel="#{i.name}" itemValue="#{i}"
-                                                         forceSelection="true" converter="#{institutionConverter}">
-                                        </p:autoComplete >  
-                                    </div>
-                                    <div class="p-field">
-                                        <p:outputLabel for="procedure">Procedure</p:outputLabel>
-                                        <p:autoComplete  id="procedure" value="#{procedurePerClientCtrl.selected.procedureId}" 
-                                                         completeMethod="#{procedurePerClientCtrl.fetchProcedures}"
-                                                         var="i" itemLabel="#{i.procedure.procId}" itemValue="#{i}"
-                                                         forceSelection="true" converter="#{procedurePerInstituteConverter}">
-                                        </p:autoComplete >  
-                                    </div>                                    
-                                    <div class="p-field">
-                                        <p:outputLabel for="createdBy">Created By</p:outputLabel>
-                                        <p:inputText id="createdBy" value="#{procedurePerClientCtrl.selected.createdBy}"/>
-                                    </div>                                        
-                                    <p:selectOneMenu id="procedureStatus" value="#{procedurePerClientCtrl.selected.status}" title="status">
-                                        <f:selectItems value="#{procedurePerClientCtrl.procClientStatus}"
-                                                       var="procStatus"
-                                                       itemValue="#{procStatus}"
-                                                       itemLabel="#{procStatus.label}"></f:selectItems>
-                                    </p:selectOneMenu>
-                                </p:outputPanel>
-                            </p:outputPanel>
-
-                            <f:facet name="footer">
-                                <p:commandButton ajax="false" value="Save" icon="pi pi-check" actionListener="#{procedurePerClientCtrl.saveClientProcedure}" update="add-procedure-content"/>
-                                <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('addNewProcedureDialog').hide()" class="ui-button-secondary"/>
-                            </f:facet>
-                        </p:dialog>
+                        </p:dataTable>                       
                         
                         <p:dialog header="Manage Procedure" width="450" showEffect="fade" modal="true" widgetVar="manageProcedureDialog" responsive="true">
                             <p:outputPanel id="manage-procedure-content" class="ui-fluid">

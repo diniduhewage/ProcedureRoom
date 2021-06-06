@@ -35,6 +35,10 @@
         <extension>css</extension>
         <mime-type>text/css</mime-type>
     </mime-mapping>
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/app/timeout.xhtml</location>
+    </error-page>
     <welcome-file-list>
         <welcome-file>app/index.xhtml</welcome-file>
     </welcome-file-list>
