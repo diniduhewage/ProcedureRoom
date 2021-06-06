@@ -36,7 +36,7 @@ public class InstitutionListCtrl implements Serializable {
     private ArrayList<InstitutePojo> items = new ArrayList<>();
 
     String baseUrl = "https://localhost:8080/ProcedureRoomService/resources/lk.gov.health.procedureroomservice";
-    String mainAppUrl = "http://localhost:8080/chimsd/data?name=";
+    String mainAppUrl = "http://localhost:8080/chims/data?name=";
 
     public String toInstitutionList() {
         selected = new InstitutePojo();

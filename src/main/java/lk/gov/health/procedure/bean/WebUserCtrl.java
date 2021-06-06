@@ -55,6 +55,7 @@ public class WebUserCtrl implements Serializable {
         webTarget = client.target(BASE_URI);
     }
 
+
     public boolean IsSystemAdmin() {
         return userRole != null && this.userRole.equals("System_Administrator");
     }
